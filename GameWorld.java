@@ -18,5 +18,13 @@ public class GameWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1024, 768, 1, true);
         setBackground(bg);
+        
+        TwoHanded t = new TwoHanded(1);
+        addObject(t, 768, 500);
+        
+        JavelinThrower j = new JavelinThrower(-1);
+        addObject(j, 100, 500);
+        
+        
     }
 }

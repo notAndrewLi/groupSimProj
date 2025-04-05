@@ -13,8 +13,8 @@ public class JavelinThrower extends Fighter
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
-    public JavelinThrower(){
-        super();
+    public JavelinThrower(int direction){
+        super(direction);
     }
     
     public void act()
