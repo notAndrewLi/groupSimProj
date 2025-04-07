@@ -12,8 +12,8 @@ public class TwoHanded extends Fighter
      * Act - do whatever the TwoHanded wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public TwoHanded(){
-        super();
+    public TwoHanded(int direction){
+        super(direction);
     }
     
     public void act()
