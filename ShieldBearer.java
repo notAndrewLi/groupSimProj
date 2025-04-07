@@ -12,8 +12,8 @@ public class ShieldBearer extends Fighter
      * Act - do whatever the ShieldBearer wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public ShieldBearer(){
-        super();
+    public ShieldBearer(int direction){
+        super(direction);
     }
     
     public void act()

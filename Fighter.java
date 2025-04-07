@@ -1,5 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import java.util.ArrayList;
 /**
  * Write a description of class Fighter here.
  * 
@@ -16,31 +16,129 @@ public abstract class Fighter extends SuperSmoothMover
     protected int health;
     protected int curAct;
     protected int direction;
+    protected int movementSpd;
+    protected int endAct;
     
-    protected boolean isAggro;
-    protected boolean isTimid;
+    protected boolean[] states;
+    protected boolean aggro;
+    protected boolean timid;
+    protected boolean cautious;
     
-    private GreenfootImage[] testFighterFrames = new GreenfootImage[5];
-    public Fighter(){
-        direction = 50;
-        isAggro = true;
-        isTimid = false;
-        for(int i = 0; i < testFighterFrames.length; i++){
-            testFighterFrames[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
-        }
+    protected String myState;
+    
+    public Fighter(int direction){
+        //bagaga
+        this.direction = direction;
+        
+        aggro = true;
+        timid = false;
+        cautious = false;
+        
+        states = new boolean[]{aggro, timid, cautious};
+        
+        changeMyState();
+        
+        health = 100;
+        movementSpd = 4;
     }
     
     public void act()
     {
        curAct++;
        
-       if(isAggro){
-           move(Math.abs(direction));
-       }else if(isTimid){
-           move(-Math.abs(direction));
-       }else if(curAct % 120 == 0){
-           move(getNewDirection());
-       }
+       myBehaviour();
+    }
+    
+    public String getMyState(){
+        return myState;
+    }
+    
+    public void takeDamage(int damage){
+        health -= damage;
+    }
+    
+    private void changeMyState(){
+
+        int randInt = Greenfoot.getRandomNumber(100);
+        
+        //25% chance to be cautious
+        if(Greenfoot.getRandomNumber(4) == 0){
+           cautious = true;
+           myState = "cautious";
+        }else if(randInt <= 50){
+            endAct = curAct + 120;
+            timid = true;
+            myState = "timid";
+        }else if(randInt > 50){
+            aggro = true;
+            myState = "aggro";
+        }
+    }
+    
+    private void myBehaviour(){
+        if(timid){
+            
+            //if two seconds have passed
+            if(curAct % endAct == 0 && curAct != 0){
+                changeMyState();
+            }else{
+                System.out.println("retreating");
+                move(movementSpd * -direction);
+            }
+            
+        }else if(aggro){
+            
+            if(checkInRange() != null){
+                attack();
+                changeMyState();
+            }else{
+                move(movementSpd * direction);
+            }
+            
+        }else if(cautious){
+            Fighter f = checkInRange();
+            
+            String theirState;
+            
+            if(f != null){
+                for (int i = 0; i < states.length; i++){
+                    states[i] = false;
+                }
+                
+                theirState = f.getMyState();
+                
+                //act accordingly
+                if(theirState.equals("timid")){
+                    aggro = true;
+                    myState = "aggro";
+                }else if(theirState.equals("aggro")){
+                    timid = true;
+                    myState = "timid";
+                }else if(theirState.equals("cautious")){
+                    //some other unique behaviour
+                    System.out.println("throw a spear");
+                }
+                
+            }else{
+                move(movementSpd/2 * direction);    
+            }
+            
+        }
+    }
+    
+    private Fighter checkInRange(){
+        
+        ArrayList<Fighter> inRange = (ArrayList<Fighter>)getObjectsInRange(100, Fighter.class);
+        
+        if(inRange.isEmpty()){
+            return null;
+        }else{
+            return inRange.get(0);
+        }
+    }
+    
+    private void attack(){
+        //attack
     }
     
     private int getNewDirection(){
@@ -50,3 +148,4 @@ public abstract class Fighter extends SuperSmoothMover
         return direction;
     }
 }
+ */

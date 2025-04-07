@@ -20,5 +20,11 @@ public class GameWorld extends World
         setBackground(bg);
         Spikes spikeTrap = new Spikes();
         addObject(spikeTrap, 150, 700); 
+        TwoHanded t = new TwoHanded(1);
+        addObject(t, 768, 500);
+        
+        JavelinThrower j = new JavelinThrower(-1);
+        addObject(j, 100, 500);
+
     }
 }
