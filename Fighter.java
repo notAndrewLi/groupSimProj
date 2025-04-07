@@ -20,12 +20,14 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean isAggro;
     protected boolean isTimid;
     
+    private GreenfootImage[] testFighterFrames = new GreenfootImage[5];
     public Fighter(){
-        //bagaga
         direction = 50;
-        
         isAggro = true;
         isTimid = false;
+        for(int i = 0; i < testFighterFrames.length; i++){
+            testFighterFrames[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
+        }
     }
     
     public void act()
