@@ -58,10 +58,7 @@ public abstract class Fighter extends SuperSmoothMover
     }
     
     private void changeMyState(){
-        for (int i = 0; i < states.length; i++){
-            states[i] = false;
-        }
-        
+
         int randInt = Greenfoot.getRandomNumber(100);
         
         //25% chance to be cautious
@@ -150,4 +147,5 @@ public abstract class Fighter extends SuperSmoothMover
         }
         return direction;
     }
-} */
+}
+ */
