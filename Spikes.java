@@ -16,17 +16,17 @@ public class Spikes extends Traps
     
     public void act()
     {
-        if(getOneIntersectingObject(Fighter.class) != null){
-            activate();
-        }
+        super.act();
     }
     
     public void activate(){
         setImage(active);
-        
+        super.activate();
     }
     
     public void deactivate(){
         //deactivate
+        setImage(deactive);
+        
     }
 }

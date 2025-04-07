@@ -20,6 +20,10 @@ public class GameWorld extends World
         setBackground(bg);
         Spikes spikeTrap = new Spikes();
         addObject(spikeTrap, 150, 700); 
+        
+        Geyser geyserTrap = new Geyser();
+        addObject(geyserTrap, 900, 690);
+        
         TwoHanded t = new TwoHanded(1);
         addObject(t, 768, 500);
         

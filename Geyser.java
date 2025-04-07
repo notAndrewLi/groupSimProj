@@ -15,6 +15,15 @@ public class Geyser extends Traps
     }
     public void act()
     {
-        // Add your action code here.
+        super.act();
+    }
+    
+    public void activate(){
+        setImage(active);
+        super.activate();
+    }
+    
+    public void deactivate(){
+        setImage(deactive);
     }
 }
