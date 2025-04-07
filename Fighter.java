@@ -148,4 +148,3 @@ public abstract class Fighter extends SuperSmoothMover
         return direction;
     }
 }
- */
