@@ -12,20 +12,25 @@ public abstract class Fighter extends SuperSmoothMover
      * Act - do whatever the Fighter wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    //fighter stats
     protected int maxHealth = 100; //add to constructor later, have ability to choose
     protected int health;
-    protected int curAct;
-    protected int curFrame;
     protected int direction;
     protected int movementSpd;
+    
+    protected int curAct;
     protected int endAct;
-
-    protected boolean[] states;
+    
+    //states
+    protected String myState;
     protected boolean aggro;
     protected boolean timid;
     protected boolean cautious;
+    
+    //animation stuff
+    protected int curFrame;
     protected GreenfootImage[] testAnimationImgs = new GreenfootImage[5];
-    protected String myState;
+    
     /**
      * Fighter constructor
      * only face one direction
@@ -38,12 +43,11 @@ public abstract class Fighter extends SuperSmoothMover
         timid = false;
         cautious = false;
 
-        states = new boolean[]{aggro, timid, cautious};
-
         changeMyState();
 
         health = 100;
         movementSpd = 4;
+        
         if(direction == 1){
             for(int i = 0; i < 5; i++){
                 testAnimationImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
@@ -61,11 +65,14 @@ public abstract class Fighter extends SuperSmoothMover
     public void act()
     {
         curAct++;
+        
+        //animation segment
         if(curAct % 4 == 0){//switch frames every 4 acts
             curFrame++;
             curFrame %= 5;
             setImage(testAnimationImgs[curFrame]);
         }
+        
         myBehaviour();
     }
 
@@ -77,8 +84,8 @@ public abstract class Fighter extends SuperSmoothMover
         health -= damage;
     }
 
-    public void heal(int healAmt){
-        health += healAmt;
+    public void heal(int healAmnt){
+        health += healAmnt;
         if(health > 100){
             health = maxHealth;
         }
@@ -90,27 +97,43 @@ public abstract class Fighter extends SuperSmoothMover
 
         //25% chance to be cautious
         if(Greenfoot.getRandomNumber(4) == 0){
-            cautious = true;
-            myState = "cautious";
+            changeMyState("cautious");
         }else if(randInt <= 50){
-            endAct = curAct + 120;
-            timid = true;
-            myState = "timid";
+            changeMyState("timid");
         }else if(randInt > 50){
-            aggro = true;
-            myState = "aggro";
+            changeMyState("aggro");
         }
     }
-
+    
+    //specific changeMyState method
+    private void changeMyState(String newState){
+       //set all states to false
+       cautious = false;
+       timid = false;
+       aggro = false;
+        
+       if(newState.equals("cautious")){
+           myState = "cautious";
+           cautious = true;
+       }else if(newState.equals("timid")){
+           endAct = curAct + 10;
+           myState = "timid";
+           timid = true;
+       }else if(newState.equals("aggro")){
+           myState = "aggro";
+           aggro = true;
+       }
+    }
+    
     private void myBehaviour(){
         if(timid){
 
             //if two seconds have passed
-            if(curAct % endAct == 0 && curAct != 0){
+            if(curAct >= endAct){
                 changeMyState();
             }else{
-                System.out.println("retreating");
-                move(movementSpd * -direction);
+                //retreat quickly
+                move(movementSpd * 2 * -direction);
             }
 
         }else if(aggro){
@@ -128,22 +151,17 @@ public abstract class Fighter extends SuperSmoothMover
             String theirState;
 
             if(f != null){
-                for (int i = 0; i < states.length; i++){
-                    states[i] = false;
-                }
-
                 theirState = f.getMyState();
 
                 //act accordingly
                 if(theirState.equals("timid")){
-                    aggro = true;
-                    myState = "aggro";
+                    changeMyState("aggro");
                 }else if(theirState.equals("aggro")){
-                    timid = true;
-                    myState = "timid";
+                    changeMyState("timid");
                 }else if(theirState.equals("cautious")){
                     //some other unique behaviour
-                    System.out.println("throw a spear");
+                    //aggro is a placeholder
+                    changeMyState("aggro");
                 }
 
             }else{
@@ -166,12 +184,5 @@ public abstract class Fighter extends SuperSmoothMover
 
     private void attack(){
         //attack
-    }
-
-    private int getNewDirection(){
-        if(Greenfoot.getRandomNumber(2) == 0){
-            return direction * -1;
-        }
-        return direction;
     }
 }
