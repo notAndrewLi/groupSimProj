@@ -31,12 +31,17 @@ public abstract class Fighter extends SuperSmoothMover
     protected int curFrame;
     protected GreenfootImage[] testAnimationImgs = new GreenfootImage[5];
     
+    protected final int gravity = 1;
+    protected int yVelocity;
+    protected boolean canJump = false;
+    protected GameWorld world;
+    protected int floorY;
+
     /**
      * Fighter constructor
      * only face one direction
      */
     public Fighter(int direction){
-        //bagaga
         this.direction = direction;
 
         aggro = true;
@@ -74,6 +79,19 @@ public abstract class Fighter extends SuperSmoothMover
         }
         
         myBehaviour();
+        fall();
+        if(canJump){
+            jump();
+        }
+    }
+    
+    public void addedToWorld(World w){
+        System.out.println(w + "");
+        if (w instanceof GameWorld) {
+            //Cast the world to MyWorld and call the method
+            world = (GameWorld) w;
+            floorY = world.getFloorY();
+        }
     }
 
     public String getMyState(){
@@ -184,5 +202,20 @@ public abstract class Fighter extends SuperSmoothMover
 
     private void attack(){
         //attack
+    }
+    
+    private void jump(){//give the fighter a velocity upwards
+        yVelocity = 10;
+        canJump = false;
+    }
+    
+    private void fall(){
+        setLocation(getX(), getY() - yVelocity);
+        yVelocity -= gravity;
+        if(getY() > floorY || Math.abs(floorY - getY()) <= 5){
+            yVelocity = 0;
+            canJump = true;
+            setLocation(getX(), floorY);
+        }
     }
 }
