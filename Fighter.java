@@ -36,7 +36,7 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean canJump = false;
     protected GameWorld world;
     protected int floorY;
-
+    protected int yOffset;
     /**
      * Fighter constructor
      * only face one direction
@@ -65,6 +65,8 @@ public abstract class Fighter extends SuperSmoothMover
             } 
         }
         setImage(testAnimationImgs[0]);
+        
+        yOffset = getImage().getHeight()/2;
     }
 
     public void act()
@@ -90,7 +92,7 @@ public abstract class Fighter extends SuperSmoothMover
         if (w instanceof GameWorld) {
             //Cast the world to MyWorld and call the method
             world = (GameWorld) w;
-            floorY = world.getFloorY();
+            floorY = world.getFloorY() - yOffset;
         }
     }
 
@@ -217,5 +219,9 @@ public abstract class Fighter extends SuperSmoothMover
             canJump = true;
             setLocation(getX(), floorY);
         }
+    }
+    
+    public int getYOffset(){
+        return yOffset;
     }
 }
