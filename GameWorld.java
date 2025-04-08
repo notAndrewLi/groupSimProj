@@ -9,6 +9,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class GameWorld extends World
 {
     GreenfootImage bg = new GreenfootImage("images/background.jpg");
+    private int floorY = 700;//just do a constant for now
     /**
      * Constructor for objects of class GameWorld.
      * 
@@ -30,5 +31,9 @@ public class GameWorld extends World
         JavelinThrower j = new JavelinThrower(1);
         addObject(j, 300, 500);
 
+    }
+    
+    public int getFloorY(){
+        return floorY;
     }
 }
