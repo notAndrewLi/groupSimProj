@@ -25,11 +25,11 @@ public class GameWorld extends World
         Geyser geyserTrap = new Geyser();
         addObject(geyserTrap, 900, 690);
         
-        TwoHanded t = new TwoHanded(-1);
-        addObject(t, 724, 500);
+        TwoHanded t = new TwoHanded(1);
+        addObject(t, 768, 715);
         
-        JavelinThrower j = new JavelinThrower(1);
-        addObject(j, 300, 500);
+        JavelinThrower j = new JavelinThrower(-1);
+        addObject(j, 100, 715);
 
     }
     
