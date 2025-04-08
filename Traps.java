@@ -8,20 +8,21 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public abstract class Traps extends SuperSmoothMover
 {
-
-    public void act()
-    {
-        if(getOneIntersectingObject(Fighter.class) != null){
+    protected int activeTime = 0;
+    protected boolean isActive = false;
+    public void act(){
+        if (!isActive && getOneIntersectingObject(Fighter.class) != null){
             activate();
-            this.sleepFor(10);
-            deactivate();
+        }
+
+        if (isActive) {
+            activeTime--;
+            if (activeTime <= 0) {
+                deactivate();
+            }
         }
     }
-
-    public void activate(){
-        Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
-        f.takeDamage(25);
-    }
-
+    
+    public abstract void activate();
     public abstract void deactivate();
 }

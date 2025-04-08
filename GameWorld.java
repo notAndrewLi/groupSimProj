@@ -25,10 +25,10 @@ public class GameWorld extends World
         addObject(geyserTrap, 900, 690);
         
         TwoHanded t = new TwoHanded(1);
-        addObject(t, 768, 500);
+        addObject(t, 768, 715);
         
         JavelinThrower j = new JavelinThrower(-1);
-        addObject(j, 100, 500);
+        addObject(j, 100, 715);
 
     }
 }
