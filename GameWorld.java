@@ -8,8 +8,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class GameWorld extends World
 {
-    GreenfootImage bg = new GreenfootImage("images/background.jpg");
-    private int floorY = 700;//just do a constant for now
+    GreenfootImage bg = new GreenfootImage("images/background(3).png");
+    private int floorY = 600;//just do a constant for now
     /**
      * Constructor for objects of class GameWorld.
      * 
@@ -20,17 +20,16 @@ public class GameWorld extends World
         super(1024, 768, 1, true);
         setBackground(bg);
         Spikes spikeTrap = new Spikes();
-        addObject(spikeTrap, 150, 700); 
+        addObject(spikeTrap, 150, floorY); 
         
         Geyser geyserTrap = new Geyser();
-        addObject(geyserTrap, 900, 690);
+        addObject(geyserTrap, 900, floorY - 10);
+                
+        TwoHanded t = new TwoHanded(-1, "sword");
+        addObject(t, 924, floorY);
         
-        TwoHanded t = new TwoHanded(1);
-        addObject(t, 768, 715);
-        
-        JavelinThrower j = new JavelinThrower(-1);
-        addObject(j, 100, 715);
-
+        JavelinThrower j = new JavelinThrower(1, "spear");
+        addObject(j, 100, floorY);
     }
     
     public int getFloorY(){

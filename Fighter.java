@@ -17,15 +17,24 @@ public abstract class Fighter extends SuperSmoothMover
     protected int health;
     protected int direction;
     protected int movementSpd;
+    protected String weaponType;
     
     protected int curAct;
     protected int endAct;
+    
+    protected Weapon myWeapon;
     
     //states
     protected String myState;
     protected boolean aggro;
     protected boolean timid;
     protected boolean cautious;
+    protected boolean usingSpecial;
+    protected ArrayList<Integer> stateArray;
+    
+    protected boolean actOngoing;
+    protected boolean iFrames;
+    protected int iFramesEndAct;
     
     //animation stuff
     protected int curFrame;
@@ -41,13 +50,24 @@ public abstract class Fighter extends SuperSmoothMover
      * Fighter constructor
      * only face one direction
      */
-    public Fighter(int direction){
+    public Fighter(int direction, String weaponType/*,Weapon myWeapon*/){
         this.direction = direction;
-
-        aggro = true;
-        timid = false;
-        cautious = false;
-
+        this.weaponType = weaponType;
+        
+        actOngoing = false;
+        //stateArray = new ArrayList<>();
+        
+        //if value = 1, state is aggro
+        //if value = 2, state is timid
+        //fighter starts off having a higher chance of being aggro
+        /*for(int i = 0;i < 9;i++){
+            if(i % 3 == 0){
+                stateArray.add(2);
+            }else{
+                stateArray.add(1);
+            }
+        }*/
+        
         changeMyState();
 
         health = 100;
@@ -66,10 +86,16 @@ public abstract class Fighter extends SuperSmoothMover
         }
         setImage(testAnimationImgs[0]);
     }
-
+    
+    protected abstract boolean useSpecialAbility();
+        
     public void act()
     {
         curAct++;
+        
+        if(iFrames && curAct >= iFramesEndAct){
+            iFrames = false;
+        }
         
         //animation segment
         if(curAct % 4 == 0){//switch frames every 4 acts
@@ -80,26 +106,47 @@ public abstract class Fighter extends SuperSmoothMover
         
         myBehaviour();
         fall();
-        if(canJump){
+        if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
             jump();
         }
     }
     
     public void addedToWorld(World w){
-        System.out.println(w + "");
+        //System.out.println(w + "");
         if (w instanceof GameWorld) {
             //Cast the world to MyWorld and call the method
             world = (GameWorld) w;
+            
             floorY = world.getFloorY();
+            
+            if(weaponType.equalsIgnoreCase("sword")){
+                myWeapon = new Sword(this);
+            }else if(weaponType.equalsIgnoreCase("spear")){
+                myWeapon = new Spear(this);
+            }
+            
+            w.addObject(myWeapon,getX(),getY());
         }
     }
 
     public String getMyState(){
+        if(myState.equals("usingSpecial")){
+            return "timid";
+        }
+        
         return myState;
     }
-
+    
+    public int getMyDirection(){
+        return direction;
+    }
+    
     public void takeDamage(int damage){
-        health -= damage;
+        if(!iFrames){
+            health -= damage;
+            iFrames = true;
+            iFramesEndAct = curAct + 60;
+        }
     }
 
     public void heal(int healAmnt){
@@ -110,15 +157,18 @@ public abstract class Fighter extends SuperSmoothMover
     }
 
     private void changeMyState(){
-
-        int randInt = Greenfoot.getRandomNumber(100);
+        
+        int missingHP = maxHealth - health;
+        
+        //as more hp is missing, chance to become timid increases
+        int randInt = Greenfoot.getRandomNumber(40) + missingHP;
 
         //25% chance to be cautious
         if(Greenfoot.getRandomNumber(4) == 0){
             changeMyState("cautious");
-        }else if(randInt <= 50){
+        }else if(randInt > 60){
             changeMyState("timid");
-        }else if(randInt > 50){
+        }else if(randInt <= 60){
             changeMyState("aggro");
         }
     }
@@ -129,17 +179,19 @@ public abstract class Fighter extends SuperSmoothMover
        cautious = false;
        timid = false;
        aggro = false;
-        
+       usingSpecial = false;
+       
+       myState = newState;
+       
        if(newState.equals("cautious")){
-           myState = "cautious";
            cautious = true;
        }else if(newState.equals("timid")){
            endAct = curAct + 10;
-           myState = "timid";
            timid = true;
        }else if(newState.equals("aggro")){
-           myState = "aggro";
            aggro = true;
+       }else if(newState.equals("usingSpecial")){
+           usingSpecial = true;
        }
     }
     
@@ -157,8 +209,15 @@ public abstract class Fighter extends SuperSmoothMover
         }else if(aggro){
 
             if(checkInRange() != null){
-                attack();
-                changeMyState();
+                
+                if(!actOngoing){
+                    actOngoing = true;
+                    myWeapon.attack();
+                }else if(!myWeapon.isDangerous()){
+                    actOngoing = false;
+                    changeMyState();
+                }
+                
             }else{
                 move(movementSpd * direction);
             }
@@ -178,30 +237,36 @@ public abstract class Fighter extends SuperSmoothMover
                     changeMyState("timid");
                 }else if(theirState.equals("cautious")){
                     //some other unique behaviour
-                    //aggro is a placeholder
-                    changeMyState("aggro");
+                    
+                    changeMyState("usingSpecial");
                 }
 
             }else{
                 move(movementSpd/2 * direction);    
             }
 
+        }else if(usingSpecial){
+            //check for when ability is done
+            
+            //useSpecialAbility returns a boolean, true if still ongoing, false if done
+            //if false, change my state
+            if(!useSpecialAbility()){
+                changeMyState("aggro");
+            }
         }
+        
+        //useSpecialAbility();
     }
 
     private Fighter checkInRange(){
 
-        ArrayList<Fighter> inRange = (ArrayList<Fighter>)getObjectsInRange(100, Fighter.class);
+        ArrayList<Fighter> inRange = (ArrayList<Fighter>)getObjectsInRange(myWeapon.getRange(), Fighter.class);
 
         if(inRange.isEmpty()){
             return null;
         }else{
             return inRange.get(0);
         }
-    }
-
-    private void attack(){
-        //attack
     }
     
     private void jump(){//give the fighter a velocity upwards
