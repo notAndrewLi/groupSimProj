@@ -16,23 +16,36 @@ public class GameWorld extends World
      */
     public GameWorld()
     {    
-        
+
         super(1024, 768, 1, true);
         setBackground(bg);
-        Spikes spikeTrap = new Spikes();
-        addObject(spikeTrap, 150, 700); 
-        
-        Geyser geyserTrap = new Geyser();
-        addObject(geyserTrap, 900, 690);
-        
+
+        for(int i = 0; i < 70; i++){
+            spawnTraps(0);
+            spawnTraps(1);
+        }
+
         TwoHanded t = new TwoHanded(-1);
         addObject(t, 768, 715);
-        
+
         JavelinThrower j = new JavelinThrower(1);
         addObject(j, 100, 715);
 
     }
-    
+
+    public void spawnTraps(int type){
+        int randomChance = Greenfoot.getRandomNumber(60);
+        if(randomChance == 0){
+            int randX = Greenfoot.getRandomNumber(getWidth());
+            if(type == 0){
+                addObject(new Geyser(), randX, floorY - 10);
+            }
+            else if(type == 1){
+                addObject(new Spikes(), randX, floorY);
+            }
+        }  
+    }
+
     public int getFloorY(){
         return floorY;
     }
