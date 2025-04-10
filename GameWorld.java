@@ -16,7 +16,7 @@ public class GameWorld extends World
      */
     public GameWorld()
     {    
-        
+
         super(1024, 768, 1, true);
         setBackground(bg);
         Spikes spikeTrap = new Spikes();
@@ -30,8 +30,22 @@ public class GameWorld extends World
         
         JavelinThrower j = new JavelinThrower(1, "spear");
         addObject(j, 100, floorY);
+
     }
-    
+
+    public void spawnTraps(int type){
+        int randomChance = Greenfoot.getRandomNumber(60);
+        if(randomChance == 0){
+            int randX = Greenfoot.getRandomNumber(getWidth());
+            if(type == 0){
+                addObject(new Geyser(), randX, floorY - 10);
+            }
+            else if(type == 1){
+                addObject(new Spikes(), randX, floorY);
+            }
+        }  
+    }
+
     public int getFloorY(){
         return floorY;
     }

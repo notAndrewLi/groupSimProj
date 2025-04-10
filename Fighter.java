@@ -45,6 +45,16 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean canJump = false;
     protected GameWorld world;
     protected int floorY;
+    
+    //Status effect stuff
+    private boolean isScorched = false;
+    private int scorchTimer = 0;
+    private int scorchDuration = 180; //3 seconds
+    private int damageInterval = 60; //deal damage every second
+    
+    private boolean isBleeding = false;
+    private int bleedTimer = 0;
+    private int bleedDuration = 300; //5 seconds
 
     /**
      * Fighter constructor
@@ -91,6 +101,27 @@ public abstract class Fighter extends SuperSmoothMover
         
     public void act()
     {
+        if(isScorched){
+            //deals damage every second
+            if(scorchTimer % damageInterval == 0){
+                takeDamage(5);
+            }
+            scorchTimer--;
+            if(scorchTimer <= 0){
+                isScorched = false;
+            }
+        }
+        
+        if(isBleeding){
+            //deals damage every second
+            if(bleedTimer % damageInterval == 0){
+                takeDamage(2);
+            }
+            bleedTimer--;
+            if(bleedTimer <= 0){
+                isBleeding = false;
+            }
+        }
         curAct++;
         
         if(iFrames && curAct >= iFramesEndAct){
@@ -146,9 +177,26 @@ public abstract class Fighter extends SuperSmoothMover
             health -= damage;
             iFrames = true;
             iFramesEndAct = curAct + 60;
-        }
+            int rand = 1 + Greenfoot.getRandomNumber(2);
+            //offsets the damage pop up location
+            int x = (rand == 2) ? this.getX() + (8 + Greenfoot.getRandomNumber(12)) : this.getX() - (8 + Greenfoot.getRandomNumber(12));
+            int y = (rand == 1) ? this.getY() + (8 + Greenfoot.getRandomNumber(12)) : this.getY() - (8 + Greenfoot.getRandomNumber(12));
+            getWorld().addObject(new FadeText(damage + "!"), x, y);
+       }
     }
 
+    public void scorchFighter(){
+        //scorch
+        isScorched = true;
+        scorchTimer = scorchDuration;
+    }
+    
+    public void bleedFighter(){
+        //bleed
+        isBleeding = true;
+        bleedTimer = bleedDuration;
+    }
+    
     public void heal(int healAmnt){
         health += healAmnt;
         if(health > 100){

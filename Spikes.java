@@ -25,11 +25,15 @@ public class Spikes extends Traps
     public void activate(){
         setImage(active);
         isActive = true;
-        activeTime = 60; //1 second at 60 FPS
+        activeTime = 120; //2 seconds at 60 FPS
 
         Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
         if (f != null) {
             f.takeDamage(25);
+            f.bleedFighter();
+            int x = f.getX();
+            int y = f.getY();
+            getWorld().addObject(new FadeText("BLEEDING!"), x, y);
         }
     }
 
