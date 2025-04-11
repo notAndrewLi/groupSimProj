@@ -33,6 +33,7 @@ public class ShieldBearer extends Fighter
         }
         
         //set a threshold for health; shield bearer can't fall below this threshold
+        //give ShieldBearer iFrames
         if(health < hpThresh){
             health = hpThresh;
         }
