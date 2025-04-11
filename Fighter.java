@@ -45,6 +45,7 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean canJump = false;
     protected GameWorld world;
     protected int floorY;
+    protected int yOffset;
     
     //Status effect stuff
     private boolean isScorched = false;
@@ -95,6 +96,8 @@ public abstract class Fighter extends SuperSmoothMover
             } 
         }
         setImage(testAnimationImgs[0]);
+        
+        yOffset = getImage().getHeight()/2;
     }
     
     protected abstract boolean useSpecialAbility();
@@ -158,6 +161,9 @@ public abstract class Fighter extends SuperSmoothMover
             
             w.addObject(myWeapon,getX(),getY());
         }
+        
+        StatBar myStatBar = new StatBar(this, maxHealth);
+        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
     }
 
     public String getMyState(){
@@ -330,5 +336,14 @@ public abstract class Fighter extends SuperSmoothMover
             canJump = true;
             setLocation(getX(), floorY);
         }
+    }
+    
+    public int getYOffset(){
+        return yOffset;
+    }
+    
+    //getter for HP
+    public int getHP(){
+        return health;
     }
 }
