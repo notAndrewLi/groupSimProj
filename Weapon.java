@@ -24,6 +24,11 @@ public abstract class Weapon extends Actor
     protected int atkDuration;
     protected int telegraphDuration;
     
+    protected int myRange;
+    protected int weaponDir;
+    protected int xOffset;
+    protected int yOffset;
+    
     protected abstract void atkTelegraph();
     
     protected abstract void playAtkAnimation();
@@ -32,6 +37,8 @@ public abstract class Weapon extends Actor
     
     public Weapon(Fighter wielder){
         this.wielder = wielder;
+        
+        weaponDir = wielder.getMyDirection();
         
         //should be defined in the subclasses
         //atkDuration = 7;
@@ -45,10 +52,11 @@ public abstract class Weapon extends Actor
         
         moveMe(this.wielder);
         
-        if(curAct % 120 == 0){
+        //test code; weapon attacks on an interval
+        /*if(curAct % 120 == 0){
             //resetAnimation();
             attack();
-        }
+        }*/
         
         //While current act is less than the given value
         if(isDangerous && curAct < telegraphEnd){
@@ -61,7 +69,7 @@ public abstract class Weapon extends Actor
             
             if(a != null){
                 Fighter f = (Fighter) a;
-                f.takeDamage(10);
+                f.takeDamage(5);
                 //do damage do this
             }
         }else{
@@ -75,11 +83,19 @@ public abstract class Weapon extends Actor
         attackEnd = telegraphEnd + atkDuration;
         isDangerous = true;
     }
+     
+    public boolean isDangerous(){
+        return isDangerous;
+    }
+    
+    public int getRange(){
+        return myRange;
+    }
     
     public void moveMe(SuperSmoothMover wielder){
         if (wielder != null && getWorld() != null){
             if (wielder.getWorld() != null){
-                setLocation (wielder.getX() - 30, wielder.getY() - 20);
+                setLocation (wielder.getX() + xOffset * weaponDir, wielder.getY() + yOffset);
             }else{
                 getWorld().removeObject(this);
                 return;
@@ -90,6 +106,9 @@ public abstract class Weapon extends Actor
     protected void setMyImage(String imageName, int x, int y){
         GreenfootImage theImage = new GreenfootImage(imageName + ".png");
         theImage.scale(x,y);
+        if(weaponDir == 1){
+            theImage.mirrorHorizontally();
+        }
         setImage(theImage);
     }
 }

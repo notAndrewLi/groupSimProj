@@ -19,7 +19,12 @@ public class Spear extends Weapon
         atkDuration = 10;
         telegraphDuration = 20;
         
-        setMyImage("spear", 100, 30);
+        xOffset = 40;
+        yOffset = 15;
+        
+        myRange = 100;
+        
+        setMyImage("spear", 100, 20);
     }
     
     public void act()
@@ -29,14 +34,14 @@ public class Spear extends Weapon
     
     protected void atkTelegraph(){
         //should modify depending on fighter's direction
-        turn(3);
+        xOffset += -2 * weaponDir;
     }
     
     protected void playAtkAnimation(){
-        turn(-15);
+        xOffset += 6 * weaponDir;
     }
     
     protected void resetAnimation(){
-        setRotation(20);
+        xOffset = 20;
     }
 }
