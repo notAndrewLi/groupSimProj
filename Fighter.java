@@ -161,6 +161,9 @@ public abstract class Fighter extends SuperSmoothMover
             
             w.addObject(myWeapon,getX(),getY());
         }
+        
+        StatBar myStatBar = new StatBar(this, maxHealth);
+        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
     }
 
     public String getMyState(){
@@ -337,5 +340,10 @@ public abstract class Fighter extends SuperSmoothMover
     
     public int getYOffset(){
         return yOffset;
+    }
+    
+    //getter for HP
+    public int getHP(){
+        return health;
     }
 }
