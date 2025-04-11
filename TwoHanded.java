@@ -12,12 +12,32 @@ public class TwoHanded extends Fighter
      * Act - do whatever the TwoHanded wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    public TwoHanded(int direction){
-        super(direction);
+    
+    protected int swingCount;
+    
+    public TwoHanded(int direction, String weaponType){
+        super(direction, weaponType);
     }
     
     public void act()
     {
         super.act();
+    }
+        
+    protected boolean useSpecialAbility(){
+        //swing three times while moving forward
+        
+        move(movementSpd/2 * direction);
+        
+        if(!myWeapon.isDangerous()){
+            myWeapon.attack();
+            swingCount++;
+        }
+        
+        if(swingCount >= 3){
+            return false;
+        }
+        
+        return true;
     }
 }
