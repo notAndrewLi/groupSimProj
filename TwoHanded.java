@@ -15,8 +15,8 @@ public class TwoHanded extends Fighter
     
     protected int swingCount;
     
-    public TwoHanded(int direction, String weaponType){
-        super(direction, weaponType);
+    public TwoHanded(int direction, String weaponType, boolean isOpponent){
+        super(direction, weaponType, isOpponent);
     }
     
     public void act()

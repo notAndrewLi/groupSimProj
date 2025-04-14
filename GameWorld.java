@@ -11,6 +11,7 @@ public class GameWorld extends World
 {
     GreenfootImage bg = new GreenfootImage("images/background(3).png");
     private int floorY = 600;//just do a constant for now
+    private int gold = 0;
     /**
      * Constructor for objects of class GameWorld.
      * 
@@ -52,6 +53,7 @@ public class GameWorld extends World
         }  
     }
 
+
     private void spawnHero(int myClass, int myWeapon,int myArmor, int myPotions){
         //myWeapon gives us the index for the weapon that should be given to the fighter
         String[] weapons = {"sword","spear"};
@@ -59,9 +61,9 @@ public class GameWorld extends World
         //"Arrays.asList" taken from ChatGPT
         //myClass gives us the index for the appropriate class
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-            new JavelinThrower(1,weapons[myWeapon]),
-            new TwoHanded(1,weapons[myWeapon]),
-            new ShieldBearer(1,weapons[myWeapon])
+            new JavelinThrower(1,weapons[myWeapon], false),
+            new TwoHanded(1,weapons[myWeapon], false),
+            new ShieldBearer(1,weapons[myWeapon], false)
         ));
 
         //do something with the potions and armor later on
@@ -79,9 +81,9 @@ public class GameWorld extends World
 
         //"Arrays.asList" taken from ChatGPT
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-            new JavelinThrower(-1,weapons[myWeapon]),
-            new TwoHanded(-1,weapons[myWeapon]),
-            new ShieldBearer(-1,weapons[myWeapon])
+            new JavelinThrower(-1,weapons[myWeapon], true),
+            new TwoHanded(-1,weapons[myWeapon], true),
+            new ShieldBearer(-1,weapons[myWeapon], true)
         ));
         myClass = Greenfoot.getRandomNumber(fighterClasses.size());
         
@@ -89,6 +91,17 @@ public class GameWorld extends World
 
         //opponent on right
         addObject(fighterClasses.get(myClass), 924, floorY);
+    }
+
+
+    public int addGold(int goldAmount){
+        this.gold += goldAmount;
+        return gold;
+    }
+    
+    public int removeGold(int goldAmount){
+        this.gold -= goldAmount;
+        return gold;
     }
 
     public int getFloorY(){

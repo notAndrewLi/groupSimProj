@@ -15,8 +15,8 @@ public class ShieldBearer extends Fighter
     
     private int hpThresh;
     
-    public ShieldBearer(int direction, String weaponType){
-        super(direction, weaponType);
+    public ShieldBearer(int direction, String weaponType, boolean isOpponent){
+        super(direction, weaponType, isOpponent);
     }
     
     public void act()
