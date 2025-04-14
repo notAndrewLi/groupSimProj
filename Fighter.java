@@ -56,14 +56,16 @@ public abstract class Fighter extends SuperSmoothMover
     private boolean isBleeding = false;
     private int bleedTimer = 0;
     private int bleedDuration = 300; //5 seconds
+    private boolean isOpponent;
 
     /**
      * Fighter constructor
      * only face one direction
      */
-    public Fighter(int direction, String weaponType/*,Weapon myWeapon*/){
+    public Fighter(int direction, String weaponType/*,Weapon myWeapon*/, boolean isOpponent){
         this.direction = direction;
         this.weaponType = weaponType;
+        this.isOpponent = isOpponent;
         
         actOngoing = false;
         //stateArray = new ArrayList<>();
@@ -104,6 +106,7 @@ public abstract class Fighter extends SuperSmoothMover
         
     public void act()
     {
+        
         if(isScorched){
             //deals damage every second
             if(scorchTimer % damageInterval == 0){
@@ -142,6 +145,11 @@ public abstract class Fighter extends SuperSmoothMover
         fall();
         if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
             jump();
+        }
+        
+        if(health <= 0 && isOpponent == true){
+            GameWorld w = (GameWorld)getWorld();
+            w.addGold(1000);
         }
     }
     
