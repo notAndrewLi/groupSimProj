@@ -1,31 +1,30 @@
-body/bodies/muscular/zombie_green.png
-	- Note: see details at https://opengameart.org/content/lpc-character-bases
+body/bodies/male/zombie_green.png
+	- Note: see details at https://opengameart.org/content/lpc-character-bases; 'Thick' Male Revised Run/Climb by JaidynReiman (based on ElizaWy's LPC Revised)
 	- Licenses:
+		- OGA-BY 3.0
 		- CC-BY-SA 3.0
 		- GPL 3.0
 	- Authors:
 		- bluecarrot16
 		- JaidynReiman
+		- Benjamin K. Smith (BenCreating)
 		- Evert
+		- Eliza Wyatt (ElizaWy)
 		- TheraHedwig
 		- MuffinElZangano
 		- Durrani
-		- Sander Frenken (castelonia)
-		- Benjamin K. Smith (BenCreating)
-		- Eliza Wyatt (ElizaWy)
-		- dalonedrau
+		- Johannes Sjölund (wulax)
 		- Stephen Challener (Redshrike)
 	- Links:
 		- https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
-		- https://opengameart.org/content/lpc-barbarian-sprite-base
-		- https://opengameart.org/content/lpc-muscular-swing-animation
-		- https://opengameart.org/content/lpc-muscular-hurt-animation
-		- https://opengameart.org/content/lpc-jump-expanded
+		- https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+		- https://opengameart.org/content/lpc-male-jumping-animation-by-durrani
+		- https://opengameart.org/content/lpc-runcycle-and-diagonal-walkcycle
 		- https://opengameart.org/content/lpc-revised-character-basics
 		- https://opengameart.org/content/lpc-be-seated
+		- https://opengameart.org/content/lpc-runcycle-for-male-muscular-and-pregnant-character-bases-with-modular-heads
 		- https://opengameart.org/content/lpc-jump-expanded
 		- https://opengameart.org/content/lpc-character-bases
-		- https://opengameart.org/content/lpc-male-jumping-animation-by-durrani
 
 head/heads/human/male/zombie_green.png
 	- Note: original head by Redshrike, tweaks by BenCreating, modular version by bluecarrot16
@@ -54,18 +53,6 @@ hat/helmet/maximus/adult/iron.png
 	- Links:
 		- https://opengameart.org/content/lpc-helmets
 		- https://opengameart.org/content/lpc-expanded-hats-facial-helmets
-
-shoulders/legion/male/steel.png
-	- Note: 
-	- Licenses:
-		- OGA-BY 3.0
-		- CC-BY-SA 3.0
-		- GPL 2.0
-		- GPL 3.0
-	- Authors:
-		- Nila122
-	- Links:
-		- https://opengameart.org/content/lpc-roman-armor
 
 legs/pants/male/red.png
 	- Note: original male pants by wulax, recolors and edits to v3 base by bluecarrot16, climb/jump/run/sit/emotes/revised combat by JaidynReiman based on ElizaWy's LPC Revised

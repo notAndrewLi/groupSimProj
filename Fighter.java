@@ -38,8 +38,10 @@ public abstract class Fighter extends SuperSmoothMover
 
     //animation stuff
     protected int curFrame;
-    protected GreenfootImage[] testAnimationImgs = new GreenfootImage[5];
-
+    protected GreenfootImage[] jumpImgs = new GreenfootImage[5];
+    protected GreenfootImage[] dieImgs = new GreenfootImage[6];
+    protected GreenfootImage[] emoteImgs = new GreenfootImage[3];
+    
     protected final int gravity = 1;
     protected int yVelocity;
     protected boolean canJump = false;
@@ -58,6 +60,7 @@ public abstract class Fighter extends SuperSmoothMover
     private int bleedDuration = 300; //5 seconds
 
     private boolean isDead;
+    
 
     /**
      * Fighter constructor
@@ -88,16 +91,23 @@ public abstract class Fighter extends SuperSmoothMover
 
         if(direction == 1){
             for(int i = 0; i < 5; i++){
-                testAnimationImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
+                jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
             }
         } else{
             for(int i = 0; i < 5; i++){
                 GreenfootImage img = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
                 img.mirrorHorizontally();
-                testAnimationImgs[i] = img;
+                jumpImgs[i] = img;
             } 
         }
-        setImage(testAnimationImgs[0]);
+        
+        for(int i = 0; i < dieImgs.length; i++){
+            dieImgs[i] = new GreenfootImage("images/dieAnimation/hurt" + i + ".png");
+        }
+        for(int i = 0; i < emoteImgs.length; i++){
+            emoteImgs[i] = new GreenfootImage("images/emoteAnimation/emote"+ i + ".png");
+        }
+        setImage(jumpImgs[0]);
 
         yOffset = getImage().getHeight()/2;
     }
@@ -106,6 +116,8 @@ public abstract class Fighter extends SuperSmoothMover
 
     public void act()
     {
+        curAct++;
+
         if(!isDead){
             if(isScorched){
                 //deals damage every second
@@ -128,7 +140,6 @@ public abstract class Fighter extends SuperSmoothMover
                     isBleeding = false;
                 }
             }
-            curAct++;
 
             if(iFrames && curAct >= iFramesEndAct){
                 iFrames = false;
@@ -138,7 +149,7 @@ public abstract class Fighter extends SuperSmoothMover
             if(curAct % 4 == 0){//switch frames every 4 acts
                 curFrame++;
                 curFrame %= 5;
-                setImage(testAnimationImgs[curFrame]);
+                setImage(jumpImgs[curFrame]);
             }
 
             myBehaviour();
@@ -355,6 +366,16 @@ public abstract class Fighter extends SuperSmoothMover
     }
     
     public void die(){
-        
+        curFrame = 0;
+        while(true){
+            if(curAct % 4 == 0){
+                setImage(dieImgs[curFrame]);
+                curFrame++;
+            }
+            if(curFrame == dieImgs.length){
+                break;
+            }
+        }
     }
+        
 }
