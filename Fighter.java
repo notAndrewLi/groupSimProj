@@ -59,7 +59,11 @@ public abstract class Fighter extends SuperSmoothMover
     private int bleedTimer = 0;
     private int bleedDuration = 300; //5 seconds
 
-    private boolean isDead;
+    protected boolean isDead;
+    protected boolean isFrozen;
+    protected boolean isEmoting;
+    
+    protected Fighter other;
     
 
     /**
@@ -118,7 +122,7 @@ public abstract class Fighter extends SuperSmoothMover
     {
         curAct++;
 
-        if(!isDead){
+        if(!isFrozen){
             if(isScorched){
                 //deals damage every second
                 if(scorchTimer % damageInterval == 0){
@@ -157,7 +161,11 @@ public abstract class Fighter extends SuperSmoothMover
                 jump();
             }
         } else{
-            die();
+            if(isDead){
+                die();
+            } else if (isEmoting){
+                emote();
+            }
         }
         fall();
     }
@@ -207,9 +215,21 @@ public abstract class Fighter extends SuperSmoothMover
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
         if(health <= 0){//perform death animation
-            curFrame = 0;
-            isDead = true;
+            setCurFrame(0);
+            die();
+            ArrayList<Fighter> fighters = (ArrayList)world.getObjects(Fighter.class);
+            for (Fighter fighter : fighters){
+                if(fighter != this){
+                    other = fighter;
+                }
+            }
+            other.setCurFrame(0);
+            other.emote();
         }
+    }
+    
+    public void setCurFrame(int frameNum){
+        curFrame = frameNum;
     }
 
     public void scorchFighter(){
@@ -368,7 +388,14 @@ public abstract class Fighter extends SuperSmoothMover
         return health;
     }
     
+    public void freezeMe(){
+        isFrozen = true;
+    }
+    
+    //die method and animation
     public void die(){
+        isDead = true;
+        freezeMe();
         if(curFrame >= dieImgs.length){
             setImage(dieImgs[dieImgs.length - 1]);
             //add code for next round
@@ -377,5 +404,13 @@ public abstract class Fighter extends SuperSmoothMover
             curFrame++;
         }
     }
-        
+    //other fighter's emote method
+    public void emote(){
+        isEmoting = true;
+        freezeMe();
+        if(curAct % 6 == 0){
+            setImage(emoteImgs[curFrame % 3]);
+            curFrame++;
+        }
+    }
 }
