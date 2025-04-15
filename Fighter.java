@@ -153,11 +153,13 @@ public abstract class Fighter extends SuperSmoothMover
             }
 
             myBehaviour();
-            fall();
             if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
                 jump();
             }
+        } else{
+            die();
         }
+        fall();
     }
 
     public void addedToWorld(World w){
@@ -204,8 +206,9 @@ public abstract class Fighter extends SuperSmoothMover
             int y = (rand == 1) ? this.getY() + (8 + Greenfoot.getRandomNumber(12)) : this.getY() - (8 + Greenfoot.getRandomNumber(12));
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
-        if(health < 0){//perform death animation
-            die();
+        if(health <= 0){//perform death animation
+            curFrame = 0;
+            isDead = true;
         }
     }
 
@@ -366,15 +369,12 @@ public abstract class Fighter extends SuperSmoothMover
     }
     
     public void die(){
-        curFrame = 0;
-        while(true){
-            if(curAct % 4 == 0){
-                setImage(dieImgs[curFrame]);
-                curFrame++;
-            }
-            if(curFrame == dieImgs.length){
-                break;
-            }
+        if(curFrame >= dieImgs.length){
+            setImage(dieImgs[dieImgs.length - 1]);
+            //add code for next round
+        } else if(curAct % 4 == 0){
+            setImage(dieImgs[curFrame]);
+            curFrame++;
         }
     }
         
