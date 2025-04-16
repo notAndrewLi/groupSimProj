@@ -13,7 +13,7 @@ public abstract class Fighter extends SuperSmoothMover
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     //fighter stats
-    protected int maxHealth = 100; //add to constructor later, have ability to choose
+    protected int maxHealth; //add to constructor later, have ability to choose
     protected int health;
     protected int direction;
     protected int movementSpd;
@@ -56,35 +56,28 @@ public abstract class Fighter extends SuperSmoothMover
     private boolean isBleeding = false;
     private int bleedTimer = 0;
     private int bleedDuration = 300; //5 seconds
-    private boolean isOpponent;
 
     /**
      * Fighter constructor
      * only face one direction
      */
-    public Fighter(int direction, String weaponType/*,Weapon myWeapon*/, boolean isOpponent){
+    public Fighter(int direction, String weaponType, int[] upgradeBonuses){
         this.direction = direction;
         this.weaponType = weaponType;
-        this.isOpponent = isOpponent;
         
         actOngoing = false;
-        //stateArray = new ArrayList<>();
-        
-        //if value = 1, state is aggro
-        //if value = 2, state is timid
-        //fighter starts off having a higher chance of being aggro
-        /*for(int i = 0;i < 9;i++){
-            if(i % 3 == 0){
-                stateArray.add(2);
-            }else{
-                stateArray.add(1);
-            }
-        }*/
         
         changeMyState();
-
-        health = 100;
-        movementSpd = 4;
+        
+        if(upgradeBonuses != null){
+            maxHealth = 100 + upgradeBonuses[0];
+            //add one for damage too
+            movementSpd = 4 + upgradeBonuses[2]/20;
+        }else{
+            maxHealth = 100;
+            movementSpd = 4;
+        }
+        health = maxHealth;
         
         if(direction == 1){
             for(int i = 0; i < 5; i++){
@@ -145,11 +138,6 @@ public abstract class Fighter extends SuperSmoothMover
         fall();
         if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
             jump();
-        }
-        
-        if(health <= 0 && isOpponent == true){
-            GameWorld w = (GameWorld)getWorld();
-            w.addGold(1000);
         }
     }
     
@@ -304,7 +292,7 @@ public abstract class Fighter extends SuperSmoothMover
                 }
 
             }else{
-                move(movementSpd/2 * direction);    
+                move(2 * direction);    
             }
 
         }else if(usingSpecial){
