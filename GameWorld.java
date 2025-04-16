@@ -11,12 +11,13 @@ public class GameWorld extends World
 {
     GreenfootImage bg = new GreenfootImage("images/background(3).png");
     private int floorY = 600;//just do a constant for now
+
     
     private Fighter MC;
     private Fighter OPP;
     private int fighterHP;
-    
-    private static int gold;
+    private static int gold = 0;
+
     /**
      * Constructor for objects of class GameWorld.
      * 
@@ -34,6 +35,8 @@ public class GameWorld extends World
         MC = spawnHero(customizationType, upgradeBonuses);
         
         OPP = spawnOpponent();
+        
+        OPP.setAsOpponent();
     }
     
     public void act(){
@@ -50,10 +53,13 @@ public class GameWorld extends World
                 Greenfoot.setWorld(new CustomizationScreen(false,gold));
             }
         }
+        
+        spawnSpawnables(0);
+        spawnSpawnables(1);
     }
     
     public void spawnTraps(int type){
-        int randomChance = Greenfoot.getRandomNumber(60);
+        int randomChance = Greenfoot.getRandomNumber(80);
         if(randomChance == 0){
             int randX = Greenfoot.getRandomNumber(getWidth());
             if(type == 0){
@@ -61,6 +67,19 @@ public class GameWorld extends World
             }
             else if(type == 1){
                 addObject(new Spikes(), randX, floorY);
+            }
+        }  
+    }
+    
+    public void spawnSpawnables(int type){
+        int randomChance = (type == 0) ? Greenfoot.getRandomNumber(120) : Greenfoot.getRandomNumber(300);
+        if(randomChance == 0){
+            int randX = Greenfoot.getRandomNumber(getWidth());
+            if(type == 0){
+                addObject(new PileOfGold(), randX, floorY);
+            }
+            else if(type == 1){
+                addObject(new PileOfSold(), randX, floorY);
             }
         }  
     }
