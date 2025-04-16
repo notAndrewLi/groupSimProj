@@ -34,6 +34,8 @@ public class GameWorld extends World
         MC = spawnHero(customizationType, upgradeBonuses);
         
         OPP = spawnOpponent();
+        
+        OPP.setAsOpponent();
     }
     
     public void act(){
