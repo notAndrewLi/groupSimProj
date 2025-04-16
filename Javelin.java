@@ -30,8 +30,8 @@ public class Javelin extends SuperSmoothMover
         angularVel = 2 * direction;
         this.direction = direction;
         
-        GreenfootImage theImage = new GreenfootImage("javelin.png");
-        theImage.scale(100,5);
+        GreenfootImage theImage = new GreenfootImage("anjewWeapon.png");
+        theImage.scale(100,17);
         if(direction == 1){
             theImage.mirrorHorizontally();
         }

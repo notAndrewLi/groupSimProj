@@ -11,8 +11,14 @@ public class FadeText extends Actor
     private int timer = 50; 
     private GreenfootImage image;
     public FadeText(String text) {
-        //Set a new text object
+        //default constructor
         image = new GreenfootImage(text, 18, Color.RED, new Color(0, 0, 0, 0));
+        setImage(image);
+    }
+    
+    public FadeText(String text, Color textColor){
+        //color customizable version
+        image = new GreenfootImage(text, 18, textColor, new Color(0, 0, 0, 0));
         setImage(image);
     }
     
