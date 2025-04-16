@@ -36,6 +36,9 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean iFrames;
     protected int iFramesEndAct;
     
+    //am i an opponent?
+    protected boolean isOpponent;
+    
     //animation stuff
     protected int curFrame;
     protected GreenfootImage[] testAnimationImgs = new GreenfootImage[5];
@@ -160,18 +163,6 @@ public abstract class Fighter extends SuperSmoothMover
         
         StatBar myStatBar = new StatBar(this, maxHealth);
         w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
-    }
-
-    public String getMyState(){
-        if(myState.equals("usingSpecial")){
-            return "timid";
-        }
-        
-        return myState;
-    }
-    
-    public int getMyDirection(){
-        return direction;
     }
     
     public void takeDamage(int damage){
@@ -332,6 +323,26 @@ public abstract class Fighter extends SuperSmoothMover
             canJump = true;
             setLocation(getX(), floorY);
         }
+    }
+    
+    public void setAsOpponent(){
+        isOpponent = true;
+    }
+    
+    public boolean isOpponent(){
+        return isOpponent;
+    }
+    
+    public String getMyState(){
+        if(myState.equals("usingSpecial")){
+            return "timid";
+        }
+        
+        return myState;
+    }
+    
+    public int getMyDirection(){
+        return direction;
     }
     
     public int getYOffset(){
