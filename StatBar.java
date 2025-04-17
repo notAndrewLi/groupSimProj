@@ -30,10 +30,10 @@ public class StatBar extends Actor {
         double hpPercent = (double) HP / maxHP;
 
         // Create a new image each time
-        GreenfootImage img = new GreenfootImage(barWidth + 2, barHeight + 25);
+        GreenfootImage img = new GreenfootImage(barWidth + 10, barHeight + 25);
 
         // Draw border
-        img.setColor(Color.BLACK);
+        img.setColor(Color.YELLOW);
         img.drawRect(0, 0, barWidth, barHeight);
 
         // Draw background
