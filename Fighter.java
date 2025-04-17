@@ -335,7 +335,7 @@ public abstract class Fighter extends SuperSmoothMover
     
     public String getMyState(){
         if(myState.equals("usingSpecial")){
-            return "timid";
+            return "cautious";
         }
         
         return myState;

@@ -50,7 +50,7 @@ public abstract class Weapon extends Actor
     {
         curAct++;
         
-        moveMe(this.wielder);
+        moveMe(wielder);
         
         //test code; weapon attacks on an interval
         /*if(curAct % 120 == 0){
@@ -92,7 +92,7 @@ public abstract class Weapon extends Actor
         return myRange;
     }
     
-    public void moveMe(SuperSmoothMover wielder){
+    public void moveMe(Fighter wielder){
         if (wielder != null && getWorld() != null){
             if (wielder.getWorld() != null){
                 setLocation (wielder.getX() + xOffset * weaponDir, wielder.getY() + yOffset);
