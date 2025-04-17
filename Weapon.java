@@ -54,14 +54,7 @@ public abstract class Weapon extends Actor
     {
         if(!fallen){
             curAct++;
-
-            moveMe(this.wielder);
-
-            //test code; weapon attacks on an interval
-            /*if(curAct % 120 == 0){
-            //resetAnimation();
-            attack();
-            }*/
+            moveMe(wielder);
 
             //While current act is less than the given value
             if(isDangerous && curAct < telegraphEnd){
@@ -98,7 +91,7 @@ public abstract class Weapon extends Actor
         return myRange;
     }
 
-    public void moveMe(SuperSmoothMover wielder){
+    public void moveMe(Fighter wielder){
         if (wielder != null && getWorld() != null){
             if (wielder.getWorld() != null){
                 setLocation (wielder.getX() + xOffset * weaponDir, wielder.getY() + yOffset);
