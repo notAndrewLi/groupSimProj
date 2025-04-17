@@ -214,7 +214,7 @@ public abstract class Fighter extends SuperSmoothMover
             int y = (rand == 1) ? this.getY() + (8 + Greenfoot.getRandomNumber(12)) : this.getY() - (8 + Greenfoot.getRandomNumber(12));
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
-        if(health <= 0){//perform death animation
+        if(health <= 0 && !isDead){//perform death animation
             setCurFrame(0);
             die();
             ArrayList<Fighter> fighters = (ArrayList)world.getObjects(Fighter.class);
@@ -225,6 +225,8 @@ public abstract class Fighter extends SuperSmoothMover
             }
             other.setCurFrame(0);
             other.emote();
+            other.getWeapon().fallToGround();
+            myWeapon.fallToGround();
         }
     }
     
@@ -412,5 +414,9 @@ public abstract class Fighter extends SuperSmoothMover
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
         }
+    }
+    
+    public Weapon getWeapon(){
+        return myWeapon;
     }
 }
