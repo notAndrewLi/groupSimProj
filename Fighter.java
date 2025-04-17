@@ -385,14 +385,6 @@ public abstract class Fighter extends SuperSmoothMover
     public boolean isOpponent(){
         return isOpponent;
     }
-    
-    public String getMyState(){
-        if(myState.equals("usingSpecial")){
-            return "timid";
-        }
-        
-        return myState;
-    }
 
     public int getYOffset(){
         return yOffset;
