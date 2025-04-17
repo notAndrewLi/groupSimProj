@@ -11,11 +11,18 @@ public class GameWorld extends World
 {
     GreenfootImage bg = new GreenfootImage("images/background(3).png");
     private int floorY = 600;//just do a constant for now
+
+    
+    private Fighter MC;
+    private Fighter OPP;
+    private int fighterHP;
+    private static int gold = 0;
+
     /**
      * Constructor for objects of class GameWorld.
      * 
      */
-    public GameWorld(int myClass,int myWeapon, int myArmor, int myPotions)
+    public GameWorld(int[] customizationType, int[] upgradeBonuses)
     {    
 
         super(1024, 768, 1, true);
@@ -25,22 +32,34 @@ public class GameWorld extends World
             spawnTraps(1);
         }
         
-        spawnHero(myClass,myWeapon,myArmor,myPotions);
+        MC = spawnHero(customizationType, upgradeBonuses);
         
-        spawnOpponent();
+        OPP = spawnOpponent();
         
-        //Greenfoot.delay(120);
-        
-        /*TwoHanded t = new TwoHanded(-1, "sword");
-        addObject(t, 924, floorY);
-
-        JavelinThrower j = new JavelinThrower(1, "spear");
-        addObject(j, 100, floorY);*/
-
+        OPP.setAsOpponent();
     }
-
+    
+    public void act(){
+        //check main character's first
+        fighterHP = MC.getHP();
+        if(fighterHP <= 0){
+            //show death screen
+            Greenfoot.setWorld(new DeathScreen());
+        }else{ //check opponent's hp
+            fighterHP = OPP.getHP();
+            if(fighterHP <= 0){
+                //show upgrade screen
+                gold += (200 + Greenfoot.getRandomNumber(300));
+                Greenfoot.setWorld(new CustomizationScreen(false,gold));
+            }
+        }
+        
+        spawnSpawnables(0);
+        spawnSpawnables(1);
+    }
+    
     public void spawnTraps(int type){
-        int randomChance = Greenfoot.getRandomNumber(60);
+        int randomChance = Greenfoot.getRandomNumber(80);
         if(randomChance == 0){
             int randX = Greenfoot.getRandomNumber(getWidth());
             if(type == 0){
@@ -51,26 +70,47 @@ public class GameWorld extends World
             }
         }  
     }
+    
+    public void spawnSpawnables(int type){
+        int randomChance = (type == 0) ? Greenfoot.getRandomNumber(120) : Greenfoot.getRandomNumber(300);
+        if(randomChance == 0){
+            int randX = Greenfoot.getRandomNumber(getWidth());
+            if(type == 0){
+                addObject(new PileOfGold(), randX, floorY);
+            }
+            else if(type == 1){
+                addObject(new PileOfSold(), randX, floorY);
+            }
+        }  
+    }
 
-    private void spawnHero(int myClass, int myWeapon,int myArmor, int myPotions){
+    private Fighter spawnHero(int[] customizationType, int[] upgradeBonuses){
         //myWeapon gives us the index for the weapon that should be given to the fighter
         String[] weapons = {"sword","spear"};
-
+        
+        int myClass = customizationType[0];
+        int myWeapon = customizationType[1];
+        int myArmor = customizationType[2];
+        int myPots = customizationType[3];
+        
         //"Arrays.asList" taken from ChatGPT
         //myClass gives us the index for the appropriate class
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-            new JavelinThrower(1,weapons[myWeapon]),
-            new TwoHanded(1,weapons[myWeapon]),
-            new ShieldBearer(1,weapons[myWeapon])
+            new JavelinThrower(1,weapons[myWeapon],upgradeBonuses),
+            new TwoHanded(1,weapons[myWeapon],upgradeBonuses),
+            new ShieldBearer(1,weapons[myWeapon],upgradeBonuses)
         ));
 
         //do something with the potions and armor later on
 
         //main character goes on left side
-        addObject(fighterClasses.get(myClass), 100, floorY);
+        Fighter mc = fighterClasses.get(myClass);
+        addObject(mc, 100, floorY);
+        
+        return mc;
     }
 
-    private void spawnOpponent(){
+    private Fighter spawnOpponent(){
         int myWeapon;
         int myClass;
         
@@ -88,9 +128,26 @@ public class GameWorld extends World
         //do something with the potions and armor later on
 
         //opponent on right
-        addObject(fighterClasses.get(myClass), 924, floorY);
+        Fighter opp = fighterClasses.get(myClass);
+        addObject(opp, 924, floorY);
+        
+        return opp;
     }
 
+    public int addGold(int goldAmount){
+        this.gold += goldAmount;
+        return gold;
+    }
+    
+    public int removeGold(int goldAmount){
+        this.gold -= goldAmount;
+        return gold;
+    }
+    
+    public int getGold(){
+        return gold;
+    }
+    
     public int getFloorY(){
         return floorY;
     }

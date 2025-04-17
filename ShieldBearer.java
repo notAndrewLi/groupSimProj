@@ -16,7 +16,12 @@ public class ShieldBearer extends Fighter
     private int hpThresh;
     
     public ShieldBearer(int direction, String weaponType){
-        super(direction, weaponType);
+        super(direction, weaponType, null);
+    }
+    
+    //with stats modified
+    public ShieldBearer(int direction, String weaponType, int[] upgradeBonuses){
+        super(direction, weaponType, upgradeBonuses);
     }
     
     public void act()
@@ -43,7 +48,7 @@ public class ShieldBearer extends Fighter
             return false;
         }
         
-        move(movementSpd/2 * -direction);
+        //move(movementSpd/2 * -direction);
         
         return true;
     }
