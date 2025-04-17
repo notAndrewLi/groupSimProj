@@ -40,20 +40,6 @@ public class GameWorld extends World
     }
     
     public void act(){
-        //check main character's first
-        fighterHP = MC.getHP();
-        if(fighterHP <= 0){
-            //show death screen
-            Greenfoot.setWorld(new DeathScreen());
-        }else{ //check opponent's hp
-            fighterHP = OPP.getHP();
-            if(fighterHP <= 0){
-                //show upgrade screen
-                gold += (200 + Greenfoot.getRandomNumber(300));
-                Greenfoot.setWorld(new CustomizationScreen(false,gold));
-            }
-        }
-        
         spawnSpawnables(0);
         spawnSpawnables(1);
     }

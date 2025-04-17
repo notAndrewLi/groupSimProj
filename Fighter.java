@@ -224,6 +224,10 @@ public abstract class Fighter extends SuperSmoothMover
             other.emote();
             other.getWeapon().fallToGround();
             myWeapon.fallToGround();
+            if(isOpponent){//am i an enemy character?
+                TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
+                world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 100);
+            }
         }
     }
     
