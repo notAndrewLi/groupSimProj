@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class Javelin here.
@@ -17,18 +18,21 @@ public class Javelin extends SuperSmoothMover
     private static double gravity; 
     private GameWorld world;
     
-    private Fighter target;
+    private Fighter me;
     private double xVelocity;
     private double yVelocity;
     private double angularVel;
     private int direction;
+    private int gracePeriod = 20;
+    
 
-    public Javelin(double theXVel, double theYVel, int direction){
+    public Javelin(double theXVel, double theYVel, int direction, Fighter me){
         gravity = 1;
         xVelocity = theXVel * direction;
         yVelocity = 5 + theYVel;
         angularVel = 2 * direction;
         this.direction = direction;
+        this.me = me;
         
         GreenfootImage theImage = new GreenfootImage("anjewWeapon.png");
         theImage.scale(100,17);
@@ -66,13 +70,16 @@ public class Javelin extends SuperSmoothMover
         
         fall();
         
+        
     }
     public void fall(){
+        gracePeriod--;
         setLocation(getX(), getY() - yVelocity);
         
         turn(angularVel);
         
         yVelocity -= gravity;
+        
         if(getY() > floorY || Math.abs(floorY - getY()) <= 5){
             yVelocity = 0;
             
@@ -81,7 +88,21 @@ public class Javelin extends SuperSmoothMover
             angularVel = 0;
             
             setLocation(getX(), floorY);
-
-        } 
+            
+            //fade away the javelin
+            GreenfootImage fadeImg = getImage();
+            fadeImg.setTransparency(getImage().getTransparency() - 1);
+            setImage(fadeImg);
+            if(getImage().getTransparency() <= 10){
+                world.removeObject(this);
+            }
+        } else if(gracePeriod < 0){
+            ArrayList<Fighter> targets = (ArrayList<Fighter>)getObjectsInRange(getImage().getWidth(), Fighter.class);//So it can hit more than 1 target
+            for(Fighter target : targets){
+                if(target != me){
+                    target.takeDamage(15);//fighters have iframes so it doesn't hit infinite times
+                }
+            }
+        }
     }
 }
