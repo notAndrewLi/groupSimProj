@@ -23,7 +23,6 @@ public class Javelin extends SuperSmoothMover
     private double yVelocity;
     private double angularVel;
     private int direction;
-    private int gracePeriod = 20;
     
 
     public Javelin(double theXVel, double theYVel, int direction, Fighter me){
@@ -73,7 +72,6 @@ public class Javelin extends SuperSmoothMover
         
     }
     public void fall(){
-        gracePeriod--;
         setLocation(getX(), getY() - yVelocity);
         
         turn(angularVel);
@@ -96,7 +94,7 @@ public class Javelin extends SuperSmoothMover
             if(getImage().getTransparency() <= 10){
                 world.removeObject(this);
             }
-        } else if(gracePeriod < 0){
+        } else{
             ArrayList<Fighter> targets = (ArrayList<Fighter>)getObjectsInRange(getImage().getWidth(), Fighter.class);//So it can hit more than 1 target
             for(Fighter target : targets){
                 if(target != me){

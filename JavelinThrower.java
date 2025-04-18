@@ -37,7 +37,7 @@ public class JavelinThrower extends Fighter
         
         ArrayList<Fighter> opponent = (ArrayList<Fighter>)getObjectsInRange(700, Fighter.class);
         
-        //no fighters? Chuck as hard as possible
+        //no fighters in range? Chuck as hard as possible
         if(opponent.isEmpty()){
            j = new Javelin(10,15,direction, this); 
         }else{
