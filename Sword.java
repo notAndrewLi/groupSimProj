@@ -24,7 +24,7 @@ public class Sword extends Weapon
         
         myRange = 60;
         
-        setMyImage("sword(1)", 50, 15);
+        setMyImage("sword(1)", 100, 15);
     }
     
     public void act()
