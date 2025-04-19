@@ -19,12 +19,12 @@ public class Spear extends Weapon
         atkDuration = 10;
         telegraphDuration = 20;
         
-        xOffset = 40;
-        yOffset = 15;
+        xOffset = 50;
+        yOffset = 20;
         
         myRange = 100;
         
-        setMyImage("spear", 100, 20);
+        setMyImage("spear", 150, 20);
     }
     
     public void act()
@@ -42,6 +42,6 @@ public class Spear extends Weapon
     }
     
     protected void resetAnimation(){
-        xOffset = 20;
+        xOffset = 50;
     }
 }

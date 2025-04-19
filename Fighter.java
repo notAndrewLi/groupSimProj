@@ -35,7 +35,7 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean actOngoing;
     protected boolean iFrames;
     protected int iFramesEndAct;
-    
+
     //am i an opponent?
     protected boolean isOpponent;
     //animation stuff
@@ -43,7 +43,7 @@ public abstract class Fighter extends SuperSmoothMover
     protected GreenfootImage[] jumpImgs = new GreenfootImage[5];
     protected GreenfootImage[] dieImgs = new GreenfootImage[6];
     protected GreenfootImage[] emoteImgs = new GreenfootImage[3];
-    
+
     protected final int gravity = 1;
     protected int yVelocity;
     protected boolean canJump = false;
@@ -64,9 +64,8 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean isDead;
     protected boolean isFrozen;
     protected boolean isEmoting;
-    
+
     protected Fighter other;
-    
 
     /**
      * Fighter constructor
@@ -77,9 +76,9 @@ public abstract class Fighter extends SuperSmoothMover
         this.weaponType = weaponType;
 
         actOngoing = false;
-        
+
         changeMyState();
-        
+
         if(upgradeBonuses != null){
             maxHealth = 100 + upgradeBonuses[0];
             //add one for damage too
@@ -93,24 +92,28 @@ public abstract class Fighter extends SuperSmoothMover
         if(direction == 1){
             for(int i = 0; i < 5; i++){
                 jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
+                jumpImgs[i] = resize(jumpImgs[i], 2);
             }
         } else{
             for(int i = 0; i < 5; i++){
                 GreenfootImage img = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
                 img.mirrorHorizontally();
                 jumpImgs[i] = img;
+                jumpImgs[i] = resize(jumpImgs[i], 2);
             } 
         }
-        
+
         for(int i = 0; i < dieImgs.length; i++){
             dieImgs[i] = new GreenfootImage("images/dieAnimation/hurt" + i + ".png");
+            dieImgs[i] = resize(dieImgs[i], 2);
         }
         for(int i = 0; i < emoteImgs.length; i++){
             emoteImgs[i] = new GreenfootImage("images/emoteAnimation/emote"+ i + ".png");
+            emoteImgs[i] = resize(emoteImgs[i], 2);
         }
         setImage(jumpImgs[0]);
 
-        yOffset = getImage().getHeight()/2;
+        yOffset = getImage().getHeight()/6;
     }
 
     protected abstract boolean useSpecialAbility();
@@ -173,7 +176,7 @@ public abstract class Fighter extends SuperSmoothMover
             //Cast the world to MyWorld and call the method
             world = (GameWorld) w;
 
-            floorY = world.getFloorY();
+            floorY = world.getFloorY() - yOffset;
 
             if(weaponType.equalsIgnoreCase("sword")){
                 myWeapon = new Sword(this);
@@ -187,7 +190,7 @@ public abstract class Fighter extends SuperSmoothMover
         StatBar myStatBar = new StatBar(this, maxHealth);
         w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
     }
-    
+
     public void takeDamage(int damage){
         if(!iFrames){
             health -= damage;
@@ -212,9 +215,13 @@ public abstract class Fighter extends SuperSmoothMover
             other.emote();
             other.getWeapon().fallToGround();
             myWeapon.fallToGround();
+            if(isOpponent){//am i an enemy character?
+                TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
+                world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 100);
+            }
         }
     }
-    
+
     public void setCurFrame(int frameNum){
         curFrame = frameNum;
     }
@@ -278,6 +285,8 @@ public abstract class Fighter extends SuperSmoothMover
     }
 
     private void myBehaviour(){
+        Fighter f = checkInRange();
+
         if(timid){
 
             //if two seconds have passed
@@ -300,13 +309,15 @@ public abstract class Fighter extends SuperSmoothMover
                     changeMyState();
                 }
 
-            }else{
-                move(movementSpd * direction);
+            }else{//should move towards other fighter
+                if(f != null){
+                    move(Math.signum(f.getX() - getX()) * movementSpd);
+                } else{
+                    move(movementSpd * direction);
+                }
             }
 
         }else if(cautious){
-            Fighter f = checkInRange();
-
             String theirState;
 
             if(f != null){
@@ -365,15 +376,15 @@ public abstract class Fighter extends SuperSmoothMover
             setLocation(getX(), floorY);
         }
     }
-    
+
     public void setAsOpponent(){
         isOpponent = true;
     }
-    
+
     public boolean isOpponent(){
         return isOpponent;
     }
-    
+
     public Weapon getWeapon(){
         return myWeapon;
     }
@@ -398,11 +409,11 @@ public abstract class Fighter extends SuperSmoothMover
     public int getHP(){
         return health;
     }
-    
+
     public void freezeMe(){
         isFrozen = true;
     }
-    
+
     //die method and animation
     public void die(){
         isDead = true;
@@ -424,4 +435,10 @@ public abstract class Fighter extends SuperSmoothMover
             curFrame++;
         }
     }
+    
+    public GreenfootImage resize(GreenfootImage img, int multiplicationFactor){
+        GreenfootImage newImg = img;
+        newImg.scale(img.getWidth() * multiplicationFactor, img.getHeight() * multiplicationFactor);
+        return(newImg);
+    }     
 }
