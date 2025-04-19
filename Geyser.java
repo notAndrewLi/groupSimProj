@@ -8,36 +8,22 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Geyser extends Traps
 {
-    GreenfootImage deactive = new GreenfootImage("geyserDeactive.png");
-    GreenfootImage active = new GreenfootImage("geyserActive.png");
     //private int activeTime = 0;
     //private boolean isActive = false;
     public Geyser(){
-        setImage(deactive);
+        super("geyserActive","geyserDeactive",180,15);
     }
 
     public void act()
     {
         super.act();
     }
-
-    public void activate(){
-        setImage(active);
-        isActive = true;
-        activeTime = 120; //2 second at 60 FPS
-
-        Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
-        if (f != null) {
-            f.takeDamage(25);
-            f.scorchFighter();
-            int x = f.getX();
-            int y = f.getY();
-            getWorld().addObject(new FadeText("SCORCHED!"), x, y);
-        }
+    
+    public void applyMyEffect(Fighter f){
+        f.scorchFighter();
     }
-
-    public void deactivate(){
-        setImage(deactive);
-        isActive = false;
+    
+    public String getDamageText(){
+        return "SCORCHED!";
     }
 }

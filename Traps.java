@@ -8,21 +8,62 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public abstract class Traps extends SuperSmoothMover
 {
-    protected int activeTime = 0;
+
+    protected int curAct = 0;
+
+    //declared by subclass constructors
+    protected GreenfootImage deactive;
+    protected GreenfootImage active;
+    protected int inactiveInterval;
+    protected int myDamage;
+    
+    protected int activeTime;
+    protected boolean canTouch = true;
     protected boolean isActive = false;
+
+    public Traps(String activeImage, String deactiveImage, int inactiveInterval,int myDamage){
+        active = new GreenfootImage(activeImage + ".png");
+        deactive = new GreenfootImage(deactiveImage + ".png");
+
+        this.inactiveInterval = inactiveInterval;
+
+        setImage(deactive);
+    }
+
     public void act(){
-        if (!isActive && getOneIntersectingObject(Fighter.class) != null){
-            activate();
+        curAct++;
+        
+        //on an interval, activate me
+        if(!isActive && curAct % inactiveInterval == 0){
+            setImage(active);
+            isActive = true;
+            activeTime = 30;
         }
 
         if (isActive) {
             activeTime--;
+
+            //put functionality here
+            Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
+            if (f != null && canTouch) {
+                canTouch = false;
+                
+                f.takeDamage(myDamage);
+                applyMyEffect(f);
+                int x = f.getX();
+                int y = f.getY();
+                getWorld().addObject(new FadeText(getDamageText()), x, y);
+            }
+
             if (activeTime <= 0) {
-                deactivate();
+                setImage(deactive);
+                canTouch = true;
+                isActive = false;   
             }
         }
     }
     
-    public abstract void activate();
-    public abstract void deactivate();
+    public abstract void applyMyEffect(Fighter f);
+    
+    public abstract String getDamageText();
 }

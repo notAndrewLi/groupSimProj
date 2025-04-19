@@ -191,18 +191,6 @@ public abstract class Fighter extends SuperSmoothMover
         w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
     }
 
-    public String getMyState(){
-        if(myState.equals("usingSpecial")){
-            return "timid";
-        }
-
-        return myState;
-    }
-
-    public int getMyDirection(){
-        return direction;
-    }
-
     public void takeDamage(int damage){
         if(!iFrames){
             health -= damage;
@@ -397,6 +385,22 @@ public abstract class Fighter extends SuperSmoothMover
         return isOpponent;
     }
 
+    public Weapon getWeapon(){
+        return myWeapon;
+    }
+    
+    public String getMyState(){
+        if(myState.equals("usingSpecial")){
+            return "cautious";
+        }
+        
+        return myState;
+    }
+    
+    public int getMyDirection(){
+        return direction;
+    }
+    
     public int getYOffset(){
         return yOffset;
     }
@@ -431,11 +435,7 @@ public abstract class Fighter extends SuperSmoothMover
             curFrame++;
         }
     }
-
-    public Weapon getWeapon(){
-        return myWeapon;
-    }
-
+    
     public GreenfootImage resize(GreenfootImage img, int multiplicationFactor){
         GreenfootImage newImg = img;
         newImg.scale(img.getWidth() * multiplicationFactor, img.getHeight() * multiplicationFactor);
