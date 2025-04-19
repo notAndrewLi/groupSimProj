@@ -30,23 +30,22 @@ public class JavelinThrower extends Fighter
         super.act();
     }
     
-    protected boolean useSpecialAbility(){
-           
+    protected boolean useSpecialAbility(){   
         Javelin j;
         Fighter opp;
         double distance;
         
         ArrayList<Fighter> opponent = (ArrayList<Fighter>)getObjectsInRange(700, Fighter.class);
         
-        //no fighters? Chuck as hard as possible
+        //no fighters in range? Chuck as hard as possible
         if(opponent.isEmpty()){
-           j = new Javelin(10,15,direction); 
+           j = new Javelin(10,15,direction, this); 
         }else{
            opp = opponent.get(0);
            
            distance = Math.abs(getX() - opp.getX());
            
-           j = new Javelin((int)(distance/45),15, direction);
+           j = new Javelin((int)(distance/45),15, direction, this);
            
         }
         getWorld().addObject(j,getX(),getY());
