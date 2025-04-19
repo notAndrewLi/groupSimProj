@@ -27,9 +27,10 @@ public class GameWorld extends World
 
         super(1024, 768, 1, true);
         setBackground(bg);
-        for(int i = 0; i < 80; i++){
-            spawnTraps(0);
-            spawnTraps(1);
+        //min amnt of traps: 1
+        //max amnt of traps: 3
+        for(int i = 0; i < (1 + Greenfoot.getRandomNumber(3)); i++){
+            spawnTraps();
         }
         
         MC = spawnHero(customizationType, upgradeBonuses);
@@ -58,17 +59,18 @@ public class GameWorld extends World
         spawnSpawnables(1);
     }
     
-    public void spawnTraps(int type){
-        int randomChance = Greenfoot.getRandomNumber(80);
+    public void spawnTraps(){
+        //0,1,2
+        int randomChance = Greenfoot.getRandomNumber(3);
+        int randX = Greenfoot.getRandomNumber(getWidth());
+        
         if(randomChance == 0){
-            int randX = Greenfoot.getRandomNumber(getWidth());
-            if(type == 0){
-                addObject(new Geyser(), randX, floorY - 10);
-            }
-            else if(type == 1){
-                addObject(new Spikes(), randX, floorY);
-            }
-        }  
+            addObject(new Geyser(), randX, floorY - 10);
+        }else if(randomChance == 1){
+            addObject(new Spikes(), randX, floorY);
+        }else{
+            addObject(new Snare(), randX, floorY);
+        }
     }
     
     public void spawnSpawnables(int type){

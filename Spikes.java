@@ -7,38 +7,23 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @version (a version number or a date)
  */
 public class Spikes extends Traps
-{
-    GreenfootImage deactive = new GreenfootImage("spikeTrapDeactive.png");
-    GreenfootImage active = new GreenfootImage("spikeTrapActive.png");
-    
+{   
     //private int activeTime = 0;
     //private boolean isActive = false;
     public Spikes(){
-        setImage(deactive);
+        super("spikeTrapActive","spikeTrapDeactive",180,10);
     }
 
     public void act()
     {
         super.act();
     }
-
-    public void activate(){
-        setImage(active);
-        isActive = true;
-        activeTime = 120; //2 seconds at 60 FPS
-
-        Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
-        if (f != null) {
-            f.takeDamage(25);
-            f.bleedFighter();
-            int x = f.getX();
-            int y = f.getY();
-            getWorld().addObject(new FadeText("BLEEDING!"), x, y);
-        }
+    
+    public void applyMyEffect(Fighter f){
+        f.bleedFighter();
     }
-
-    public void deactivate(){
-        setImage(deactive);
-        isActive = false;
+    
+    public String getDamageText(){
+        return "BLEEDING!";
     }
 }
