@@ -15,13 +15,13 @@ public class ShieldBearer extends Fighter
     
     private Actor myShield;
     
-    public ShieldBearer(int direction, String weaponType){
-        super(direction, weaponType, null);
+    public ShieldBearer(int direction, int[] customizationType){
+        super(direction, customizationType, null);
     }
     
     //with stats modified
-    public ShieldBearer(int direction, String weaponType, int[] upgradeBonuses){
-        super(direction, weaponType, upgradeBonuses);
+    public ShieldBearer(int direction, int[] customizationType, int[] upgradeBonuses){
+        super(direction, customizationType, upgradeBonuses);
     }
     
     /*public void addedToWorld(World w){

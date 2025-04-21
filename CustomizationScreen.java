@@ -22,23 +22,25 @@ public class CustomizationScreen extends World
     private ArrayList<Image> selectionImages;
     private ArrayList<Image> upgradeButtons;
     private ArrayList<TextLabel> upgradeCostLabels;
-
+    
+    private int selectionImgSize = 90;
+    
     private static String fighterName;
 
     private static int[] customizationType = {0,0,0,0};
 
     //amount of options per customizable setting
     // -1 because 0 counts as one index
-    private int[] customMax = {3,2,2,3};
+    private int[] customMax = {3,3,3,3};
 
     //index 2 and 3 should be armor and hp pots respectfully
-    private String[] customizationString = {"Class","Weapon","",""};
+    private String[] customizationString = {"Class","Weapon","Armor",""};
 
     /*
      * ---CONTENTS---
-     * Weapons: 0 = Sword, 1 = Spear
      * Classes: 0 = J Thrower, 1 = TwoHanded, 2 = ShieldBearer
-     * Armor: 0 = ?, 1 = ?, 2 = ?
+     * Weapons: 0 = Sword, 1 = Spear
+     * Armor: 0 = Light, 1 = Med, 2 = Heavy
      * HP Potions: Self explanatory
      */
 
@@ -176,7 +178,7 @@ public class CustomizationScreen extends World
                     //determine what i am customizing by finding the index of the specific button in the array, and determining which set it belongs to(see above)
                     int buttonIndex = arrowButtons.indexOf(i);
                     int customIndex = returnCustomizationType(buttonIndex);
-                    int selector = 1;
+                    int selector = -1;
                     int theInt;
 
                     //all the buttons on the left side of the "set" of arrow buttons has an even index in the arraylist 
@@ -197,7 +199,7 @@ public class CustomizationScreen extends World
                     GreenfootImage img = new GreenfootImage(customizationString[customIndex] + customizationType[customIndex] + ".png");
 
                     //when modified,change below as well
-                    img.scale(75,75);
+                    img.scale(selectionImgSize,selectionImgSize);
                     selectionImages.get(customIndex).setImage(img);
 
                     System.out.println(customizationString[customIndex] + " : " + customizationType[customIndex]);
@@ -273,7 +275,7 @@ public class CustomizationScreen extends World
 
         //icon to indicate selection
         //set it to the default upon starting
-        Image theSelection = new Image(90,90,customizationString[curIndex] + "0",false);
+        Image theSelection = new Image(selectionImgSize,selectionImgSize,customizationString[curIndex] + "0",false);
         addObject(theSelection,512 + 325 * screenSide,yPos);
         selectionImages.add(theSelection);
 

@@ -13,7 +13,7 @@ public class HeavyArmor extends Armor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public HeavyArmor(Fighter wearer){
-        super(wearer,15);
+        super(wearer,3,2);
         setMyImage("heavyArmor");
     }
     

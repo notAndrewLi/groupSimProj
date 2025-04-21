@@ -13,7 +13,7 @@ public class MedArmor extends Armor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public MedArmor(Fighter wearer){
-        super(wearer,10);
+        super(wearer,2,1);
         setMyImage("medArmor");
     }
     
