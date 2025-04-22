@@ -22,7 +22,7 @@ public class Snare extends Traps
     }
     
     public void applyMyEffect(Fighter f){
-        f.freezeMe();
+        f.freezeMe(50);
     }
     
     public String getDamageText(){

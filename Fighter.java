@@ -57,6 +57,7 @@ public abstract class Fighter extends SuperSmoothMover
     private int scorchTimer = 0;
     private int scorchDuration = 180; //3 seconds
     private int damageInterval = 60; //deal damage every second
+    private int frozenTimer = 0;
 
     private boolean isBleeding = false;
     private int bleedTimer = 0;
@@ -65,8 +66,6 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean isDead;
     protected boolean isFrozen;
     protected boolean isEmoting;
-
-    protected Fighter other;
 
     /**
      * Fighter constructor
@@ -158,34 +157,35 @@ public abstract class Fighter extends SuperSmoothMover
     public void act()
     {
         curAct++;
+        frozenTimer--;
 
-        if(!isFrozen){
-            if(isScorched){
-                //deals damage every second
-                if(scorchTimer % damageInterval == 0){
-                    takeDamage(5);
-                }
-                scorchTimer--;
-                if(scorchTimer <= 0){
-                    isScorched = false;
-                }
+        if(isScorched){
+            //deals damage every second
+            if(scorchTimer % damageInterval == 0){
+                takeDamage(5);
             }
-
-            if(isBleeding){
-                //deals damage every second
-                if(bleedTimer % damageInterval == 0){
-                    takeDamage(2);
-                }
-                bleedTimer--;
-                if(bleedTimer <= 0){
-                    isBleeding = false;
-                }
+            scorchTimer--;
+            if(scorchTimer <= 0){
+                isScorched = false;
             }
+        }
 
-            if(iFrames && curAct >= iFramesEndAct){
-                iFrames = false;
+        if(isBleeding){
+            //deals damage every second
+            if(bleedTimer % damageInterval == 0){
+                takeDamage(2);
             }
+            bleedTimer--;
+            if(bleedTimer <= 0){
+                isBleeding = false;
+            }
+        }
 
+        if(iFrames && curAct >= iFramesEndAct){
+            iFrames = false;
+        }
+
+        if(frozenTimer <= 0){
             //animation segment
             if(curAct % 4 == 0){//switch frames every 4 acts
                 curFrame++;
@@ -225,21 +225,32 @@ public abstract class Fighter extends SuperSmoothMover
         if(health <= 0 && !isDead){//perform death animation
             setCurFrame(0);
             die();
-            ArrayList<Fighter> fighters = (ArrayList)world.getObjects(Fighter.class);
-            for (Fighter fighter : fighters){
-                if(fighter != this){
-                    other = fighter;
-                }
+            ArrayList<Fighter> otherFighters = getOtherFighters();
+            for(Fighter otherFighter : otherFighters){
+                otherFighter.setCurFrame(0);
+                otherFighter.emote();
+                otherFighter.getWeapon().fallToGround();
             }
-            other.setCurFrame(0);
-            other.emote();
-            other.getWeapon().fallToGround();
+
             myWeapon.fallToGround();
             if(isOpponent){//am i an enemy character?
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
                 world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 100);
             }
         }
+    }
+
+    public ArrayList<Fighter> getOtherFighters(){
+        ArrayList<Fighter> fighters = (ArrayList)world.getObjects(Fighter.class);
+        ArrayList<Fighter> otherFighters = new ArrayList<Fighter>();
+        for (Fighter fighter : fighters){
+            if(fighter != this){
+                if(fighter.getHP() > 0){
+                    otherFighters.add(fighter);
+                }
+            }
+        }
+        return otherFighters;
     }
 
     public void setCurFrame(int frameNum){
@@ -295,7 +306,7 @@ public abstract class Fighter extends SuperSmoothMover
         if(newState.equals("cautious")){
             cautious = true;
         }else if(newState.equals("timid")){
-            endAct = curAct + 10;
+            endAct = curAct + 30;
             timid = true;
         }else if(newState.equals("aggro")){
             aggro = true;
@@ -319,7 +330,7 @@ public abstract class Fighter extends SuperSmoothMover
 
         }else if(aggro){
 
-            if(checkInRange() != null){
+            if(f != null){
 
                 if(!actOngoing){
                     actOngoing = true;
@@ -330,12 +341,10 @@ public abstract class Fighter extends SuperSmoothMover
                     changeMyState();
                 }
 
+            }else if(isTouchingOpponentWall()){//is touching the opponents wall?
+                changeMyState("timid");
             }else{//should move towards other fighter
-                if(f != null){
-                    move(Math.signum(f.getX() - getX()) * movementSpd);
-                } else{
-                    move(movementSpd * direction);
-                }
+                move(movementSpd * direction);
             }
 
         }else if(cautious){
@@ -355,6 +364,8 @@ public abstract class Fighter extends SuperSmoothMover
                     changeMyState("usingSpecial");
                 }
 
+            }else if(isTouchingOpponentWall()){//is touching the opponents wall?
+                changeMyState("timid");
             }else{
                 move(2 * direction);    
             }
@@ -457,8 +468,12 @@ public abstract class Fighter extends SuperSmoothMover
         return health;
     }
 
+    public void freezeMe(int time){
+        frozenTimer = time;
+    }
+
     public void freezeMe(){
-        isFrozen = true;
+        freezeMe(Integer.MAX_VALUE);
     }
     
     public void unfreezeMe(){
@@ -491,5 +506,13 @@ public abstract class Fighter extends SuperSmoothMover
         GreenfootImage newImg = img;
         newImg.scale(img.getWidth() * multiplicationFactor, img.getHeight() * multiplicationFactor);
         return(newImg);
-    }     
+    }
+
+    public boolean isTouchingOpponentWall(){
+        int opponentWallX = world.getWidth()/2 * (1 + direction);
+        if(Math.abs(getX() - opponentWallX) <= 20){
+            return true;
+        }
+        return false;
+    }
 }
