@@ -12,13 +12,15 @@ public class GameWorld extends World
     GreenfootImage bg = new GreenfootImage("images/background(3).png");
     private int floorY = 600;//just do a constant for now
 
-    
     private Fighter MC;
     private Fighter OPP;
     private int fighterHP;
     private int mcHealingCount = 0;
     private int oppHealingCount;
     private static int gold = 0;
+    private int coinCeiling = 100;
+    private int yVelocity = 10;
+    private int gravity = 1;
 
     /**
      * Constructor for objects of class GameWorld.
@@ -34,14 +36,14 @@ public class GameWorld extends World
         for(int i = 0; i < (1 + Greenfoot.getRandomNumber(3)); i++){
             spawnTraps();
         }
-        
+
         MC = spawnHero(customizationType, upgradeBonuses);
-        
+
         OPP = spawnOpponent();
-        
+
         OPP.setAsOpponent();
     }
-    
+
     public void act(){
         spawnSpawnables(0);
         spawnSpawnables(1);
@@ -85,16 +87,31 @@ public class GameWorld extends World
             addObject(new Snare(), randX, floorY);
         }
     }
-    
+
+    /*
+    private void fall(){
+        setLocation(getX(), getY() - yVelocity);
+        yVelocity -= gravity;
+        if(getY() > floorY || Math.abs(floorY - getY()) <= 5){
+            setLocation(getX(), floorY);
+        }
+    }
+    */
+
     public void spawnSpawnables(int type){
         int randomChance = (type == 0) ? Greenfoot.getRandomNumber(120) : Greenfoot.getRandomNumber(300);
         if(randomChance == 0){
             int randX = Greenfoot.getRandomNumber(getWidth());
             if(type == 0){
-                addObject(new PileOfGold(), randX, floorY);
+                PileOfGold g = new PileOfGold();
+                addObject(g, randX, coinCeiling);
+
+                
             }
             else if(type == 1){
-                addObject(new PileOfSold(), randX, floorY);
+                PileOfSold s = new PileOfSold();
+                addObject(s, randX, coinCeiling);
+
             }
         }  
     }
@@ -118,7 +135,7 @@ public class GameWorld extends World
         //main character goes on left side
         Fighter mc = fighterClasses.get(myClass);
         addObject(mc, 100, floorY);
-        
+
         return mc;
     }
 
@@ -137,13 +154,13 @@ public class GameWorld extends World
             new ShieldBearer(-1,customizationType)
         ));
         myClass = Greenfoot.getRandomNumber(fighterClasses.size());
-        
+
         //do something with the potions and armor later on
 
         //opponent on right
         Fighter opp = fighterClasses.get(myClass);
         addObject(opp, 924, floorY);
-        
+
         return opp;
     }
 
@@ -151,16 +168,16 @@ public class GameWorld extends World
         this.gold += goldAmount;
         return gold;
     }
-    
+
     public int removeGold(int goldAmount){
         this.gold -= goldAmount;
         return gold;
     }
-    
+
     public int getGold(){
         return gold;
     }
-    
+
     public int getFloorY(){
         return floorY;
     }
