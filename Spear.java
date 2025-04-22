@@ -14,15 +14,7 @@ public class Spear extends Weapon
      */
     
     public Spear(Fighter wielder){
-        super(wielder);
-        
-        atkDuration = 10;
-        telegraphDuration = 20;
-        
-        xOffset = 50;
-        yOffset = 20;
-        
-        myRange = 100;
+        super(wielder,5,10,20,50,20,100);
         
         setMyImage("spear", 150, 20);
     }
@@ -34,11 +26,11 @@ public class Spear extends Weapon
     
     protected void atkTelegraph(){
         //should modify depending on fighter's direction
-        xOffset += -2 * weaponDir;
+        xOffset += -2 * wielder.getMyDirection();
     }
     
     protected void playAtkAnimation(){
-        xOffset += 6 * weaponDir;
+        xOffset += 6 * wielder.getMyDirection();
     }
     
     protected void resetAnimation(){

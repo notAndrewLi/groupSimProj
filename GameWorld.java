@@ -43,6 +43,20 @@ public class GameWorld extends World
     public void act(){
         spawnSpawnables(0);
         spawnSpawnables(1);
+        
+        //checking if fighters are facing the right way
+        if(MC.getX() > OPP.getX() && MC.getMyDirection() == 1){
+            //set my direction = -1
+            MC.setDirection(-1);
+            
+            //set opp direction = 1
+            OPP.setDirection(1);
+        }else if(MC.getX() < OPP.getX() && MC.getMyDirection() == -1){
+            //set my direction = 1
+            MC.setDirection(1);
+            //set opp direction = -1
+            OPP.setDirection(-1);
+        }
     }
     
     public void spawnTraps(){
@@ -74,19 +88,18 @@ public class GameWorld extends World
 
     private Fighter spawnHero(int[] customizationType, int[] upgradeBonuses){
         //myWeapon gives us the index for the weapon that should be given to the fighter
-        String[] weapons = {"sword","spear"};
         
         int myClass = customizationType[0];
-        int myWeapon = customizationType[1];
-        int myArmor = customizationType[2];
+        //int myWeapon = customizationType[1];
+        //int myArmor = customizationType[2];
         int myPots = customizationType[3];
         
         //"Arrays.asList" taken from ChatGPT
         //myClass gives us the index for the appropriate class
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-            new JavelinThrower(1,weapons[myWeapon],upgradeBonuses),
-            new TwoHanded(1,weapons[myWeapon],upgradeBonuses),
-            new ShieldBearer(1,weapons[myWeapon],upgradeBonuses)
+            new JavelinThrower(1,customizationType,upgradeBonuses),
+            new TwoHanded(1,customizationType,upgradeBonuses),
+            new ShieldBearer(1,customizationType,upgradeBonuses)
         ));
 
         //do something with the potions and armor later on
@@ -102,14 +115,14 @@ public class GameWorld extends World
         int myWeapon;
         int myClass;
         
-        String[] weapons = {"sword","spear"};
-        myWeapon = Greenfoot.getRandomNumber(weapons.length);
-
+        //modify whenever new content added
+        int[] customizationType = {0,Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(3)};
+        
         //"Arrays.asList" taken from ChatGPT
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-            new JavelinThrower(-1,weapons[myWeapon]),
-            new TwoHanded(-1,weapons[myWeapon]),
-            new ShieldBearer(-1,weapons[myWeapon])
+            new JavelinThrower(-1,customizationType),
+            new TwoHanded(-1,customizationType),
+            new ShieldBearer(-1,customizationType)
         ));
         myClass = Greenfoot.getRandomNumber(fighterClasses.size());
         

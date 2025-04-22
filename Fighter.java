@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
+import java.util.Arrays;
 /**
  * Write a description of class Fighter here.
  * 
@@ -17,13 +18,13 @@ public abstract class Fighter extends SuperSmoothMover
     protected int health;
     protected int direction;
     protected int movementSpd;
-    protected String weaponType;
-
     protected int curAct;
     protected int endAct;
 
+    protected int[] customizationType;
     protected Weapon myWeapon;
-
+    protected Armor myArmor;
+    
     //states
     protected String myState;
     protected boolean aggro;
@@ -70,9 +71,9 @@ public abstract class Fighter extends SuperSmoothMover
      * Fighter constructor
      * only face one direction
      */
-    public Fighter(int direction, String weaponType, int[] upgradeBonuses){
+    public Fighter(int direction, int[] customizationType, int[] upgradeBonuses){
         this.direction = direction;
-        this.weaponType = weaponType;
+        this.customizationType = customizationType;
 
         actOngoing = false;
 
@@ -116,7 +117,43 @@ public abstract class Fighter extends SuperSmoothMover
     }
 
     protected abstract boolean useSpecialAbility();
+    
+    //moved ts up, before the act method because it should occur before the act method; the order pmo too much
+    public void addedToWorld(World w){
+        //System.out.println(w + "");
+        if (w instanceof GameWorld) {
+            //Cast the world to MyWorld and call the method
+            world = (GameWorld) w;
 
+            floorY = world.getFloorY() - yOffset;
+            
+            int weaponType = customizationType[1];
+            int armorType = customizationType[2];
+            
+            ArrayList<Weapon> weaponTypes = new ArrayList<Weapon>(Arrays.asList(
+                new Sword(this),
+                new Spear(this),
+                new Dagger(this)
+            ));
+            
+            ArrayList<Armor> armorTypes = new ArrayList<Armor>(Arrays.asList(
+                new LightArmor(this),
+                new MedArmor(this),
+                new HeavyArmor(this)
+            ));
+            
+            myWeapon = weaponTypes.get(weaponType);
+            w.addObject(myWeapon,getX(),getY());
+            
+            myArmor = armorTypes.get(armorType);
+            w.addObject(myArmor,getX(),getY());
+            movementSpd -= myArmor.getWeight();
+        }
+
+        StatBar myStatBar = new StatBar(this, maxHealth);
+        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
+    }
+    
     public void act()
     {
         curAct++;
@@ -170,30 +207,13 @@ public abstract class Fighter extends SuperSmoothMover
         fall();
     }
 
-    public void addedToWorld(World w){
-        //System.out.println(w + "");
-        if (w instanceof GameWorld) {
-            //Cast the world to MyWorld and call the method
-            world = (GameWorld) w;
-
-            floorY = world.getFloorY() - yOffset;
-
-            if(weaponType.equalsIgnoreCase("sword")){
-                myWeapon = new Sword(this);
-            }else if(weaponType.equalsIgnoreCase("spear")){
-                myWeapon = new Spear(this);
-            }
-
-            w.addObject(myWeapon,getX(),getY());
-        }
-
-        StatBar myStatBar = new StatBar(this, maxHealth);
-        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
-    }
-
     public void takeDamage(int damage){
         if(!iFrames){
-            health -= damage;
+            //if damage is greater than armor resistance
+            if(damage - myArmor.getDmgResist() > 0){
+                health -= (damage - myArmor.getDmgResist());
+            }
+            
             iFrames = true;
             iFramesEndAct = curAct + 60;
             int rand = 1 + Greenfoot.getRandomNumber(2);
@@ -316,6 +336,7 @@ public abstract class Fighter extends SuperSmoothMover
                     actOngoing = true;
                     myWeapon.attack();
                 }else if(!myWeapon.isDangerous()){
+                    //only changes once attack is done
                     actOngoing = false;
                     changeMyState();
                 }
@@ -391,6 +412,32 @@ public abstract class Fighter extends SuperSmoothMover
     public void setAsOpponent(){
         isOpponent = true;
     }
+    
+    public void setMovementSpd(int theSpd){
+        movementSpd = theSpd;
+    }
+    
+    public void setDirection(int newDir){
+        direction = newDir;
+
+        //reorient weapon
+        myWeapon.setMyImage();
+        myArmor.setMyImage();
+        
+        if(direction == 1){
+            for(int i = 0; i < 5; i++){
+                jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
+                jumpImgs[i] = resize(jumpImgs[i], 2);
+            }
+        } else{
+            for(int i = 0; i < 5; i++){
+                GreenfootImage img = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
+                img.mirrorHorizontally();
+                jumpImgs[i] = img;
+                jumpImgs[i] = resize(jumpImgs[i], 2);
+            } 
+        }
+    }
 
     public boolean isOpponent(){
         return isOpponent;
@@ -428,7 +475,11 @@ public abstract class Fighter extends SuperSmoothMover
     public void freezeMe(){
         freezeMe(Integer.MAX_VALUE);
     }
-
+    
+    public void unfreezeMe(){
+        isFrozen = false;
+    }
+    
     //die method and animation
     public void die(){
         isDead = true;

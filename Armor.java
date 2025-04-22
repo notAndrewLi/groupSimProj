@@ -15,10 +15,14 @@ public abstract class Armor extends Actor
     
     protected Fighter wearer;
     protected int dmgResist;
+    protected int weight;
     
-    public Armor(Fighter wearer,int dmgResist){
+    protected String imgName;
+    
+    public Armor(Fighter wearer,int dmgResist,int weight){
         this.wearer = wearer;
         this.dmgResist = dmgResist;
+        this.weight = weight;
     }
     
     public void act()
@@ -29,17 +33,18 @@ public abstract class Armor extends Actor
     public void moveMe(Fighter wielder){
         if (wielder != null && getWorld() != null){
             if (wielder.getWorld() != null){
-                setLocation (wielder.getX(), wielder.getY() - 10);
+                setLocation (wielder.getX(), wielder.getY() - 18);
             }else{
-                getWorld().removeObject(this);
+                getWorld().removeObject(this);;
                 return;
             }
         }    
     }
     
     public void setMyImage(String imgName){
+        this.imgName = imgName;
         GreenfootImage img = new GreenfootImage(imgName + ".png");
-        img.scale(40,40);
+        img.scale(90,90);
         
         if(wearer.getMyDirection() == -1){
             img.mirrorHorizontally();
@@ -48,7 +53,16 @@ public abstract class Armor extends Actor
         setImage(img);
     }
     
+    //for re-orienting after a direction change
+    public void setMyImage(){
+        setMyImage(imgName);
+    }
+    
     public int getDmgResist(){
         return dmgResist;
+    }
+    
+    public int getWeight(){
+        return weight;
     }
 }

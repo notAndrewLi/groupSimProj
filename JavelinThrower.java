@@ -16,13 +16,13 @@ public class JavelinThrower extends Fighter
     
     private int javelinCount;
     
-    public JavelinThrower(int direction, String weaponType){
-        super(direction, weaponType, null);
+    public JavelinThrower(int direction, int[] customizationType){
+        super(direction, customizationType, null);
     }
     
     //with stats modified
-    public JavelinThrower(int direction, String weaponType, int[] upgradeBonuses){
-        super(direction, weaponType, upgradeBonuses);
+    public JavelinThrower(int direction, int[] customizationType, int[] upgradeBonuses){
+        super(direction, customizationType, upgradeBonuses);
     }
     
     public void act()
