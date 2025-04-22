@@ -286,7 +286,7 @@ public abstract class Fighter extends SuperSmoothMover
         if(newState.equals("cautious")){
             cautious = true;
         }else if(newState.equals("timid")){
-            endAct = curAct + 10;
+            endAct = curAct + 30;
             timid = true;
         }else if(newState.equals("aggro")){
             aggro = true;
@@ -320,6 +320,8 @@ public abstract class Fighter extends SuperSmoothMover
                     changeMyState();
                 }
 
+            }else if(isTouchingOpponentWall()){//is touching the opponents wall?
+                changeMyState("timid");
             }else{//should move towards other fighter
                 move(movementSpd * direction);
             }
@@ -341,6 +343,8 @@ public abstract class Fighter extends SuperSmoothMover
                     changeMyState("usingSpecial");
                 }
 
+            }else if(isTouchingOpponentWall()){//is touching the opponents wall?
+                changeMyState("timid");
             }else{
                 move(2 * direction);    
             }
@@ -451,5 +455,13 @@ public abstract class Fighter extends SuperSmoothMover
         GreenfootImage newImg = img;
         newImg.scale(img.getWidth() * multiplicationFactor, img.getHeight() * multiplicationFactor);
         return(newImg);
-    }     
+    }
+
+    public boolean isTouchingOpponentWall(){
+        int opponentWallX = world.getWidth()/2 * (1 + direction);
+        if(Math.abs(getX() - opponentWallX) <= 20){
+            return true;
+        }
+        return false;
+    }
 }
