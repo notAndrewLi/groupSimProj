@@ -19,8 +19,6 @@ public class GameWorld extends World
     private int oppHealingCount;
     private static int gold = 0;
     private int coinCeiling = 100;
-    private int yVelocity = 10;
-    private int gravity = 1;
 
     /**
      * Constructor for objects of class GameWorld.
@@ -31,9 +29,9 @@ public class GameWorld extends World
 
         super(1024, 768, 1, true);
         setBackground(bg);
-        //min amnt of traps: 1
-        //max amnt of traps: 3
-        for(int i = 0; i < (1 + Greenfoot.getRandomNumber(3)); i++){
+        //min amnt of traps: 3
+        //max amnt of traps: 5
+        for(int i = 0; i < (3 + Greenfoot.getRandomNumber(5)); i++){
             spawnTraps();
         }
 
@@ -88,30 +86,17 @@ public class GameWorld extends World
         }
     }
 
-    /*
-    private void fall(){
-        setLocation(getX(), getY() - yVelocity);
-        yVelocity -= gravity;
-        if(getY() > floorY || Math.abs(floorY - getY()) <= 5){
-            setLocation(getX(), floorY);
-        }
-    }
-    */
-
     public void spawnSpawnables(int type){
-        int randomChance = (type == 0) ? Greenfoot.getRandomNumber(120) : Greenfoot.getRandomNumber(300);
+        int randomChance = (type == 0) ? Greenfoot.getRandomNumber(300) : Greenfoot.getRandomNumber(700);
         if(randomChance == 0){
             int randX = Greenfoot.getRandomNumber(getWidth());
             if(type == 0){
                 PileOfGold g = new PileOfGold();
                 addObject(g, randX, coinCeiling);
-
-                
             }
             else if(type == 1){
                 PileOfSold s = new PileOfSold();
                 addObject(s, randX, coinCeiling);
-
             }
         }  
     }

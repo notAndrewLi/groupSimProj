@@ -151,7 +151,7 @@ public abstract class Fighter extends SuperSmoothMover
         }
 
         StatBar myStatBar = new StatBar(this, maxHealth);
-        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
+        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 80);
     }
     
     public void act()
@@ -186,6 +186,7 @@ public abstract class Fighter extends SuperSmoothMover
         }
 
         if(frozenTimer <= 0){
+            isFrozen = false;
             //animation segment
             if(curAct % 4 == 0){//switch frames every 4 acts
                 curFrame++;
@@ -469,7 +470,20 @@ public abstract class Fighter extends SuperSmoothMover
     }
 
     public void freezeMe(int time){
+        isFrozen = true;
         frozenTimer = time;
+    }
+    
+    public boolean isFrozen(){
+        return isFrozen; 
+    }
+    
+    public boolean isScorched(){
+        return isScorched;
+    }
+    
+    public boolean isBleeding(){
+        return isBleeding;
     }
 
     public void freezeMe(){
