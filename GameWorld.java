@@ -16,6 +16,8 @@ public class GameWorld extends World
     private Fighter MC;
     private Fighter OPP;
     private int fighterHP;
+    private int mcHealingCount = 0;
+    private int oppHealingCount;
     private static int gold = 0;
 
     /**
@@ -43,6 +45,17 @@ public class GameWorld extends World
     public void act(){
         spawnSpawnables(0);
         spawnSpawnables(1);
+        
+        //spawning health pots
+        if(MC.getHP() <= 50 && mcHealingCount > 0){
+            addObject(new Potion(false),MC.getX(),0);
+            mcHealingCount -= 1;
+        }
+        
+        if(OPP.getHP() <= 50 && oppHealingCount > 0){
+            addObject(new Potion(true),OPP.getX(),0);
+            oppHealingCount -= 1;
+        }
         
         //checking if fighters are facing the right way
         if(MC.getX() > OPP.getX() && MC.getMyDirection() == 1){
@@ -90,9 +103,7 @@ public class GameWorld extends World
         //myWeapon gives us the index for the weapon that should be given to the fighter
         
         int myClass = customizationType[0];
-        //int myWeapon = customizationType[1];
-        //int myArmor = customizationType[2];
-        int myPots = customizationType[3];
+        mcHealingCount = customizationType[3] + 1;
         
         //"Arrays.asList" taken from ChatGPT
         //myClass gives us the index for the appropriate class
@@ -117,6 +128,7 @@ public class GameWorld extends World
         
         //modify whenever new content added
         int[] customizationType = {0,Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(3)};
+        oppHealingCount = customizationType[3] + 1;
         
         //"Arrays.asList" taken from ChatGPT
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(

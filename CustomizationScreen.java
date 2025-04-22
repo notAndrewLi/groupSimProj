@@ -34,7 +34,7 @@ public class CustomizationScreen extends World
     private int[] customMax = {3,3,3,3};
 
     //index 2 and 3 should be armor and hp pots respectfully
-    private String[] customizationString = {"Class","Weapon","Armor",""};
+    private String[] customizationString = {"Class","Weapon","Armor","Potions"};
 
     /*
      * ---CONTENTS---
@@ -178,7 +178,7 @@ public class CustomizationScreen extends World
                     //determine what i am customizing by finding the index of the specific button in the array, and determining which set it belongs to(see above)
                     int buttonIndex = arrowButtons.indexOf(i);
                     int customIndex = returnCustomizationType(buttonIndex);
-                    int selector = -1;
+                    int selector = 1;
                     int theInt;
 
                     //all the buttons on the left side of the "set" of arrow buttons has an even index in the arraylist 
