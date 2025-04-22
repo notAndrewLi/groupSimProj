@@ -66,6 +66,8 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean isDead;
     protected boolean isFrozen;
     protected boolean isEmoting;
+    
+    protected String name = "Opponent";
 
     /**
      * Fighter constructor
@@ -148,10 +150,14 @@ public abstract class Fighter extends SuperSmoothMover
             myArmor = armorTypes.get(armorType);
             w.addObject(myArmor,getX(),getY());
             movementSpd -= myArmor.getWeight();
+            
+            if(!isOpponent){
+                name = world.getMCName();
+            }
         }
-
-        StatBar myStatBar = new StatBar(this, maxHealth);
-        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
+        
+        StatBar myStatBar = new StatBar(this, maxHealth, name);
+        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 100);
     }
     
     public void act()
@@ -235,7 +241,7 @@ public abstract class Fighter extends SuperSmoothMover
             myWeapon.fallToGround();
             if(isOpponent){//am i an enemy character?
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
-                world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 100);
+                world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 50);
             }
         }
     }
@@ -499,6 +505,9 @@ public abstract class Fighter extends SuperSmoothMover
         if(curAct % 6 == 0){
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
+        }
+        if(Greenfoot.getRandomNumber(600) == 0){//lazy way to change to customization screen
+            Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
         }
     }
 
