@@ -4,19 +4,26 @@ public class StatBar extends Actor {
     private int HP;
     private int maxHP;
     private Fighter fighter;
-    private int barWidth = 200;
-    private int barHeight = 25;
+
+    
     private boolean scorched;
     private boolean bleeding;
     private boolean snared;
 
-    public StatBar(Fighter fighter, int maxHP){
+    private int barWidth = 250;
+    private int barHeight = 70;
+    private String name;
+
+
+    public StatBar(Fighter fighter, int maxHP, String name){
         this.fighter = fighter;
         this.maxHP = maxHP;
+        this.name = name;
         this.HP = maxHP;
-
         // Create the image with enough height for the bar and text
-        GreenfootImage img = new GreenfootImage(barWidth + 2, barHeight + 100);
+
+        GreenfootImage img = new GreenfootImage(barWidth, barHeight);
+
         setImage(img);
         updateBar(); // draw the initial bar
     }
@@ -36,26 +43,31 @@ public class StatBar extends Actor {
         double hpPercent = (double) HP / maxHP;
 
         // Create a new image each time
-        GreenfootImage img = new GreenfootImage(barWidth + 10, barHeight + 100);
+
+        GreenfootImage img = new GreenfootImage(barWidth, barHeight);
 
         // Draw border
         img.setColor(Color.YELLOW);
-        img.drawRect(0, 0, barWidth, barHeight);
+        img.drawRect(0, 20, barWidth, 25);
 
         // Draw background
         img.setColor(Color.GRAY);
-        img.fillRect(1, 1, barWidth - 1, barHeight - 1);
+        img.fillRect(1, 21, barWidth - 1, 24);
 
         img.setColor(Color.RED);
 
         // Draw filled bar
         int fillWidth = (int)(hpPercent * (barWidth - 2));
-        img.fillRect(1, 1, fillWidth, barHeight - 1);
+        img.fillRect(1, 21, fillWidth, 24);
 
         // Draw HP text below the bar
         img.setColor(Color.WHITE);
-        img.setFont(new Font("Arial", false, false, 16));
-        img.drawString("HP: " + HP + "/" + maxHP, 10, barHeight + 18);
+        img.setFont(new Font("Arial", true, false, 16));
+        img.drawString("HP: " + HP + "/" + maxHP, 0, barHeight);
+
+        img.setColor(new Color(227, 129, 68));
+        img.setFont(new Font("Arial", true, false, 16));
+        img.drawString(name, 0, 17);
 
         int statusYOffset = barHeight + 36;
         if (scorched) {
