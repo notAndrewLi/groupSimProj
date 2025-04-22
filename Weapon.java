@@ -25,10 +25,15 @@ public abstract class Weapon extends Actor
     protected int telegraphDuration;
 
     protected int myRange;
-    protected int weaponDir;
+    protected int damage;
+    //protected int weaponDir;
     protected int xOffset;
     protected int yOffset;
-
+    
+    
+    protected String imageName;
+    protected int imgX;
+    protected int imgY;
     protected GreenfootImage theImage;
 
     protected abstract void atkTelegraph();
@@ -39,15 +44,17 @@ public abstract class Weapon extends Actor
 
     protected boolean fallen;
 
-    public Weapon(Fighter wielder){
+    public Weapon(Fighter wielder, int damage, int atkDuration, int telegraphDuration, int xOffset, int yOffset, int myRange){
         this.wielder = wielder;
+        
+        this.damage = damage;
+        this.atkDuration = atkDuration;
+        this.telegraphDuration = telegraphDuration;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
+        this.myRange = myRange;
 
-        weaponDir = wielder.getMyDirection();
-
-        //should be defined in the subclasses
-        //atkDuration = 7;
-
-        isDangerous = true;
+        isDangerous = false;
     }
 
     public void act()
@@ -67,7 +74,7 @@ public abstract class Weapon extends Actor
 
                 if(a != null){
                     Fighter f = (Fighter) a;
-                    f.takeDamage(5);
+                    f.takeDamage(damage);
                     //do damage do this
                 }
             }else{
@@ -94,7 +101,7 @@ public abstract class Weapon extends Actor
     public void moveMe(Fighter wielder){
         if (wielder != null && getWorld() != null){
             if (wielder.getWorld() != null){
-                setLocation (wielder.getX() + xOffset * weaponDir, wielder.getY() + yOffset);
+                setLocation (wielder.getX() + xOffset * wielder.getMyDirection(), wielder.getY() + yOffset);
             }else{
                 getWorld().removeObject(this);
                 return;
@@ -102,20 +109,29 @@ public abstract class Weapon extends Actor
         }    
     }
 
-    protected void setMyImage(String imageName, int x, int y){
+    public void setMyImage(String imageName, int x, int y){
+        this.imageName = imageName;
+        imgX = x;
+        imgY = y;
         theImage = new GreenfootImage(imageName + ".png");
         theImage.scale(x,y);
-        if(weaponDir == 1){
+        if(wielder.getMyDirection() == 1){
             theImage.mirrorHorizontally();
         }
         setImage(theImage);
     }
-
+    
+    
+    //no parameters, for mirroring image when modifying direction
+    public void setMyImage(){
+        setMyImage(imageName,imgX,imgY);
+    }
+    
     protected void fallToGround() {
         GameWorld w = (GameWorld) getWorld();
         int floorY = w.getFloorY() + 15;
-        turnTowards(getX(), getY() + (100 * weaponDir));//quick way of turning towards the ground
-        setLocation(getX() + (25 * weaponDir), floorY - yOffset);
+        turnTowards(getX(), getY() + (100 * wielder.getMyDirection()));//quick way of turning towards the ground
+        setLocation(getX() + (25 * wielder.getMyDirection()), floorY - yOffset);
         fallen = true;
     }
 }

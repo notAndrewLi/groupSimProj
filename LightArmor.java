@@ -14,7 +14,7 @@ public class LightArmor extends Armor
      */
     
     public LightArmor(Fighter wearer){
-        super(wearer,5);
+        super(wearer,1,0);
         setMyImage("lightArmor");
     }
     
