@@ -18,6 +18,9 @@ public class GameWorld extends World
     private int mcHealingCount = 0;
     private int oppHealingCount;
     private static int gold = 0;
+    private int coinCeiling = 100;
+    private int yVelocity = 10;
+    private int gravity = 1;
 
     private String fighterName;
     /**
@@ -90,10 +93,15 @@ public class GameWorld extends World
         if(randomChance == 0){
             int randX = Greenfoot.getRandomNumber(getWidth());
             if(type == 0){
-                addObject(new PileOfGold(), randX, floorY);
+                PileOfGold g = new PileOfGold();
+                addObject(g, randX, coinCeiling);
+
+                
             }
             else if(type == 1){
-                addObject(new PileOfSold(), randX, floorY);
+                PileOfSold s = new PileOfSold();
+                addObject(s, randX, coinCeiling);
+
             }
         }  
     }
