@@ -10,6 +10,7 @@ public class PileOfGold extends Spawnables
 {
     GreenfootImage img = new GreenfootImage("gold.png");
     private int timer = 0;
+    
     public PileOfGold(){
         setImage(img);
     }
@@ -17,6 +18,7 @@ public class PileOfGold extends Spawnables
     public void act()
     {
         Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
+        super.fall();
         if (f != null) {
             GameWorld w  = (GameWorld)getWorld();
             w.addGold(100);
@@ -27,6 +29,9 @@ public class PileOfGold extends Spawnables
             if (timer >= 240) { //240 frames = 4 seconds at 60 FPS
                 getWorld().removeObject(this);
             }
-        }        
-    }
+        }  
+        
+    }     
+
+    
 }
