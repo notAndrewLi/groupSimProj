@@ -15,6 +15,8 @@ public class GameWorld extends World
     private Fighter MC;
     private Fighter OPP;
     private int fighterHP;
+    private int mcHealingCount = 0;
+    private int oppHealingCount;
     private static int gold = 0;
     private int coinCeiling = 100;
     private int yVelocity = 10;
@@ -29,9 +31,10 @@ public class GameWorld extends World
 
         super(1024, 768, 1, true);
         setBackground(bg);
-        for(int i = 0; i < 80; i++){
-            spawnTraps(0);
-            spawnTraps(1);
+        //min amnt of traps: 1
+        //max amnt of traps: 3
+        for(int i = 0; i < (1 + Greenfoot.getRandomNumber(3)); i++){
+            spawnTraps();
         }
 
         MC = spawnHero(customizationType, upgradeBonuses);
@@ -42,35 +45,47 @@ public class GameWorld extends World
     }
 
     public void act(){
-        //check main character's first
-        fighterHP = MC.getHP();
-        if(fighterHP <= 0){
-            //show death screen
-            Greenfoot.setWorld(new DeathScreen());
-        }else{ //check opponent's hp
-            fighterHP = OPP.getHP();
-            if(fighterHP <= 0){
-                //show upgrade screen
-                gold += (200 + Greenfoot.getRandomNumber(300));
-                Greenfoot.setWorld(new CustomizationScreen(false,gold));
-            }
-        }
-
         spawnSpawnables(0);
         spawnSpawnables(1);
+        
+        //spawning health pots
+        if(MC.getHP() <= 50 && mcHealingCount > 0){
+            addObject(new Potion(false),MC.getX(),0);
+            mcHealingCount -= 1;
+        }
+        
+        if(OPP.getHP() <= 50 && oppHealingCount > 0){
+            addObject(new Potion(true),OPP.getX(),0);
+            oppHealingCount -= 1;
+        }
+        
+        //checking if fighters are facing the right way
+        if(MC.getX() > OPP.getX() && MC.getMyDirection() == 1){
+            //set my direction = -1
+            MC.setDirection(-1);
+            
+            //set opp direction = 1
+            OPP.setDirection(1);
+        }else if(MC.getX() < OPP.getX() && MC.getMyDirection() == -1){
+            //set my direction = 1
+            MC.setDirection(1);
+            //set opp direction = -1
+            OPP.setDirection(-1);
+        }
     }
-
-    public void spawnTraps(int type){
-        int randomChance = Greenfoot.getRandomNumber(80);
+    
+    public void spawnTraps(){
+        //0,1,2
+        int randomChance = Greenfoot.getRandomNumber(3);
+        int randX = Greenfoot.getRandomNumber(getWidth());
+        
         if(randomChance == 0){
-            int randX = Greenfoot.getRandomNumber(getWidth());
-            if(type == 0){
-                addObject(new Geyser(), randX, floorY - 10);
-            }
-            else if(type == 1){
-                addObject(new Spikes(), randX, floorY);
-            }
-        }  
+            addObject(new Geyser(), randX, floorY - 10);
+        }else if(randomChance == 1){
+            addObject(new Spikes(), randX, floorY);
+        }else{
+            addObject(new Snare(), randX, floorY);
+        }
     }
 
     /*
@@ -103,20 +118,17 @@ public class GameWorld extends World
 
     private Fighter spawnHero(int[] customizationType, int[] upgradeBonuses){
         //myWeapon gives us the index for the weapon that should be given to the fighter
-        String[] weapons = {"sword","spear"};
-
+        
         int myClass = customizationType[0];
-        int myWeapon = customizationType[1];
-        int myArmor = customizationType[2];
-        int myPots = customizationType[3];
-
+        mcHealingCount = customizationType[3] + 1;
+        
         //"Arrays.asList" taken from ChatGPT
         //myClass gives us the index for the appropriate class
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-                    new JavelinThrower(1,weapons[myWeapon],upgradeBonuses),
-                    new TwoHanded(1,weapons[myWeapon],upgradeBonuses),
-                    new ShieldBearer(1,weapons[myWeapon],upgradeBonuses)
-                ));
+            new JavelinThrower(1,customizationType,upgradeBonuses),
+            new TwoHanded(1,customizationType,upgradeBonuses),
+            new ShieldBearer(1,customizationType,upgradeBonuses)
+        ));
 
         //do something with the potions and armor later on
 
@@ -130,16 +142,17 @@ public class GameWorld extends World
     private Fighter spawnOpponent(){
         int myWeapon;
         int myClass;
-
-        String[] weapons = {"sword","spear"};
-        myWeapon = Greenfoot.getRandomNumber(weapons.length);
-
+        
+        //modify whenever new content added
+        int[] customizationType = {0,Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(3)};
+        oppHealingCount = customizationType[3] + 1;
+        
         //"Arrays.asList" taken from ChatGPT
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-                    new JavelinThrower(-1,weapons[myWeapon]),
-                    new TwoHanded(-1,weapons[myWeapon]),
-                    new ShieldBearer(-1,weapons[myWeapon])
-                ));
+            new JavelinThrower(-1,customizationType),
+            new TwoHanded(-1,customizationType),
+            new ShieldBearer(-1,customizationType)
+        ));
         myClass = Greenfoot.getRandomNumber(fighterClasses.size());
 
         //do something with the potions and armor later on

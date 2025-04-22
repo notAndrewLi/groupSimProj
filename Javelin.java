@@ -1,4 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import java.util.ArrayList;
 
 /**
  * Write a description of class Javelin here.
@@ -17,18 +18,20 @@ public class Javelin extends SuperSmoothMover
     private static double gravity; 
     private GameWorld world;
     
-    private Fighter target;
+    private Fighter me;
     private double xVelocity;
     private double yVelocity;
     private double angularVel;
     private int direction;
+    
 
-    public Javelin(double theXVel, double theYVel, int direction){
+    public Javelin(double theXVel, double theYVel, int direction, Fighter me){
         gravity = 1;
         xVelocity = theXVel * direction;
         yVelocity = 5 + theYVel;
         angularVel = 2 * direction;
         this.direction = direction;
+        this.me = me;
         
         GreenfootImage theImage = new GreenfootImage("anjewWeapon.png");
         theImage.scale(100,17);
@@ -66,6 +69,7 @@ public class Javelin extends SuperSmoothMover
         
         fall();
         
+        
     }
     public void fall(){
         setLocation(getX(), getY() - yVelocity);
@@ -73,6 +77,7 @@ public class Javelin extends SuperSmoothMover
         turn(angularVel);
         
         yVelocity -= gravity;
+        
         if(getY() > floorY || Math.abs(floorY - getY()) <= 5){
             yVelocity = 0;
             
@@ -81,7 +86,16 @@ public class Javelin extends SuperSmoothMover
             angularVel = 0;
             
             setLocation(getX(), floorY);
-
-        } 
+            
+            //fade away the javelin, method is defined in supersmoothmover
+            fadeAway();
+        } else{
+            ArrayList<Fighter> targets = (ArrayList<Fighter>)getObjectsInRange(getImage().getWidth(), Fighter.class);//So it can hit more than 1 target
+            for(Fighter target : targets){
+                if(target != me){
+                    target.takeDamage(15);//fighters have iframes so it doesn't hit infinite times
+                }
+            }
+        }
     }
 }

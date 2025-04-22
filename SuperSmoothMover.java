@@ -45,7 +45,7 @@ public abstract class SuperSmoothMover extends Actor
     public SuperSmoothMover (){
         staticRotation = false;
     }
-    
+
     /**
      * Move forward by the specified distance.
      * (Overrides the method in Actor).
@@ -178,7 +178,7 @@ public abstract class SuperSmoothMover extends Actor
         cosRotation = Math.cos(Math.toRadians(preciseRotation));
         sinRotation = Math.sin(Math.toRadians(preciseRotation));
     }
-    
+
     /**
      * Set the location using exact coordinates.
      * 
@@ -297,4 +297,12 @@ public abstract class SuperSmoothMover extends Actor
         }
     }
 
+    public void fadeAway(){
+        GreenfootImage fadeImg = getImage();
+        fadeImg.setTransparency(getImage().getTransparency() - 1);
+        setImage(fadeImg);
+        if(getImage().getTransparency() <= 10){
+            getWorld().removeObject(this);
+        }
+    }
 }

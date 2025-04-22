@@ -20,7 +20,7 @@ public class TextLabel extends ScreenGui
     public TextLabel(String text, int fontSize) {
         this.fontSize = fontSize;
         this.textColor = new Color(255,255,255);
-        GreenfootImage img = new GreenfootImage(text, fontSize, Color.WHITE, null);
+        GreenfootImage img = new GreenfootImage(text, fontSize, textColor, null);
         setImage(img);
     }       
     

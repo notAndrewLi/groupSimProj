@@ -15,13 +15,13 @@ public class TwoHanded extends Fighter
     
     protected int swingCount;
     
-    public TwoHanded(int direction, String weaponType){
-        super(direction, weaponType, null);
+    public TwoHanded(int direction, int[] customizationType){
+        super(direction, customizationType, null);
     }
     
     //with stats modified
-    public TwoHanded(int direction, String weaponType, int[] upgradeBonuses){
-        super(direction, weaponType, upgradeBonuses);
+    public TwoHanded(int direction, int[] customizationType, int[] upgradeBonuses){
+        super(direction, customizationType, upgradeBonuses);
     }
     
     public void act()

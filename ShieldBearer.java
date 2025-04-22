@@ -13,42 +13,71 @@ public class ShieldBearer extends Fighter
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     
-    private int hpThresh;
+    private Actor myShield;
     
-    public ShieldBearer(int direction, String weaponType){
-        super(direction, weaponType, null);
+    public ShieldBearer(int direction, int[] customizationType){
+        super(direction, customizationType, null);
     }
     
     //with stats modified
-    public ShieldBearer(int direction, String weaponType, int[] upgradeBonuses){
-        super(direction, weaponType, upgradeBonuses);
+    public ShieldBearer(int direction, int[] customizationType, int[] upgradeBonuses){
+        super(direction, customizationType, upgradeBonuses);
     }
+    
+    /*public void addedToWorld(World w){
+        myShield = new Image(25,25,"shield",false);
+        
+        w.addObject(myShield,getX(),getY());
+    }*/
     
     public void act()
     {
         super.act();
+        
+        /*if (this != null && getWorld() != null){
+            if (this.getWorld() != null){
+                myShield.setLocation (this.getX(), this.getY());
+            }else{
+                getWorld().removeObject(myShield);
+                return;
+            }
+        } */ 
     }
         
     protected boolean useSpecialAbility(){
-        //raise my shield
+        //for things that you want to happen only once per ability cast
         if(!actOngoing){
             actOngoing = true;
-            endAct = curAct + 60;
-            hpThresh = health;
+            boolean mirrorImage = false;
+            if(direction == -1){
+                mirrorImage = true;
+            }
+            
+            myShield = new Image(100,100,"shield",mirrorImage);
+            getWorld().addObject(myShield,getX(),getY());
+            
+            //shield bearer gets iFrames
+            iFrames = true;
+            iFramesEndAct = curAct + 180;
+            endAct = iFramesEndAct;
         }
         
-        //set a threshold for health; shield bearer can't fall below this threshold
-        //give ShieldBearer iFrames
-        if(health < hpThresh){
-            health = hpThresh;
-        }
+        if (this != null && getWorld() != null){
+            if (this.getWorld() != null){
+                myShield.setLocation (this.getX() + 20 * direction, this.getY());
+            }else{
+                getWorld().removeObject(myShield);
+            }
+        } 
         
+        //end ability
         if(curAct >= endAct){
+            getWorld().removeObject(myShield);
             actOngoing = false;
             return false;
         }
         
-        //move(movementSpd/2 * -direction);
+        move(1 * direction);
         
         return true;
     }

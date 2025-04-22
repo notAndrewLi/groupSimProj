@@ -14,17 +14,9 @@ public class Sword extends Weapon
      */
     
     public Sword(Fighter wielder){
-        super(wielder);
+        super(wielder,10,10,20,20,0,60);
         
-        atkDuration = 10;
-        telegraphDuration = 20;
-        
-        xOffset = 20;
-        yOffset = 0;
-        
-        myRange = 60;
-        
-        setMyImage("sword(1)", 50, 15);
+        setMyImage("sword(1)", 100, 30);
     }
     
     public void act()
@@ -34,16 +26,16 @@ public class Sword extends Weapon
     
     protected void atkTelegraph(){
         //should modify depending on fighter's direction
-        turn(-1 * weaponDir);
+        turn(-1 * wielder.getMyDirection());
     }
     
     protected void playAtkAnimation(){
         //System.out.println("sword attack");
         
-        turn(9 * weaponDir);
+        turn(9 * wielder.getMyDirection());
     }
     
     protected void resetAnimation(){
-        setRotation(-20 * weaponDir);
+        setRotation(-20 * wielder.getMyDirection());
     }
 }
