@@ -87,13 +87,8 @@ public class Javelin extends SuperSmoothMover
             
             setLocation(getX(), floorY);
             
-            //fade away the javelin
-            GreenfootImage fadeImg = getImage();
-            fadeImg.setTransparency(getImage().getTransparency() - 1);
-            setImage(fadeImg);
-            if(getImage().getTransparency() <= 10){
-                world.removeObject(this);
-            }
+            //fade away the javelin, method is defined in supersmoothmover
+            fadeAway();
         } else{
             ArrayList<Fighter> targets = (ArrayList<Fighter>)getObjectsInRange(getImage().getWidth(), Fighter.class);//So it can hit more than 1 target
             for(Fighter target : targets){
