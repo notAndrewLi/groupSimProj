@@ -22,9 +22,4 @@ public class Frame extends ScreenGui
        
        setImage(theImage);
     }
-    
-    public void act()
-    {
-        //do nothing; I'm a frame LOL
-    }
 }
