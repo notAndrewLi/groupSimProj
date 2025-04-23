@@ -21,7 +21,7 @@ public class PileOfSold extends Spawnables
         super.fall();
         if (f != null) {
             GameWorld w  = (GameWorld)getWorld();
-            w.removeGold(50);
+            if(w.getGold() >= 50) w.removeGold(50);
             getWorld().addObject(new FadeText("-50 Gold", Color.RED), this.getX(), this.getY());
             getWorld().removeObject(this);
         } else {
