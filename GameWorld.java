@@ -120,6 +120,8 @@ public class GameWorld extends World
         //main character goes on left side
         Fighter mc = fighterClasses.get(myClass);
         addObject(mc, 100, floorY);
+        Indicator ind = new Indicator(mc);
+        addObject(ind, 0, 0);
 
         return mc;
     }
