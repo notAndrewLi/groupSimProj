@@ -25,7 +25,7 @@ public class StartWorld extends World
         super(1024, 768, 1); 
         
         //create background
-        addObject(new Frame(1024,768,new Color(128,0,0)),512,384);
+        addObject(new Image(1024,768,"bloodRed",false),512,384);
         
         //create text
         textSpacing = 160;
@@ -41,8 +41,8 @@ public class StartWorld extends World
         addLetter(512 + textSpacing/2,topRowY + 150,"t");
         addLetter(512 + textSpacing + 80,topRowY + 150,"s");
         
-        addObject(new Image(350,350,"gLeft",false),150,600);
-        addObject(new Image(350,350,"gRight",false),1024 - 150,600);
+        //addObject(new Image(350,350,"gLeft",false),150,600);
+        //addObject(new Image(350,350,"gRight",false),1024 - 150,600);
         
         startButton = new Image(300,200,"goButton",false);
         

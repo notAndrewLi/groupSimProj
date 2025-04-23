@@ -14,7 +14,7 @@ public class Sword extends Weapon
      */
     
     public Sword(Fighter wielder){
-        super(wielder,10,10,20,20,0,60);
+        super(wielder,15,10,20,20,0,60);
         
         setMyImage("sword(1)", 100, 30);
     }
