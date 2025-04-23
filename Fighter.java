@@ -88,7 +88,7 @@ public abstract class Fighter extends SuperSmoothMover
             movementSpd = 4;
         }
         health = maxHealth;
-
+        
         if(direction == 1){
             for(int i = 0; i < 5; i++){
                 jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
@@ -112,7 +112,7 @@ public abstract class Fighter extends SuperSmoothMover
             emoteImgs[i] = resize(emoteImgs[i], 2);
         }
         setImage(jumpImgs[0]);
-
+        
         yOffset = getImage().getHeight()/6;
     }
 
@@ -192,7 +192,7 @@ public abstract class Fighter extends SuperSmoothMover
                 curFrame %= 5;
                 setImage(jumpImgs[curFrame]);
             }
-
+            //fighter behaviour
             myBehaviour();
             if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
                 jump();
@@ -204,6 +204,7 @@ public abstract class Fighter extends SuperSmoothMover
                 emote();
             }
         }
+        
         fall();
     }
 

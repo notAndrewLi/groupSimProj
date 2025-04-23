@@ -14,7 +14,7 @@ public class Spear extends Weapon
      */
     
     public Spear(Fighter wielder){
-        super(wielder,5,10,20,50,20,100);
+        super(wielder,10,10,20,50,20,100);
         
         setMyImage("spear", 150, 20);
     }

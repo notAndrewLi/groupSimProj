@@ -9,8 +9,8 @@ import java.util.Arrays;
  */
 public class GameWorld extends World
 {
-    GreenfootImage bg = new GreenfootImage("images/background(3).png");
-    private int floorY = 600;//just do a constant for now
+    GreenfootImage bg; //= new GreenfootImage("images/baldHead.png");
+    private int floorY;//just do a constant for now
 
     private Fighter MC;
     private Fighter OPP;
@@ -28,9 +28,16 @@ public class GameWorld extends World
      */
     public GameWorld(int[] customizationType, int[] upgradeBonuses)
     {    
-
         super(1024, 768, 1, true);
+        
+        String[] bgImgs = {"carpet","baldHead","dinnerTable"};
+        int[] floorVals = {480,470,495};
+        
+        int randInt = Greenfoot.getRandomNumber(bgImgs.length);
+        bg = new GreenfootImage("images/" + bgImgs[randInt] + ".png");
         setBackground(bg);
+        
+        floorY = floorVals[randInt];
         //min amnt of traps: 1
         //max amnt of traps: 3
         for(int i = 0; i < (1 + Greenfoot.getRandomNumber(3)); i++){

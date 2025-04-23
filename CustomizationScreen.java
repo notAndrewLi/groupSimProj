@@ -70,7 +70,7 @@ public class CustomizationScreen extends World
         super(1024, 768, 1); 
 
         //background
-        addObject(new Frame(1024,768,new Color(128,0,0)),512,384);
+        addObject(new Image(1024,768,"bloodRed",false),512,384);
 
         //image of fighter
         //addObject(new Image(250,415,"placeholder",false),512,384);
@@ -86,7 +86,7 @@ public class CustomizationScreen extends World
             selectionImages = new ArrayList<>();
 
             //set starting weapon, fighter class, unique personality traits??
-            addObject(new Image(250,415,"placeholder",false),512,384);
+            addObject(new Image(275,415,"theFighter",false),512,384);
             
             fighterName = fNames[Greenfoot.getRandomNumber(fNames.length)] + titles[Greenfoot.getRandomNumber(titles.length)];
 

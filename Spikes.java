@@ -11,7 +11,7 @@ public class Spikes extends Traps
     //private int activeTime = 0;
     //private boolean isActive = false;
     public Spikes(){
-        super("spikeTrapActive","spikeTrapDeactive",180,10);
+        super("spikeActive","spikeDeactive",180,10);
     }
 
     public void act()
