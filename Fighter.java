@@ -21,7 +21,7 @@ public abstract class Fighter extends SuperSmoothMover
     protected int dmgBonus;
     protected int curAct;
     protected int endAct;
-    protected int transTimer;
+    protected static int transTimer;
     
     protected int[] customizationType;
     protected Weapon myWeapon;
@@ -71,8 +71,6 @@ public abstract class Fighter extends SuperSmoothMover
     
     protected String name = "Opponent";
     
-    private int timerForCustomizationScreen;
-
 
     /**
      * Fighter constructor
@@ -222,7 +220,7 @@ public abstract class Fighter extends SuperSmoothMover
             if(isDead){
                 die();
             } else if (isEmoting){
-                emote(transTimer);
+                emote();
             }
         }
         
@@ -245,14 +243,14 @@ public abstract class Fighter extends SuperSmoothMover
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
         if(health <= 0 && !isDead){//perform death animation
-            transTimer = curAct + 180;
-            
             setCurFrame(0);
             die();
             ArrayList<Fighter> otherFighters = getOtherFighters();
+            transTimer = curAct + 180;
+
             for(Fighter otherFighter : otherFighters){
                 otherFighter.setCurFrame(0);
-                otherFighter.emote(transTimer);
+                otherFighter.emote();
                 otherFighter.getWeapon().fallToGround();
                 otherFighter.getArmor().fallToGround();
             }
@@ -541,17 +539,15 @@ public abstract class Fighter extends SuperSmoothMover
         }
     }
     //other fighter's emote method
-    public void emote(int theTransTimer){
+    public void emote(){
         isEmoting = true;
         freezeMe();
         if(curAct % 6 == 0){
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
         }
-        if(curAct >= theTransTimer){
+        if(curAct >= transTimer){
             Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
-        } else{
-            timerForCustomizationScreen++;
         }
     }
     
