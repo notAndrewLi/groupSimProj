@@ -519,7 +519,7 @@ public abstract class Fighter extends SuperSmoothMover
 
     public boolean isTouchingOpponentWall(){
         int opponentWallX = world.getWidth()/2 * (1 + direction);
-        if(Math.abs(getX() - opponentWallX) <= 20){
+        if(Math.abs(getX() - opponentWallX) <= 40){
             return true;
         }
         return false;
