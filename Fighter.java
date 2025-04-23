@@ -18,9 +18,11 @@ public abstract class Fighter extends SuperSmoothMover
     protected int health;
     protected int direction;
     protected int movementSpd;
+    protected int dmgBonus;
     protected int curAct;
     protected int endAct;
-
+    protected int transTimer;
+    
     protected int[] customizationType;
     protected Weapon myWeapon;
     protected Armor myArmor;
@@ -80,13 +82,20 @@ public abstract class Fighter extends SuperSmoothMover
         actOngoing = false;
 
         changeMyState();
-
+        
+        
+        //upgrade bonuses in increments of 20; modify accordingly
         if(upgradeBonuses != null){
             maxHealth = 100 + upgradeBonuses[0];
-            //add one for damage too
+            
+            dmgBonus = upgradeBonuses[1]/5;
+            
             movementSpd = 4 + upgradeBonuses[2]/20;
         }else{
             maxHealth = 100;
+            
+            dmgBonus = 0;
+            
             movementSpd = 4;
         }
         health = maxHealth;
@@ -210,7 +219,7 @@ public abstract class Fighter extends SuperSmoothMover
             if(isDead){
                 die();
             } else if (isEmoting){
-                emote();
+                emote(transTimer);
             }
         }
         
@@ -233,12 +242,14 @@ public abstract class Fighter extends SuperSmoothMover
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
         if(health <= 0 && !isDead){//perform death animation
+            transTimer = curAct + 180;
+            
             setCurFrame(0);
             die();
             ArrayList<Fighter> otherFighters = getOtherFighters();
             for(Fighter otherFighter : otherFighters){
                 otherFighter.setCurFrame(0);
-                otherFighter.emote();
+                otherFighter.emote(transTimer);
                 otherFighter.getWeapon().fallToGround();
                 otherFighter.getArmor().fallToGround();
             }
@@ -478,7 +489,11 @@ public abstract class Fighter extends SuperSmoothMover
     public int getYOffset(){
         return yOffset;
     }
-
+    
+    public int getDmgBonus(){
+        return dmgBonus;
+    }
+    
     //getter for HP
     public int getHP(){
         return health;
@@ -512,6 +527,7 @@ public abstract class Fighter extends SuperSmoothMover
     //die method and animation
     public void die(){
         isDead = true;
+        
         freezeMe();
         if(curFrame >= dieImgs.length){
             setImage(dieImgs[dieImgs.length - 1]);
@@ -522,14 +538,14 @@ public abstract class Fighter extends SuperSmoothMover
         }
     }
     //other fighter's emote method
-    public void emote(){
+    public void emote(int theTransTimer){
         isEmoting = true;
         freezeMe();
         if(curAct % 6 == 0){
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
         }
-        if(Greenfoot.getRandomNumber(600) == 0){//lazy way to change to customization screen
+        if(curAct >= theTransTimer){
             Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
         }
     }

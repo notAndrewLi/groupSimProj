@@ -25,12 +25,12 @@ public class GameWorld extends World
      * Constructor for objects of class GameWorld.
      * 
      */
-    public GameWorld(int[] customizationType, int[] upgradeBonuses, String fighterName)
+    public GameWorld(int[] customizationType, int[] upgradeBonuses, String fighterName, int fights)
     {    
         super(1024, 768, 1, true);
         
-        String[] bgImgs = {"carpet","baldHead","dinnerTable"};
-        int[] floorVals = {480,470,495};
+        String[] bgImgs = {"carpet","baldHead","dinnerTable","sandBox"};
+        int[] floorVals = {480,470,495,570};
         
         int randInt = Greenfoot.getRandomNumber(bgImgs.length);
         bg = new GreenfootImage("images/" + bgImgs[randInt] + ".png");
@@ -46,8 +46,8 @@ public class GameWorld extends World
         this.fighterName = fighterName;
 
         MC = spawnHero(customizationType, upgradeBonuses);
-
-        OPP = spawnOpponent();
+        
+        OPP = spawnOpponent(fights);
 
     }
 
@@ -135,19 +135,36 @@ public class GameWorld extends World
         return mc;
     }
 
-    private Fighter spawnOpponent(){
+    private Fighter spawnOpponent(int fights){
         int myWeapon;
         int myClass;
 
         //modify whenever new content added
+        //index 0 left empty because class is already decided
         int[] customizationType = {0,Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(3)};
+        int[] upgradeBonuses = new int[3];
+        
+        //always one less than the mc
+        int amountOfUpgradesThatIHave = fights - 1;
+        if(amountOfUpgradesThatIHave <= 0){
+            amountOfUpgradesThatIHave = 1;
+        }
+        
+        for(int i = 0;i < fights;i++){
+            int pointsAllocatedToThisStat = Greenfoot.getRandomNumber(amountOfUpgradesThatIHave);
+            
+            upgradeBonuses[i] = pointsAllocatedToThisStat * 20;
+            
+            amountOfUpgradesThatIHave -= pointsAllocatedToThisStat;
+        }
+        
         oppHealingCount = customizationType[3] + 1;
 
         //"Arrays.asList" taken from ChatGPT
         ArrayList<Fighter> fighterClasses = new ArrayList<Fighter>(Arrays.asList(
-                    new JavelinThrower(-1,customizationType),
-                    new TwoHanded(-1,customizationType),
-                    new ShieldBearer(-1,customizationType)
+                    new JavelinThrower(-1,customizationType,upgradeBonuses),
+                    new TwoHanded(-1,customizationType,upgradeBonuses),
+                    new ShieldBearer(-1,customizationType,upgradeBonuses)
                 ));
         myClass = Greenfoot.getRandomNumber(fighterClasses.size());
 
