@@ -4,9 +4,16 @@ public class StatBar extends Actor {
     private int HP;
     private int maxHP;
     private Fighter fighter;
+
+    
+    private boolean scorched;
+    private boolean bleeding;
+    private boolean snared;
+
     private int barWidth = 250;
     private int barHeight = 70;
     private String name;
+
 
     public StatBar(Fighter fighter, int maxHP, String name){
         this.fighter = fighter;
@@ -14,24 +21,31 @@ public class StatBar extends Actor {
         this.name = name;
         this.HP = maxHP;
         // Create the image with enough height for the bar and text
+
         GreenfootImage img = new GreenfootImage(barWidth, barHeight);
+
         setImage(img);
         updateBar(); // draw the initial bar
     }
 
-    public void act() {
+    public void act() { 
         updateBar(); // refresh bar every frame
     }
 
     public void updateBar() {
         HP = fighter.getHP(); // Get current HP
+        scorched = fighter.isScorched();
+        bleeding = fighter.isBleeding();
+        snared = fighter.isFrozen();
         if(HP < 0){
             HP = 0;
         }
         double hpPercent = (double) HP / maxHP;
 
         // Create a new image each time
-        GreenfootImage img = new GreenfootImage(barWidth, barHeight);
+
+        GreenfootImage img = new GreenfootImage(barWidth, barHeight + 54);
+
         // Draw border
         img.setColor(Color.YELLOW);
         img.drawRect(0, 20, barWidth, 25);
@@ -55,6 +69,24 @@ public class StatBar extends Actor {
         img.setFont(new Font("Arial", true, false, 16));
         img.drawString(name, 0, 17);
 
+        int statusYOffset = barHeight + 18;
+        if (scorched) {
+            img.setColor(Color.ORANGE);
+            img.drawString("SCORCHED", 0, statusYOffset);
+            statusYOffset += 18;
+        }
+        if (bleeding) {
+            img.setColor(Color.RED);
+            img.drawString("BLEEDING", 0, statusYOffset);
+            statusYOffset += 18;
+        }
+        if (snared) {
+            img.setColor(Color.CYAN);
+            img.drawString("SNARED", 0, statusYOffset);
+            statusYOffset += 18;
+        }
+
         setImage(img);
+
     }
 }
