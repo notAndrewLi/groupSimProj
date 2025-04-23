@@ -10,7 +10,7 @@ public class StatBar extends Actor {
     private boolean bleeding;
     private boolean snared;
 
-    private int barWidth = 250;
+    private int barWidth = 270;
     private int barHeight = 70;
     private String name;
 
