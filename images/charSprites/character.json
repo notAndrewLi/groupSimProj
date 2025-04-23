@@ -1,9 +1,9 @@
 {
   "bodyTypeName": "male",
-  "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#?body=Body_color_zombie_green&head=Human_male_zombie_green&legs=Pants_red&hat=Maximus_iron",
+  "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#?body=Body_color_zombie_green&head=Human_male_zombie_green&sex=male&legs=Pants_red",
   "spritesheets": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/spritesheets/",
   "version": 1,
-  "datetime": "4/11/2025, 8:22:07 AM",
+  "datetime": "4/22/2025, 10:09:37 PM",
   "credits": [
     {
       "fileName": "body/bodies/male/zombie_green.png",
@@ -18,13 +18,6 @@
       "authors": "bluecarrot16,Benjamin K. Smith (BenCreating),Stephen Challener (Redshrike)",
       "urls": "https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-character-bases",
       "notes": "original head by Redshrike, tweaks by BenCreating, modular version by bluecarrot16"
-    },
-    {
-      "fileName": "hat/helmet/maximus/adult/iron.png",
-      "licenses": "CC-BY 3.0,CC-BY 4.0,OGA-BY 3.0,GPL 2.0,GPL 3.0",
-      "authors": "bluecarrot16",
-      "urls": "https://opengameart.org/content/lpc-helmets,https://opengameart.org/content/lpc-expanded-hats-facial-helmets",
-      "notes": ""
     },
     {
       "fileName": "legs/pants/male/red.png",
@@ -57,14 +50,6 @@
       "parentName": "head",
       "name": "Human_male",
       "variant": "zombie_green",
-      "supportedAnimations": "spellcast,thrust,walk,slash,shoot,hurt,watering,idle,jump,run,sit,emote,climb,combat,1h_slash,1h_backslash,1h_halfslash"
-    },
-    {
-      "fileName": "hat/helmet/maximus/adult/iron.png",
-      "zPos": 130,
-      "parentName": "hat",
-      "name": "Maximus",
-      "variant": "iron",
       "supportedAnimations": "spellcast,thrust,walk,slash,shoot,hurt,watering,idle,jump,run,sit,emote,climb,combat,1h_slash,1h_backslash,1h_halfslash"
     }
   ]
