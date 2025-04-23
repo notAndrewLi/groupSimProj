@@ -134,4 +134,8 @@ public abstract class Weapon extends Actor
         setLocation(getX() + (25 * wielder.getMyDirection()), floorY - yOffset);
         fallen = true;
     }
+    
+    public int getWeaponLength(){
+        return theImage.getWidth();
+    }
 }

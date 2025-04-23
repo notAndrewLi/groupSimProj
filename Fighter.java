@@ -239,9 +239,11 @@ public abstract class Fighter extends SuperSmoothMover
                 otherFighter.setCurFrame(0);
                 otherFighter.emote();
                 otherFighter.getWeapon().fallToGround();
+                otherFighter.getArmor().fallToGround();
             }
 
             myWeapon.fallToGround();
+            myArmor.fallToGround();
             if(isOpponent){//am i an enemy character?
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
                 world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 50);
@@ -454,6 +456,10 @@ public abstract class Fighter extends SuperSmoothMover
 
     public Weapon getWeapon(){
         return myWeapon;
+    }
+    
+    public Armor getArmor(){
+        return myArmor;
     }
 
     public String getMyState(){
