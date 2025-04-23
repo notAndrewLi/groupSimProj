@@ -74,7 +74,7 @@ public abstract class Weapon extends Actor
 
                 if(a != null){
                     Fighter f = (Fighter) a;
-                    f.takeDamage(damage);
+                    f.takeDamage(damage + wielder.getDmgBonus());
                     //do damage do this
                 }
             }else{
