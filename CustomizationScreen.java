@@ -228,7 +228,7 @@ public class CustomizationScreen extends World
         if(upgradeButtons != null){
             for(Image i: upgradeButtons){
                 int theIndex = upgradeButtons.indexOf(i);
-                if(Greenfoot.mouseClicked(i) && canBuy[theIndex]){
+                if(Greenfoot.mouseClicked(i) && canBuy[theIndex] && myGold - upgradeCostVals[theIndex] >= 0){
                     canBuy[theIndex] = false;
                     //subtract gold
                     //match up the index of the button in the arraylist with the array containing the cost of the upgrade

@@ -26,7 +26,7 @@ public class PileOfGold extends Spawnables
             getWorld().removeObject(this);
         } else {
             timer++;
-            if (timer >= 240) { //240 frames = 4 seconds at 60 FPS
+            if (timer >= 300) { //300 frames = 5 seconds at 60 FPS
                 getWorld().removeObject(this);
             }
         }  

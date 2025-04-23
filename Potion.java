@@ -15,10 +15,6 @@ public class Potion extends Spawnables
     
     private boolean healOpponent;
     
-    private int curAct;
-    
-    private int floorY;
-    
     public Potion(boolean healOpponent){
         this.healOpponent = healOpponent;
         
@@ -43,29 +39,10 @@ public class Potion extends Spawnables
     
     public void act()
     {
-        curAct++;
-        fall();
-        
-        /*
-        //falling
-        if(checkAirborne() && curAct % 2 == 0){
-            setLocation(getX(),getY() + 15);
-        }
-        */
-        
+        super.fall();
         healOnContact();
     }
     
-    /*
-    private boolean checkAirborne(){
-        if(getY() >= floorY){
-            setLocation(getX(),floorY);
-            return false;
-        }
-        
-        return true;
-    }
-    */
     
     private void healOnContact(){
         Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
