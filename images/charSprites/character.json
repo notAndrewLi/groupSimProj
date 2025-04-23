@@ -1,16 +1,18 @@
 {
-  "bodyTypeName": "male",
-  "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#?body=Body_color_zombie_green&head=Human_male_zombie_green&legs=Pants_red&hat=Maximus_iron",
+
+  "bodyTypeName": "muscular",
+  "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#?body=Body_color_zombie_green&head=Human_male_zombie_green&sex=muscular&legs=Pants_red&shoes=Basic_Shoes_black&hat=none_Barbuta",
   "spritesheets": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/spritesheets/",
   "version": 1,
-  "datetime": "4/11/2025, 8:22:07 AM",
+  "datetime": "4/22/2025, 5:06:14 PM",
+
   "credits": [
     {
-      "fileName": "body/bodies/male/zombie_green.png",
-      "licenses": "OGA-BY 3.0,CC-BY-SA 3.0,GPL 3.0",
-      "authors": "bluecarrot16,JaidynReiman,Benjamin K. Smith (BenCreating),Evert,Eliza Wyatt (ElizaWy),TheraHedwig,MuffinElZangano,Durrani,Johannes Sjölund (wulax),Stephen Challener (Redshrike)",
-      "urls": "https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-medieval-fantasy-character-sprites,https://opengameart.org/content/lpc-male-jumping-animation-by-durrani,https://opengameart.org/content/lpc-runcycle-and-diagonal-walkcycle,https://opengameart.org/content/lpc-revised-character-basics,https://opengameart.org/content/lpc-be-seated,https://opengameart.org/content/lpc-runcycle-for-male-muscular-and-pregnant-character-bases-with-modular-heads,https://opengameart.org/content/lpc-jump-expanded,https://opengameart.org/content/lpc-character-bases",
-      "notes": "see details at https://opengameart.org/content/lpc-character-bases; 'Thick' Male Revised Run/Climb by JaidynReiman (based on ElizaWy's LPC Revised)"
+      "fileName": "body/bodies/muscular/zombie_green.png",
+      "licenses": "CC-BY-SA 3.0,GPL 3.0",
+      "authors": "bluecarrot16,JaidynReiman,Evert,TheraHedwig,MuffinElZangano,Durrani,Sander Frenken (castelonia),Benjamin K. Smith (BenCreating),Eliza Wyatt (ElizaWy),dalonedrau,Stephen Challener (Redshrike)",
+      "urls": "https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-barbarian-sprite-base,https://opengameart.org/content/lpc-muscular-swing-animation,https://opengameart.org/content/lpc-muscular-hurt-animation,https://opengameart.org/content/lpc-jump-expanded,https://opengameart.org/content/lpc-revised-character-basics,https://opengameart.org/content/lpc-be-seated,https://opengameart.org/content/lpc-jump-expanded,https://opengameart.org/content/lpc-character-bases,https://opengameart.org/content/lpc-male-jumping-animation-by-durrani",
+      "notes": "see details at https://opengameart.org/content/lpc-character-bases"
     },
     {
       "fileName": "head/heads/human/male/zombie_green.png",
@@ -20,27 +22,35 @@
       "notes": "original head by Redshrike, tweaks by BenCreating, modular version by bluecarrot16"
     },
     {
-      "fileName": "hat/helmet/maximus/adult/iron.png",
-      "licenses": "CC-BY 3.0,CC-BY 4.0,OGA-BY 3.0,GPL 2.0,GPL 3.0",
-      "authors": "bluecarrot16",
-      "urls": "https://opengameart.org/content/lpc-helmets,https://opengameart.org/content/lpc-expanded-hats-facial-helmets",
-      "notes": ""
-    },
-    {
       "fileName": "legs/pants/male/red.png",
       "licenses": "OGA-BY 3.0,GPL 3.0,CC-BY-SA 3.0",
       "authors": "bluecarrot16,JaidynReiman,ElizaWy,Matthew Krohn (makrohn),Johannes Sjölund (wulax),Stephen Challener (Redshrike)",
       "urls": "https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles,https://opengameart.org/content/lpc-medieval-fantasy-character-sprites,https://opengameart.org/content/lpc-expanded-pants",
       "notes": "original male pants by wulax, recolors and edits to v3 base by bluecarrot16, climb/jump/run/sit/emotes/revised combat by JaidynReiman based on ElizaWy's LPC Revised"
+    },
+    {
+      "fileName": "feet/shoes/basic/male/black.png",
+      "licenses": "OGA-BY 3.0,CC-BY-SA 3.0,GPL 3.0",
+      "authors": "JaidynReiman,bluecarrot16,Johannes Sjölund (wulax)",
+      "urls": "https://opengameart.org/content/lpc-medieval-fantasy-character-sprites,http://opengameart.org/content/lpc-clothing-updates,https://opengameart.org/content/lpc-expanded-socks-shoes",
+      "notes": "original by wulax, edited for v3 base by bluecarrot16, Jump/Sit/Emote/Run/Revised Combat by JaidynReiman"
     }
   ],
   "layers": [
     {
-      "fileName": "body/bodies/male/zombie_green.png",
+      "fileName": "body/bodies/muscular/zombie_green.png",
       "zPos": 10,
       "parentName": "body",
       "name": "Body_color",
       "variant": "zombie_green",
+      "supportedAnimations": "spellcast,thrust,walk,slash,shoot,hurt,watering,idle,jump,run,sit,emote,climb,combat,1h_slash,1h_backslash,1h_halfslash"
+    },
+    {
+      "fileName": "feet/shoes/basic/male/black.png",
+      "zPos": 15,
+      "parentName": "shoes",
+      "name": "Basic_Shoes",
+      "variant": "black",
       "supportedAnimations": "spellcast,thrust,walk,slash,shoot,hurt,watering,idle,jump,run,sit,emote,climb,combat,1h_slash,1h_backslash,1h_halfslash"
     },
     {
@@ -57,14 +67,6 @@
       "parentName": "head",
       "name": "Human_male",
       "variant": "zombie_green",
-      "supportedAnimations": "spellcast,thrust,walk,slash,shoot,hurt,watering,idle,jump,run,sit,emote,climb,combat,1h_slash,1h_backslash,1h_halfslash"
-    },
-    {
-      "fileName": "hat/helmet/maximus/adult/iron.png",
-      "zPos": 130,
-      "parentName": "hat",
-      "name": "Maximus",
-      "variant": "iron",
       "supportedAnimations": "spellcast,thrust,walk,slash,shoot,hurt,watering,idle,jump,run,sit,emote,climb,combat,1h_slash,1h_backslash,1h_halfslash"
     }
   ]

@@ -13,7 +13,7 @@ public class Dagger extends Weapon
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public Dagger(Fighter wielder){
-        super(wielder,15,80,60,30,0,150);
+        super(wielder,5,80,60,30,0,150);
         
         setMyImage("dagger", 70, 30);
     }

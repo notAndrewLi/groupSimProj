@@ -10,7 +10,7 @@ public abstract class Spawnables extends SuperSmoothMover
 {
     protected int yVelocity = 0;
     protected int gravity = 1;
-    protected int floorY = 600;
+    protected int floorY;
     /**
      * Act - do whatever the Spawnables wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -18,6 +18,12 @@ public abstract class Spawnables extends SuperSmoothMover
     public void act()
     {
         // Add your action code here.
+    }
+    
+    public void addedToWorld(World w){
+        GameWorld gw = (GameWorld) w;
+        
+        floorY = gw.getFloorY();
     }
     
     public void fall() {

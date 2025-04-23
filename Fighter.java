@@ -90,7 +90,7 @@ public abstract class Fighter extends SuperSmoothMover
             movementSpd = 4;
         }
         health = maxHealth;
-
+        
         if(direction == 1){
             for(int i = 0; i < 5; i++){
                 jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
@@ -114,7 +114,7 @@ public abstract class Fighter extends SuperSmoothMover
             emoteImgs[i] = resize(emoteImgs[i], 2);
         }
         setImage(jumpImgs[0]);
-
+        
         yOffset = getImage().getHeight()/6;
     }
 
@@ -201,7 +201,7 @@ public abstract class Fighter extends SuperSmoothMover
                 curFrame %= 5;
                 setImage(jumpImgs[curFrame]);
             }
-
+            //fighter behaviour
             myBehaviour();
             if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
                 jump();
@@ -213,6 +213,7 @@ public abstract class Fighter extends SuperSmoothMover
                 emote();
             }
         }
+        
         fall();
     }
 
@@ -239,9 +240,11 @@ public abstract class Fighter extends SuperSmoothMover
                 otherFighter.setCurFrame(0);
                 otherFighter.emote();
                 otherFighter.getWeapon().fallToGround();
+                otherFighter.getArmor().fallToGround();
             }
 
             myWeapon.fallToGround();
+            myArmor.fallToGround();
             if(isOpponent){//am i an enemy character?
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
                 world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 50);
@@ -455,6 +458,10 @@ public abstract class Fighter extends SuperSmoothMover
     public Weapon getWeapon(){
         return myWeapon;
     }
+    
+    public Armor getArmor(){
+        return myArmor;
+    }
 
     public String getMyState(){
         if(myState.equals("usingSpecial")){
@@ -535,7 +542,7 @@ public abstract class Fighter extends SuperSmoothMover
 
     public boolean isTouchingOpponentWall(){
         int opponentWallX = world.getWidth()/2 * (1 + direction);
-        if(Math.abs(getX() - opponentWallX) <= 20){
+        if(Math.abs(getX() - opponentWallX) <= 40){
             return true;
         }
         return false;

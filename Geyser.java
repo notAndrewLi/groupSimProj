@@ -5,7 +5,7 @@ public class Geyser extends Traps
     //private int activeTime = 0;
     //private boolean isActive = false;
     public Geyser(){
-        super("geyserActive","geyserDeactive",180,15);
+        super("fireActive","fireDeactive",180,15);
     }
 
     public void act()
