@@ -29,12 +29,13 @@ public abstract class Weapon extends Actor
     //protected int weaponDir;
     protected int xOffset;
     protected int yOffset;
-    
-    
+
     protected String imageName;
     protected int imgX;
     protected int imgY;
     protected GreenfootImage theImage;
+
+    protected GreenfootSound attackSFX;
 
     protected abstract void atkTelegraph();
 
@@ -46,7 +47,7 @@ public abstract class Weapon extends Actor
 
     public Weapon(Fighter wielder, int damage, int atkDuration, int telegraphDuration, int xOffset, int yOffset, int myRange){
         this.wielder = wielder;
-        
+
         this.damage = damage;
         this.atkDuration = atkDuration;
         this.telegraphDuration = telegraphDuration;
@@ -67,6 +68,9 @@ public abstract class Weapon extends Actor
             if(isDangerous && curAct < telegraphEnd){
                 atkTelegraph();
             }else if(isDangerous && curAct < attackEnd){
+                if(attackSFX != null){
+                    attackSFX.play();
+                }
                 //do damage
                 playAtkAnimation();
 
@@ -120,13 +124,12 @@ public abstract class Weapon extends Actor
         }
         setImage(theImage);
     }
-    
-    
+
     //no parameters, for mirroring image when modifying direction
     public void setMyImage(){
         setMyImage(imageName,imgX,imgY);
     }
-    
+
     protected void fallToGround() {
         GameWorld w = (GameWorld) getWorld();
         int floorY = w.getFloorY() + 15;
@@ -134,7 +137,7 @@ public abstract class Weapon extends Actor
         setLocation(getX() + (25 * wielder.getMyDirection()), floorY - yOffset);
         fallen = true;
     }
-    
+
     public int getWeaponLength(){
         return theImage.getWidth();
     }

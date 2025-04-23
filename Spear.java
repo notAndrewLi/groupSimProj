@@ -17,6 +17,7 @@ public class Spear extends Weapon
         super(wielder,10,10,20,50,20,100);
         
         setMyImage("spear", 150, 20);
+        attackSFX = new GreenfootSound("spearSFX.mp3");
     }
     
     public void act()

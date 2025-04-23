@@ -12,10 +12,12 @@ public class Dagger extends Weapon
      * Act - do whatever the Dagger wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
+    
+    
     public Dagger(Fighter wielder){
         super(wielder,5,80,60,30,0,150);
-        
         setMyImage("dagger", 70, 30);
+        attackSFX = new GreenfootSound("daggerSFX.mp3");
     }
     
     public void act()

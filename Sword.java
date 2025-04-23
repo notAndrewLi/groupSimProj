@@ -20,6 +20,7 @@ public class Sword extends Weapon
         //super(wielder,100,10,20,20,0,60);
         
         setMyImage("sword(1)", 100, 30);
+        attackSFX = new GreenfootSound("swordSFX.mp3");
     }
     
     public void act()
