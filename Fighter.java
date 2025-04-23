@@ -540,6 +540,7 @@ public abstract class Fighter extends SuperSmoothMover
     }
     //other fighter's emote method
     public void emote(){
+        heal(maxHealth);
         isEmoting = true;
         freezeMe();
         if(curAct % 6 == 0){
@@ -564,5 +565,9 @@ public abstract class Fighter extends SuperSmoothMover
             return true;
         }
         return false;
+    }
+    
+    public void removeIframes(){
+        iFrames = false;
     }
 }
