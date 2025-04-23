@@ -58,6 +58,8 @@ public class ShieldBearer extends Fighter
             
             //shield bearer gets iFrames
             iFrames = true;
+            
+            //iFrames should end themselves in the fighter's (superclass') act method
             iFramesEndAct = curAct + 180;
             endAct = iFramesEndAct;
         }

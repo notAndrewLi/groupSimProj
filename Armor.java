@@ -36,7 +36,7 @@ public abstract class Armor extends Actor
         if(!fallen){
             if (wielder != null && getWorld() != null){
                 if (wielder.getWorld() != null){
-                    setLocation (wielder.getX(), wielder.getY() - 18);
+                    setLocation (wielder.getX() + 2 * -wielder.getMyDirection(), wielder.getY() - 25);
                 }else{
                     getWorld().removeObject(this);;
                     return;

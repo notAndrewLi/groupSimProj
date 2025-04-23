@@ -15,19 +15,20 @@ public class CustomizationScreen extends World
      * Constructor for objects of class CustomizationScreen.
      * 
      */
-    
+
     private static int fights;
+    private int fightsToWin = 3;
     
     private ArrayList<Image> arrowButtons;
     private ArrayList<Image> selectionImages;
     private ArrayList<Image> upgradeButtons;
     private ArrayList<TextLabel> upgradeCostLabels;
-    
+
     private int selectionImgSize = 90;
-    
+
     private static String fighterName;
 
-    private static int[] customizationType = {0,0,0,0};
+    private static int[] customizationType;
 
     //amount of options per customizable setting
     // -1 because 0 counts as one index
@@ -56,11 +57,12 @@ public class CustomizationScreen extends World
     private TextLabel myGoldDisplay;
 
     String[] statArray = {"Upgrade Health", "Upgrade Damage", "Upgrade Speed"};
-    private static int[] upgradeCostVals = {200,200,200};
-    private static int[] upgradeBonuses = {0,0,0};
+    private static int[] upgradeBonuses;
+    private static int[] upgradeCostVals = new int[3];
 
     //modify according to number of upgrade buttons
-    private static boolean[] canBuy = {true,true,true,true,true};
+    //all buttons are set to true once the switch to Game World is made
+    private static boolean[] canBuy = {true,true,true};
 
     private TextLabel goButton;
 
@@ -76,18 +78,31 @@ public class CustomizationScreen extends World
         //addObject(new Image(250,415,"placeholder",false),512,384);
 
         //start button
+
+        //we need a "go" button no matter what
         goButton = new TextLabel("Let's Rock!", 50); 
         addObject(goButton,512,700);
-
+        
+        addObject(new Image(275,415,"theFighter",false),512,384);
+        
         myGold = theGold;
 
         if(simStart){
+            fights = 0;
+
             arrowButtons = new ArrayList<>();
             selectionImages = new ArrayList<>();
 
-            //set starting weapon, fighter class, unique personality traits??
-            addObject(new Image(275,415,"theFighter",false),512,384);
+            //set all values to default on world start
+            customizationType = new int[4];
+            upgradeBonuses = new int[3];
+            for(int i = 0; i < upgradeCostVals.length;i++){
+                upgradeCostVals[i] = 200;
+            }
             
+            //image for fighter
+            addObject(new Image(275,415,"theFighter",false),512,384);
+
             fighterName = fNames[Greenfoot.getRandomNumber(fNames.length)] + titles[Greenfoot.getRandomNumber(titles.length)];
             //fighter's name
             addObject(new TextLabel(fighterName,50),512,50);
@@ -110,10 +125,6 @@ public class CustomizationScreen extends World
 
         }else{
             //upgrade screen
-            fights += 1;
-            
-            //fighter name for testing, remove later
-            fighterName = "Bob";
 
             //display myGold
             myGoldDisplay = new TextLabel("Gold to his name: " + myGold,25,new Color(255,255,255));
@@ -122,14 +133,18 @@ public class CustomizationScreen extends World
             upgradeButtons = new ArrayList<>();
 
             upgradeCostLabels = new ArrayList<>();
-            
+
             addObject(new TextLabel(fighterName,50),512,50);
             
+            //fight counter
+            int remainingFights = fightsToWin - fights;
+            addObject(new TextLabel("Fights until Dominance:" + remainingFights, 24), 512, 650);
+            
             //progress bar:
-            addObject(new Image(40,66,"placeholder",false),512,700 - (100 * fights));
-            
-            addObject(new Image(500,500,"progressLine(1)",false),570,768/2);
-            
+            //addObject(new Image(40,66,"placeholder",false),512,700 - (100 * fights));
+
+            //addObject(new Image(500,500,"progressLine(1)",false),570,768/2);
+
             int yPos = 200;
 
             for(int i = 0;i < 3;i++){
@@ -142,23 +157,26 @@ public class CustomizationScreen extends World
             }
 
         }
-
-        //stats like health, armor, damage etc can be modified later
-
-        //on fighter death, return to this screen
-
     }
 
     public void act(){
+        //if we land on customization screen after the last fight, change to victory screen
+        if(fights == fightsToWin){
+            Greenfoot.setWorld(new VictoryScreen());
+        }
+        
         //confirm, start fight
         if(Greenfoot.mouseClicked(goButton)){
 
+            fights += 1;
+
+            //set all upgrade buttons clickable again
             for(int i  = 0; i < canBuy.length;i++){
                 canBuy[i] = true;
             }
 
             //pass all of our fighter's information
-            Greenfoot.setWorld(new GameWorld(customizationType,upgradeBonuses, fighterName));
+            Greenfoot.setWorld(new GameWorld(customizationType,upgradeBonuses, fighterName, fights));
         }
 
         //which set of arrow buttons is the program referring to?
@@ -201,7 +219,7 @@ public class CustomizationScreen extends World
                     img.scale(selectionImgSize,selectionImgSize);
                     selectionImages.get(customIndex).setImage(img);
 
-                    System.out.println(customizationString[customIndex] + " : " + customizationType[customIndex]);
+                    //System.out.println(customizationString[customIndex] + " : " + customizationType[customIndex]);
                 }
             }
         }
