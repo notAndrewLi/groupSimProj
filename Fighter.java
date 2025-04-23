@@ -68,6 +68,9 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean isEmoting;
     
     protected String name = "Opponent";
+    
+    private int timerForCustomizationScreen;
+
 
     /**
      * Fighter constructor
@@ -529,11 +532,14 @@ public abstract class Fighter extends SuperSmoothMover
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
         }
-        if(Greenfoot.getRandomNumber(600) == 0){//lazy way to change to customization screen
+        if(timerForCustomizationScreen >= 300){//lazy way to change to customization screen
             Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
+        } else{
+            timerForCustomizationScreen++;
         }
     }
-
+    
+    
     public GreenfootImage resize(GreenfootImage img, int multiplicationFactor){
         GreenfootImage newImg = img;
         newImg.scale(img.getWidth() * multiplicationFactor, img.getHeight() * multiplicationFactor);

@@ -8,9 +8,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class PileOfGold extends Spawnables
 {
-    GreenfootImage img = new GreenfootImage("gold.png");
-    private int timer = 0;
-    
+    GreenfootImage img = new GreenfootImage("gold.png");    
     public PileOfGold(){
         setImage(img);
     }
@@ -24,14 +22,7 @@ public class PileOfGold extends Spawnables
             w.addGold(100);
             getWorld().addObject(new FadeText("+100 Gold", Color.YELLOW), this.getX(), this.getY());
             getWorld().removeObject(this);
-        } else {
-            timer++;
-            if (timer >= 300) { //300 frames = 5 seconds at 60 FPS
-                getWorld().removeObject(this);
-            }
-        }  
+        }
         
     }     
-
-    
 }
