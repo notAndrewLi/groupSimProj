@@ -24,6 +24,7 @@ public class Javelin extends SuperSmoothMover
     private double angularVel;
     private int direction;
     private boolean isDangerous = true;
+    private GreenfootSound javelinSFX = new GreenfootSound("javelinSFX.mp3");
 
     public Javelin(double theXVel, double theYVel, int direction, Fighter me){
         gravity = 1;
@@ -85,6 +86,10 @@ public class Javelin extends SuperSmoothMover
             angularVel = 0;
 
             setLocation(getX(), floorY);
+            if(isDangerous){
+                javelinSFX.play();
+            }
+            isDangerous = false;
 
             //fade away the javelin, method is defined in supersmoothmover
             fadeAway();
@@ -95,6 +100,7 @@ public class Javelin extends SuperSmoothMover
                     if(isDangerous){
                         target.removeIframes();
                         target.takeDamage(20);
+                        javelinSFX.play();
                         isDangerous = false;
                     }
                 }

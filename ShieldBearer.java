@@ -14,7 +14,7 @@ public class ShieldBearer extends Fighter
      */
     
     private Actor myShield;
-    
+    private GreenfootSound shieldSFX = new GreenfootSound("shieldSFX.mp3");
     public ShieldBearer(int direction, int[] customizationType){
         super(direction, customizationType, null);
     }
@@ -55,6 +55,7 @@ public class ShieldBearer extends Fighter
             
             myShield = new Image(100,100,"shield",mirrorImage);
             getWorld().addObject(myShield,getX(),getY());
+            shieldSFX.play();
             
             //shield bearer gets iFrames
             iFrames = true;
