@@ -89,7 +89,6 @@ public class CustomizationScreen extends World
             addObject(new Image(275,415,"theFighter",false),512,384);
             
             fighterName = fNames[Greenfoot.getRandomNumber(fNames.length)] + titles[Greenfoot.getRandomNumber(titles.length)];
-
             //fighter's name
             addObject(new TextLabel(fighterName,50),512,50);
 
@@ -159,7 +158,7 @@ public class CustomizationScreen extends World
             }
 
             //pass all of our fighter's information
-            Greenfoot.setWorld(new GameWorld(customizationType,upgradeBonuses));
+            Greenfoot.setWorld(new GameWorld(customizationType,upgradeBonuses, fighterName));
         }
 
         //which set of arrow buttons is the program referring to?
@@ -195,7 +194,7 @@ public class CustomizationScreen extends World
                         customizationType[customIndex] = customMax[customIndex] - 1; 
                     }
 
-                    //set new image to display new selction
+                    //set new image to display new selection
                     GreenfootImage img = new GreenfootImage(customizationString[customIndex] + customizationType[customIndex] + ".png");
 
                     //when modified,change below as well

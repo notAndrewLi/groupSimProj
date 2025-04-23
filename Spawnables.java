@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Spawnables extends SuperSmoothMover
+public abstract class Spawnables extends SuperSmoothMover
 {
     protected int yVelocity = 0;
     protected int gravity = 1;

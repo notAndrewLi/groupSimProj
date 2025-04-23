@@ -1,9 +1,11 @@
 {
+
   "bodyTypeName": "muscular",
   "url": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/#?body=Body_color_zombie_green&head=Human_male_zombie_green&sex=muscular&legs=Pants_red&shoes=Basic_Shoes_black&hat=none_Barbuta",
   "spritesheets": "https://liberatedpixelcup.github.io/Universal-LPC-Spritesheet-Character-Generator/spritesheets/",
   "version": 1,
   "datetime": "4/22/2025, 5:06:14 PM",
+
   "credits": [
     {
       "fileName": "body/bodies/muscular/zombie_green.png",

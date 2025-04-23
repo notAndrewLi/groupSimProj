@@ -66,6 +66,8 @@ public abstract class Fighter extends SuperSmoothMover
     protected boolean isDead;
     protected boolean isFrozen;
     protected boolean isEmoting;
+    
+    protected String name = "Opponent";
 
     /**
      * Fighter constructor
@@ -148,10 +150,16 @@ public abstract class Fighter extends SuperSmoothMover
             myArmor = armorTypes.get(armorType);
             w.addObject(myArmor,getX(),getY());
             movementSpd -= myArmor.getWeight();
+            
+            if(!isOpponent){
+                name = world.getMCName();
+            }
         }
 
-        StatBar myStatBar = new StatBar(this, maxHealth);
-        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 50);
+        
+        StatBar myStatBar = new StatBar(this, maxHealth, name);
+        w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 100);
+
     }
     
     public void act()
@@ -186,6 +194,7 @@ public abstract class Fighter extends SuperSmoothMover
         }
 
         if(frozenTimer <= 0){
+            isFrozen = false;
             //animation segment
             if(curAct % 4 == 0){//switch frames every 4 acts
                 curFrame++;
@@ -231,12 +240,14 @@ public abstract class Fighter extends SuperSmoothMover
                 otherFighter.setCurFrame(0);
                 otherFighter.emote();
                 otherFighter.getWeapon().fallToGround();
+                otherFighter.getArmor().fallToGround();
             }
 
             myWeapon.fallToGround();
+            myArmor.fallToGround();
             if(isOpponent){//am i an enemy character?
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
-                world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 100);
+                world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 50);
             }
         }
     }
@@ -447,6 +458,10 @@ public abstract class Fighter extends SuperSmoothMover
     public Weapon getWeapon(){
         return myWeapon;
     }
+    
+    public Armor getArmor(){
+        return myArmor;
+    }
 
     public String getMyState(){
         if(myState.equals("usingSpecial")){
@@ -470,7 +485,20 @@ public abstract class Fighter extends SuperSmoothMover
     }
 
     public void freezeMe(int time){
+        isFrozen = true;
         frozenTimer = time;
+    }
+    
+    public boolean isFrozen(){
+        return isFrozen; 
+    }
+    
+    public boolean isScorched(){
+        return isScorched;
+    }
+    
+    public boolean isBleeding(){
+        return isBleeding;
     }
 
     public void freezeMe(){
@@ -501,6 +529,9 @@ public abstract class Fighter extends SuperSmoothMover
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
         }
+        if(Greenfoot.getRandomNumber(600) == 0){//lazy way to change to customization screen
+            Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
+        }
     }
 
     public GreenfootImage resize(GreenfootImage img, int multiplicationFactor){
@@ -511,7 +542,7 @@ public abstract class Fighter extends SuperSmoothMover
 
     public boolean isTouchingOpponentWall(){
         int opponentWallX = world.getWidth()/2 * (1 + direction);
-        if(Math.abs(getX() - opponentWallX) <= 20){
+        if(Math.abs(getX() - opponentWallX) <= 40){
             return true;
         }
         return false;

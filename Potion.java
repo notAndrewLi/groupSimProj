@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Potion extends Actor
+public class Potion extends Spawnables
 {
     /**
      * Act - do whatever the Potion wants to do. This method is called whenever
@@ -44,15 +44,19 @@ public class Potion extends Actor
     public void act()
     {
         curAct++;
+        fall();
         
+        /*
         //falling
         if(checkAirborne() && curAct % 2 == 0){
             setLocation(getX(),getY() + 15);
         }
+        */
         
         healOnContact();
     }
     
+    /*
     private boolean checkAirborne(){
         if(getY() >= floorY){
             setLocation(getX(),floorY);
@@ -61,6 +65,7 @@ public class Potion extends Actor
         
         return true;
     }
+    */
     
     private void healOnContact(){
         Fighter f = (Fighter)getOneIntersectingObject(Fighter.class);
