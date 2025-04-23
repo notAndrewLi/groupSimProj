@@ -17,7 +17,7 @@ public class GameWorld extends World
     private int fighterHP;
     private int mcHealingCount = 0;
     private int oppHealingCount;
-    private static int gold = 0;
+    private  int gold = 0;
     private int coinCeiling = 100;
 
     private String fighterName;

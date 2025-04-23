@@ -113,7 +113,7 @@ public class CustomizationScreen extends World
             fights += 1;
             
             //fighter name for testing, remove later
-            fighterName = "Bob";
+            //fighterName = "Bob";
 
             //display myGold
             myGoldDisplay = new TextLabel("Gold to his name: " + myGold,25,new Color(255,255,255));
@@ -201,7 +201,7 @@ public class CustomizationScreen extends World
                     img.scale(selectionImgSize,selectionImgSize);
                     selectionImages.get(customIndex).setImage(img);
 
-                    System.out.println(customizationString[customIndex] + " : " + customizationType[customIndex]);
+                    //System.out.println(customizationString[customIndex] + " : " + customizationType[customIndex]);
                 }
             }
         }
@@ -210,7 +210,7 @@ public class CustomizationScreen extends World
         if(upgradeButtons != null){
             for(Image i: upgradeButtons){
                 int theIndex = upgradeButtons.indexOf(i);
-                if(Greenfoot.mouseClicked(i) && canBuy[theIndex]){
+                if(Greenfoot.mouseClicked(i) && canBuy[theIndex] && myGold - upgradeCostVals[theIndex] >= 0){
                     canBuy[theIndex] = false;
                     //subtract gold
                     //match up the index of the button in the arraylist with the array containing the cost of the upgrade
