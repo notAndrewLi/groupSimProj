@@ -17,7 +17,7 @@ public class CustomizationScreen extends World
      */
 
     private static int fights;
-    private int fightsToWin = 3;
+    private int fightsToWin = 4;
     
     private ArrayList<Image> arrowButtons;
     private ArrayList<Image> selectionImages;

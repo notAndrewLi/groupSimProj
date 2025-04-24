@@ -151,7 +151,7 @@ public class GameWorld extends World
         //modify whenever new content added
         //index 0 left empty because class is already decided
         int[] customizationType = {0,Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(2),Greenfoot.getRandomNumber(3)};
-        int[] upgradeBonuses = new int[3];
+        int[] upgradeBonuses = new int[4];
         
         //always one less than the mc
         int amountOfUpgradesThatIHave = fights - 1;
