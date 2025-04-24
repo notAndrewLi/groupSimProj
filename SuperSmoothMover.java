@@ -32,6 +32,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
  * 
  * @version 1.24.jc -- Modified by Jordan Cohen
  * 
+ * Added a fadeaway method - Andrew Li
  */
 public abstract class SuperSmoothMover extends Actor
 {

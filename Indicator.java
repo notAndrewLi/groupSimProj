@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class Indicator here.
  * 
- * @author (your name) 
+ * @author (Andrew Li) 
  * @version (a version number or a date)
  */
 public class Indicator extends Actor

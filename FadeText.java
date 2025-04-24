@@ -1,5 +1,10 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+/**
+ * Write a description of class Armor here.
+ * 
+ * @author (Dinneth De Silva) 
+ * @version (a version number or a date)
+ */
 public class FadeText extends Actor
 {
     private int timer = 50; 

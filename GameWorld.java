@@ -4,7 +4,7 @@ import java.util.Arrays;
 /**
  * Write a description of class GameWorld here.
  * 
- * @author (your name) 
+ * @author (Andrew Li, ) 
  * @version (a version number or a date)
  */
 public class GameWorld extends World
