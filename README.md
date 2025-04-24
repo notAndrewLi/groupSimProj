@@ -4,6 +4,59 @@ A README.txt file (If you are comfortable with Markdown, you may use a README.md
 A summary of all major features in the simulator (point form is acceptable)
 Credits to any image or sound files that you get online
 
+## Summary of features
+### Worlds
+- Start World
+- Customization World
+  - First allows customization of:
+    - fighter class
+    - weapon style
+    - num of potions
+    - armour type
+    - fighter name
+  - After fights: buy stat upgrades for fighter
+- Game World
+  - World for fighting between two Fighters
+  - Spawns traps
+  - Gold spawns
+  - Stat bars for each fighter
+  - Randomized maps
+- Victory World
+### Fighters
+- Different styles with different abilities
+  - Javelin
+    - Throws Javelins
+  - Shield
+    - Ignores damage for a duration of time
+  - Two-Handed
+    - Can attack multiple times in a row
+- Animations:
+  - Jumping
+  - Emoting
+  - Dying
+### Traps
+- Geyser
+  - Burn damage
+- Spikes
+  - Bleed damage
+- Snare
+  - Bound effect
+- Spawn randomly on the floor
+### Spawnables
+- Spawn randomly from the sky
+- Gives gold
+### Weapons
+- Different weapon styles:
+  - Spear
+  - Sword
+  - Dagger
+### Armor
+- Different weapon types:
+  - Light
+  - Medium
+  - Heavy
+- Range in damage reducing capabilities, and loss in speed
+  
 ## Credits
 ### Images:
 Players: 
