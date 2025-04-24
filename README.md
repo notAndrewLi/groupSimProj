@@ -69,11 +69,12 @@ Weapons:
 Coins drawn by Dinneth De Silva
 
 Backgrounds: 
-- End Screen by 
-- Sand box game world by
-- Dinnertable game world by
-- Bald head game world by
-- Carpet game world by 
+- End Screen by chatGPT
+- Sand box game world by chatGPT
+- Dinner table game world by chatGPT
+- Bald head game world by https://www.istockphoto.com/photo/frowning-mature-man-gm185086406-19293022
+- Carpet game world by https://calgaryhomes.ca/blog/carpet-material-types.html and teddy bear: https://www.amazon.ca/LotFancy-Stuffed-Animals-Footprints-Birthday/dp/B079BG1425?th=1
+- Backgrounds for customization + start worlds https://www.istockphoto.com/vector/border-of-hues-of-red-paint-splashing-droplets-watercolor-strokes-design-element-gm1223686206-359542983 
 
 Armor:
 - All drawn by Cyrus Yu
