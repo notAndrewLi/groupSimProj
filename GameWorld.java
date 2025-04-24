@@ -21,6 +21,7 @@ public class GameWorld extends World
     private int coinCeiling = 100;
 
     private String fighterName;
+    private GreenfootSound BGM = new GreenfootSound("fightBGM.mp3");
     /**
      * Constructor for objects of class GameWorld.
      * 
@@ -28,7 +29,7 @@ public class GameWorld extends World
     public GameWorld(int[] customizationType, int[] upgradeBonuses, String fighterName, int fights)
     {    
         super(1024, 768, 1, true);
-        
+        BGM.playLoop();
         String[] bgImgs = {"carpet","baldHead","dinnerTable","sandBox"};
         int[] floorVals = {480,470,495,570};
         
@@ -50,7 +51,15 @@ public class GameWorld extends World
         OPP = spawnOpponent(fights);
 
     }
-
+    
+    public void started(){
+        BGM.play();
+    }
+    
+    public void stopped(){
+        BGM.pause();
+    }
+    
     public void act(){
         spawnSpawnables(0);
         spawnSpawnables(1);
@@ -197,5 +206,9 @@ public class GameWorld extends World
 
     public String getMCName(){
         return fighterName;
+    }
+    
+    public void stopMusic(){
+        BGM.stop();
     }
 }

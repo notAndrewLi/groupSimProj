@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public abstract class Traps extends SuperSmoothMover
+public abstract class Traps extends Actor
 {
 
     protected int curAct = 0;

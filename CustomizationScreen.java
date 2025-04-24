@@ -65,12 +65,14 @@ public class CustomizationScreen extends World
     private static boolean[] canBuy = {true,true,true};
 
     private TextLabel goButton;
+    
+    private GreenfootSound BGM = new GreenfootSound("customizationBGM.mp3");
 
     public CustomizationScreen(boolean simStart, int theGold)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1024, 768, 1); 
-
+        BGM.playLoop();
         //background
         addObject(new Image(1024,768,"bloodRed",false),512,384);
 
@@ -158,10 +160,19 @@ public class CustomizationScreen extends World
 
         }
     }
+    
+    public void started(){
+        BGM.play();
+    }
+    
+    public void stopped(){
+        BGM.pause();
+    }
 
     public void act(){
         //if we land on customization screen after the last fight, change to victory screen
         if(fights == fightsToWin){
+            BGM.stop();
             Greenfoot.setWorld(new VictoryScreen());
         }
         
@@ -177,6 +188,7 @@ public class CustomizationScreen extends World
 
             //pass all of our fighter's information
             Greenfoot.setWorld(new GameWorld(customizationType,upgradeBonuses, fighterName, fights));
+            BGM.stop();
         }
 
         //which set of arrow buttons is the program referring to?

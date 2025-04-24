@@ -245,6 +245,16 @@ public abstract class Fighter extends SuperSmoothMover
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
         if(health <= 0 && !isDead){//perform death animation
+            
+            //pick up all gold in world
+            
+            ArrayList<PileOfGold> golds = (ArrayList<PileOfGold>) world.getObjects(PileOfGold.class);
+            
+            for(PileOfGold gold : golds){
+                world.addGold(100);
+                world.removeObject(gold);
+            }
+            
             setCurFrame(0);
             die();
             ArrayList<Fighter> otherFighters = getOtherFighters();
@@ -554,6 +564,7 @@ public abstract class Fighter extends SuperSmoothMover
             curFrame++;
         }
         if(curAct >= transTimer){
+            world.stopMusic();
             Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
         }
     }
