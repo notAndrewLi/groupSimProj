@@ -4,7 +4,7 @@ import java.util.Arrays;
 /**
  * Write a description of class Fighter here.
  * 
- * @author (your name) 
+ * @author (Andrew Li, ) 
  * @version (a version number or a date)
  */
 public abstract class Fighter extends SuperSmoothMover

@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class Traps here.
  * 
- * @author (your name) 
+ * @author (Andrew Li, Dinneth De Silva) 
  * @version (a version number or a date)
  */
 public abstract class Traps extends Actor

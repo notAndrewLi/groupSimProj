@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class Weapon here.
  * 
- * @author (your name) 
+ * @author (Andrew Li, Cyrus Yu) 
  * @version (a version number or a date)
  */
 public abstract class Weapon extends Actor

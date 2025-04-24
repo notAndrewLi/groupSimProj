@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Write a description of class Javelin here.
  * 
- * @author (your name) 
+ * @author (Andrew Li, Dinneth De Silva) 
  * @version (a version number or a date)
  */
 public class Javelin extends SuperSmoothMover
