@@ -6,6 +6,36 @@ Credits to any image or sound files that you get online
 
 ## Credits
 ### Images:
+Players: 
+- Sprite animations by: Johannes Sjölund (wulax), Michael Whitlock (bigbeargames), Matthew Krohn (makrohn), Nila122, David Conway Jr. (JaidynReiman), Carlo Enrico Victoria (Nemisys), Thane Brimhall (pennomi), bluecarrot16, Luke Mehl, Benjamin K. Smith (BenCreating), ElizaWy, MuffinElZangano, Durrani, kheftel, Stephen Challener (Redshrike), TheraHedwig, Evert, Pierre Vigier (pvigier), Eliza Wyatt (ElizaWy), Johannes Sj?lund (wulax), Sander Frenken (castelonia), dalonedrau, Lanea Zimmerman (Sharm), Sprites contributed as part of the Liberated Pixel Cup project from OpenGameArt.org: http://opengameart.org/content/lpc-collection License: Creative Commons Attribution-ShareAlike 3.0 (CC-BY-SA 3.0) http://creativecommons.org/licenses/by-sa/3.0/ Detailed credits: [LINK TO CREDITS.CSV FILE]
+
+Weapons:
+- Spear https://www.reddit.com/r/Terraria/comments/p4y33n/some_spear_designs_i_made/
+- Javelin Made by Dinneth De Silva
+
+Coins drawn by Dinneth De Silva
+
+Backgrounds: 
+- End Screen by 
+- Sand box game world by
+- Dinnertable game world by
+- Bald head game world by
+- Carpet game world by 
+
+Armor:
+- All drawn by Cyrus Yu
+
+Traps:
+- All drawn by Cyrus Yu
+
+Classes Sprites:
+- All drawn by Cyrus Yu
+
+
+Much more of the art:
+- Drawn by Cyrus Yu
+
+Player Indicator https://www.nicepng.com/png/detail/244-2444375_rhodes-online-green-dot-icon.png
 
 ### Sound effects:
 Weapons:
