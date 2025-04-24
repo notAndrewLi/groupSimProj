@@ -50,6 +50,7 @@ public class StartWorld extends World
     
     public void act(){
         if(Greenfoot.mouseClicked(startButton)){
+            new GreenfootSound("buttonClickSFX.mp3").play(); // new instance plays immediately
             Greenfoot.setWorld(new CustomizationScreen(true,0));
         }
     }

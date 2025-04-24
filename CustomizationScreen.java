@@ -167,7 +167,7 @@ public class CustomizationScreen extends World
         
         //confirm, start fight
         if(Greenfoot.mouseClicked(goButton)){
-
+            new GreenfootSound("buttonClickSFX.mp3").play(); // new instance plays immediately
             fights += 1;
 
             //set all upgrade buttons clickable again
@@ -192,6 +192,7 @@ public class CustomizationScreen extends World
         if(arrowButtons != null){
             for(Image i: arrowButtons){
                 if(Greenfoot.mouseClicked(i)){
+                    new GreenfootSound("buttonClickSFX.mp3").play(); // new instance plays immediately
                     //determine what i am customizing by finding the index of the specific button in the array, and determining which set it belongs to(see above)
                     int buttonIndex = arrowButtons.indexOf(i);
                     int customIndex = returnCustomizationType(buttonIndex);
@@ -229,6 +230,7 @@ public class CustomizationScreen extends World
             for(Image i: upgradeButtons){
                 int theIndex = upgradeButtons.indexOf(i);
                 if(Greenfoot.mouseClicked(i) && canBuy[theIndex] && myGold - upgradeCostVals[theIndex] >= 0){
+                    new GreenfootSound("buttonClickSFX.mp3").play(); // new instance plays immediately
                     canBuy[theIndex] = false;
                     //subtract gold
                     //match up the index of the button in the arraylist with the array containing the cost of the upgrade
