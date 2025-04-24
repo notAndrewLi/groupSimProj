@@ -15,7 +15,7 @@ public class Dagger extends Weapon
     
     
     public Dagger(Fighter wielder){
-        super(wielder,5,80,60,30,0,150);
+        super(wielder,5,40,60,30,0,150);
         setMyImage("dagger", 70, 30);
         attackSFX = new GreenfootSound("daggerSFX.mp3");
     }
