@@ -19,12 +19,11 @@ public class VictoryScreen extends World
     private Frame blackScrn;
     
     private GreenfootSound BGM = new GreenfootSound("victoryBGM.mp3");
-    
     public VictoryScreen()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(1024, 768, 1); 
-        
+        BGM.setVolume(50);
         BGM.play();
         
         addObject(new Image(1024,768,"endScreen",false),1024/2,768/2);
