@@ -3,7 +3,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class Armor here.
  * 
- * @author (your name) 
+ * @author (Andrew Li) 
  * @version (a version number or a date)
  */
 public abstract class Armor extends Actor
