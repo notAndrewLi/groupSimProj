@@ -671,7 +671,12 @@ public abstract class Fighter extends SuperSmoothMover
         }
         if(curAct >= transTimer) {
             world.stopMusic();
-            Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
+            //Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
+            if(isOpponent){
+               Greenfoot.setWorld(new DeathScreen()); 
+            }else{
+                Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
+            }
         }
     }
     
