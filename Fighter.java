@@ -1,115 +1,117 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.ArrayList;
 import java.util.Arrays;
+
 /**
- * Write a description of class Fighter here.
+ * An abstract class representing a Fighter in the game.
+ * This class serves as the base for all fighter characters, providing common functionality
+ * for movement, combat, and status effects. Fighters have health, can attack with weapons,
+ * wear armor, and are affected by various game mechanics like gravity and status effects.
  * 
- * @author (Andrew Li, ) 
- * @version (a version number or a date)
+ * @author (Andrew Li)
+ * @version 1.0
  */
 public abstract class Fighter extends SuperSmoothMover
 {
-    /**
-     * Act - do whatever the Fighter wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    //fighter stats
-    protected int maxHealth; //add to constructor later, have ability to choose
+    // Fighter stats
+    protected int maxHealth;
     protected int health;
-    protected int direction;
+    protected int direction;// Direction the fighter is facing (1 for right, -1 for left)
     protected int movementSpd;
     protected int dmgBonus;
     protected int curAct;
-    protected int endAct;
-    protected static int transTimer;
+    protected int endAct;// Act number when current state should end
+    protected static int transTimer;// Timer for scene transitions
     
-    protected int[] customizationType;
+    protected int[] customizationType; // Array containing customization choices
     protected Weapon myWeapon;
     protected Armor myArmor;
     
-    //states
-    protected String myState;
+    // State variables
+    protected String myState;// Current state of the fighter
     protected boolean aggro;
     protected boolean timid;
     protected boolean cautious;
     protected boolean usingSpecial;
     protected ArrayList<Integer> stateArray;
-
+    
     protected boolean actOngoing;
     protected boolean iFrames;
     protected int iFramesEndAct;
-
-    //am i an opponent?
-    protected boolean isOpponent;
-    //animation stuff
+    
+    // Identity variables
+    protected boolean isOpponent;// Whether this fighter is an opponent
+    
+    // Animation variables
     protected int curFrame;
     protected GreenfootImage[] jumpImgs = new GreenfootImage[5];
     protected GreenfootImage[] dieImgs = new GreenfootImage[6];
     protected GreenfootImage[] emoteImgs = new GreenfootImage[3];
-
-    protected final int gravity = 1;
+    
+    // Physics variables
+    protected final int gravity = 1;// Gravity constant
     protected int yVelocity;
     protected boolean canJump = false;
     protected GameWorld world;
-    protected int floorY;
-    protected int yOffset;
-
-    //Status effect stuff
+    protected int floorY;// Y-coordinate of the floor
+    protected int yOffset;// Vertical offset for positioning
+    
+    // Status effect variables
     private boolean isScorched = false;
     private int scorchTimer = 0;
-    private int scorchDuration = 180; //3 seconds
-    private int damageInterval = 60; //deal damage every second
-    private int frozenTimer = 0;
-
-    private boolean isBleeding = false;
-    private int bleedTimer = 0;
-    private int bleedDuration = 300; //5 seconds
-
+    private int scorchDuration = 180;
+    private int damageInterval = 60;
+    private int frozenTimer = 0;        
+    
+    private boolean isBleeding = false; 
+    private int bleedTimer = 0;         
+    private int bleedDuration = 300;    
+    
+    // State flags
     protected boolean isDead;
     protected boolean isFrozen;
     protected boolean isEmoting;
     
-    protected String name = "Opponent";
+    protected String name = "Opponent"; // Fighter's name
     
+    // Sound effects
     protected GreenfootSound jumpSFX = new GreenfootSound("jumpSFX.mp3");
     protected GreenfootSound cheerSFX = new GreenfootSound("cheerSFX.mp3");
     protected GreenfootSound loseSFX = new GreenfootSound("loseSFX.mp3");
+    
     /**
-     * Fighter constructor
-     * only face one direction
+     * Constructs a Fighter with specified direction, customization, and upgrades.
+     * 
+     * @param direction The initial facing direction (1 for right, -1 for left)
+     * @param customizationType Array containing customization choices
+     * @param upgradeBonuses Array containing upgrade bonuses for health, damage, and speed
      */
-    public Fighter(int direction, int[] customizationType, int[] upgradeBonuses){
+    public Fighter(int direction, int[] customizationType, int[] upgradeBonuses) {
         this.direction = direction;
         this.customizationType = customizationType;
-
         actOngoing = false;
-
         changeMyState();
         
-        
-        //upgrade bonuses in increments of 20; modify accordingly
-        if(upgradeBonuses != null){
+        // Apply upgrade bonuses (in increments of 20)
+        if(upgradeBonuses != null) {
             maxHealth = 100 + upgradeBonuses[0];
-            
             dmgBonus = upgradeBonuses[1]/5;
-            
             movementSpd = 4 + upgradeBonuses[2]/20;
-        }else{
+        } else {
             maxHealth = 100;
-            
             dmgBonus = 0;
-            
             movementSpd = 4;
         }
         health = maxHealth;
         
-        if(direction == 1){
-            for(int i = 0; i < 5; i++){
+        // Load and prepare animation frames based on direction
+        if(direction == 1) {
+            for(int i = 0; i < 5; i++) {
                 jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
                 jumpImgs[i] = resize(jumpImgs[i], 2);
             }
-        } else{
-            for(int i = 0; i < 5; i++){
+        } else {
+            for(int i = 0; i < 5; i++) {
                 GreenfootImage img = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
                 img.mirrorHorizontally();
                 jumpImgs[i] = img;
@@ -117,11 +119,12 @@ public abstract class Fighter extends SuperSmoothMover
             } 
         }
 
-        for(int i = 0; i < dieImgs.length; i++){
+        // Load death and emote animations
+        for(int i = 0; i < dieImgs.length; i++) {
             dieImgs[i] = new GreenfootImage("images/dieAnimation/hurt" + i + ".png");
             dieImgs[i] = resize(dieImgs[i], 2);
         }
-        for(int i = 0; i < emoteImgs.length; i++){
+        for(int i = 0; i < emoteImgs.length; i++) {
             emoteImgs[i] = new GreenfootImage("images/emoteAnimation/emote"+ i + ".png");
             emoteImgs[i] = resize(emoteImgs[i], 2);
         }
@@ -130,20 +133,29 @@ public abstract class Fighter extends SuperSmoothMover
         yOffset = getImage().getHeight()/6;
     }
 
+    /**
+     * Abstract method for using the fighter's special ability.
+     * Must be implemented by concrete subclasses.
+     * 
+     * @return true if the ability is still ongoing, false if completed
+     */
     protected abstract boolean useSpecialAbility();
     
-    //moved ts up, before the act method because it should occur before the act method; the order pmo too much
-    public void addedToWorld(World w){
-        //System.out.println(w + "");
+    /**
+     * Called when the fighter is added to the world.
+     * Initializes the fighter's equipment and stats.
+     * 
+     * @param w The world the fighter is being added to
+     */
+    public void addedToWorld(World w) {
         if (w instanceof GameWorld) {
-            //Cast the world to MyWorld and call the method
             world = (GameWorld) w;
-
             floorY = world.getFloorY() - yOffset;
             
             int weaponType = customizationType[1];
             int armorType = customizationType[2];
             
+            // Initialize weapon and armor based on customization
             ArrayList<Weapon> weaponTypes = new ArrayList<Weapon>(Arrays.asList(
                 new Sword(this),
                 new Spear(this),
@@ -157,71 +169,75 @@ public abstract class Fighter extends SuperSmoothMover
             ));
             
             myWeapon = weaponTypes.get(weaponType);
-            w.addObject(myWeapon,getX(),getY());
+            w.addObject(myWeapon, getX(), getY());
             
             myArmor = armorTypes.get(armorType);
-            w.addObject(myArmor,getX(),getY());
+            w.addObject(myArmor, getX(), getY());
             movementSpd -= myArmor.getWeight();
             
-            if(!isOpponent){
+            if(!isOpponent) {
                 name = world.getMCName();
             }
         }
 
-        
+        // Add stat bar for the fighter
         StatBar myStatBar = new StatBar(this, maxHealth, name);
         w.addObject(myStatBar, (w.getWidth()/2) - (direction * 300), 100);
-
     }
     
-    public void act()
-    {
+    /**
+     * The main act method called by Greenfoot.
+     * Handles all fighter behavior, status effects, and animations.
+     */
+    public void act() {
         curAct++;
         frozenTimer--;
 
-        if(isScorched){
-            //deals damage every second
-            if(scorchTimer % damageInterval == 0){
+        // Handle scorch status effect
+        if(isScorched) {
+            if(scorchTimer % damageInterval == 0) {
                 takeDamage(5);
             }
             scorchTimer--;
-            if(scorchTimer <= 0){
+            if(scorchTimer <= 0) {
                 isScorched = false;
             }
         }
 
-        if(isBleeding){
-            //deals damage every second
-            if(bleedTimer % damageInterval == 0){
+        // Handle bleed status effect
+        if(isBleeding) {
+            if(bleedTimer % damageInterval == 0) {
                 takeDamage(2);
             }
             bleedTimer--;
-            if(bleedTimer <= 0){
+            if(bleedTimer <= 0) {
                 isBleeding = false;
             }
         }
 
-        if(iFrames && curAct >= iFramesEndAct){
+        // Handle invincibility frames
+        if(iFrames && curAct >= iFramesEndAct) {
             iFrames = false;
         }
 
-        if(frozenTimer <= 0){
+        // Handle frozen state
+        if(frozenTimer <= 0) {
             isFrozen = false;
-            //animation segment
-            if(curAct % 4 == 0){//switch frames every 4 acts
+            // Animation handling
+            if(curAct % 4 == 0) {
                 curFrame++;
                 curFrame %= 5;
                 setImage(jumpImgs[curFrame]);
             }
-            //fighter behaviour
+            // Behavior logic
             myBehaviour();
-            if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0){
+            if(canJump && curAct % (7 + Greenfoot.getRandomNumber(10)) == 0) {
                 jump();
             }
-        } else{
-            if(isDead){
+        } else {
+            if(isDead) {
                 die();
-            } else if (isEmoting){
+            } else if (isEmoting) {
                 emote();
             }
         }
@@ -229,28 +245,33 @@ public abstract class Fighter extends SuperSmoothMover
         fall();
     }
 
-    public void takeDamage(int damage){
-        if(!iFrames){
-            //if damage is greater than armor resistance
-            if(damage - myArmor.getDmgResist() > 0){
+    /**
+     * Causes the fighter to take damage, applying armor resistance.
+     * Triggers invincibility frames and displays damage numbers.
+     * 
+     * @param damage The amount of damage to take before armor resistance
+     */
+    public void takeDamage(int damage) {
+        if(!iFrames) {
+            // Apply damage with armor resistance
+            if(damage - myArmor.getDmgResist() > 0) {
                 health -= (damage - myArmor.getDmgResist());
             }
             
             iFrames = true;
             iFramesEndAct = curAct + 60;
+            // Display damage number
             int rand = 1 + Greenfoot.getRandomNumber(2);
-            //offsets the damage pop up location
             int x = (rand == 2) ? this.getX() + (8 + Greenfoot.getRandomNumber(12)) : this.getX() - (8 + Greenfoot.getRandomNumber(12));
             int y = (rand == 1) ? this.getY() + (8 + Greenfoot.getRandomNumber(12)) : this.getY() - (8 + Greenfoot.getRandomNumber(12));
             getWorld().addObject(new FadeText(damage + "!"), x, y);
         }
-        if(health <= 0 && !isDead){//perform death animation
-            
-            //pick up all gold in world
-            
+        
+        // Handle death
+        if(health <= 0 && !isDead) {
+            // Collect all gold in the world
             ArrayList<PileOfGold> golds = (ArrayList<PileOfGold>) world.getObjects(PileOfGold.class);
-            
-            for(PileOfGold gold : golds){
+            for(PileOfGold gold : golds) {
                 world.addGold(100);
                 world.removeObject(gold);
             }
@@ -260,7 +281,8 @@ public abstract class Fighter extends SuperSmoothMover
             ArrayList<Fighter> otherFighters = getOtherFighters();
             transTimer = curAct + 300;
 
-            for(Fighter otherFighter : otherFighters){
+            // Handle other fighters' reactions
+            for(Fighter otherFighter : otherFighters) {
                 otherFighter.setCurFrame(0);
                 otherFighter.emote();
                 otherFighter.getWeapon().fallToGround();
@@ -269,72 +291,94 @@ public abstract class Fighter extends SuperSmoothMover
 
             myWeapon.fallToGround();
             myArmor.fallToGround();
-            if(isOpponent){//am i an enemy character?
+            
+            // Display victory/defeat message
+            if(isOpponent) {
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
                 world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 50);
                 cheerSFX.play();
-            } else{
+            } else {
                 loseSFX.play();
             }
         }
     }
 
-    public ArrayList<Fighter> getOtherFighters(){
+    /**
+     * Gets a list of all other fighters in the world.
+     * 
+     * @return ArrayList of other Fighter objects
+     */
+    public ArrayList<Fighter> getOtherFighters() {
         ArrayList<Fighter> fighters = (ArrayList)world.getObjects(Fighter.class);
         ArrayList<Fighter> otherFighters = new ArrayList<Fighter>();
-        for (Fighter fighter : fighters){
-            if(fighter != this){
-                if(fighter.getHP() > 0){
-                    otherFighters.add(fighter);
-                }
+        for (Fighter fighter : fighters) {
+            if(fighter != this && fighter.getHP() > 0) {
+                otherFighters.add(fighter);
             }
         }
         return otherFighters;
     }
 
-    public void setCurFrame(int frameNum){
+    /**
+     * Sets the current animation frame.
+     * 
+     * @param frameNum The frame number to set
+     */
+    public void setCurFrame(int frameNum) {
         curFrame = frameNum;
     }
 
-    public void scorchFighter(){
-        //scorch
+    /**
+     * Applies the scorch status effect to the fighter.
+     */
+    public void scorchFighter() {
         isScorched = true;
         scorchTimer = scorchDuration;
     }
 
-    public void bleedFighter(){
-        //bleed
+    /**
+     * Applies the bleed status effect to the fighter.
+     */
+    public void bleedFighter() {
         isBleeding = true;
         bleedTimer = bleedDuration;
     }
 
-    public void heal(int healAmnt){
+    /**
+     * Heals the fighter by a specified amount, capping at max health.
+     * 
+     * @param healAmnt The amount to heal
+     */
+    public void heal(int healAmnt) {
         health += healAmnt;
-        if(health > 100){
+        if(health > maxHealth) {
             health = maxHealth;
         }
     }
 
-    private void changeMyState(){
-
+    /**
+     * Randomly changes the fighter's state based on current health.
+     */
+    private void changeMyState() {
         int missingHP = maxHealth - health;
-
-        //as more hp is missing, chance to become timid increases
         int randInt = Greenfoot.getRandomNumber(40) + missingHP;
 
-        //25% chance to be cautious
-        if(Greenfoot.getRandomNumber(4) == 0){
+        if(Greenfoot.getRandomNumber(4) == 0) {
             changeMyState("cautious");
-        }else if(randInt > 60){
+        } else if(randInt > 60) {
             changeMyState("timid");
-        }else if(randInt <= 60){
+        } else if(randInt <= 60) {
             changeMyState("aggro");
         }
     }
 
-    //specific changeMyState method
-    private void changeMyState(String newState){
-        //set all states to false
+    /**
+     * Changes the fighter's state to a specific state.
+     * 
+     * @param newState The new state to set ("cautious", "timid", "aggro", or "usingSpecial")
+     */
+    private void changeMyState(String newState) {
+        // Reset all states
         cautious = false;
         timid = false;
         aggro = false;
@@ -342,135 +386,132 @@ public abstract class Fighter extends SuperSmoothMover
 
         myState = newState;
 
-        if(newState.equals("cautious")){
+        // Set appropriate state flag
+        if(newState.equals("cautious")) {
             cautious = true;
-        }else if(newState.equals("timid")){
+        } else if(newState.equals("timid")) {
             endAct = curAct + 30;
             timid = true;
-        }else if(newState.equals("aggro")){
+        } else if(newState.equals("aggro")) {
             aggro = true;
-        }else if(newState.equals("usingSpecial")){
+        } else if(newState.equals("usingSpecial")) {
             usingSpecial = true;
         }
     }
 
-    private void myBehaviour(){
+    /**
+     * Determines and executes the fighter's behavior based on current state.
+     */
+    private void myBehaviour() {
         Fighter f = checkInRange();
 
-        if(timid){
-
-            //if two seconds have passed
-            if(curAct >= endAct){
+        if(timid) {
+            if(curAct >= endAct) {
                 changeMyState();
-            }else{
-                //retreat quickly
+            } else {
                 move(movementSpd * 2 * -direction);
             }
-
-        }else if(aggro){
-
-            if(f != null){
-
-                if(!actOngoing){
+        } else if(aggro) {
+            if(f != null) {
+                if(!actOngoing) {
                     actOngoing = true;
                     myWeapon.attack();
-                }else if(!myWeapon.isDangerous()){
-                    //only changes once attack is done
+                } else if(!myWeapon.isDangerous()) {
                     actOngoing = false;
                     changeMyState();
                 }
-
-            }else if(isTouchingOpponentWall()){//is touching the opponents wall?
+            } else if(isTouchingOpponentWall()) {
                 changeMyState("timid");
-            }else{//should move towards other fighter
+            } else {
                 move(movementSpd * direction);
             }
-
-        }else if(cautious){
-            String theirState;
-
-            if(f != null){
-                theirState = f.getMyState();
-
-                //act accordingly
-                if(theirState.equals("timid")){
+        } else if(cautious) {
+            if(f != null) {
+                String theirState = f.getMyState();
+                if(theirState.equals("timid")) {
                     changeMyState("aggro");
-                }else if(theirState.equals("aggro")){
+                } else if(theirState.equals("aggro")) {
                     changeMyState("timid");
-                }else if(theirState.equals("cautious")){
-                    //some other unique behaviour
-
+                } else if(theirState.equals("cautious")) {
                     changeMyState("usingSpecial");
                 }
-
-            }else if(isTouchingOpponentWall()){//is touching the opponents wall?
+            } else if(isTouchingOpponentWall()) {
                 changeMyState("timid");
-            }else{
+            } else {
                 move(2 * direction);    
             }
-
-        }else if(usingSpecial){
-            //check for when ability is done
-
-            //useSpecialAbility returns a boolean, true if still ongoing, false if done
-            //if false, change my state
-            if(!useSpecialAbility()){
+        } else if(usingSpecial) {
+            if(!useSpecialAbility()) {
                 changeMyState("aggro");
             }
         }
-
-        //useSpecialAbility();
     }
 
-    private Fighter checkInRange(){
-
+    /**
+     * Checks if any other fighters are within attack range.
+     * 
+     * @return The first fighter in range, or null if none
+     */
+    private Fighter checkInRange() {
         ArrayList<Fighter> inRange = (ArrayList<Fighter>)getObjectsInRange(myWeapon.getRange(), Fighter.class);
-
-        if(inRange.isEmpty()){
-            return null;
-        }else{
-            return inRange.get(0);
-        }
+        return inRange.isEmpty() ? null : inRange.get(0);
     }
 
-    private void jump(){//give the fighter a velocity upwards
+    /**
+     * Makes the fighter jump by applying upward velocity.
+     */
+    private void jump() {
         jumpSFX.play();
         yVelocity = 10;
         canJump = false;
     }
 
-    private void fall(){
+    /**
+     * Handles the fighter's falling due to gravity.
+     */
+    private void fall() {
         setLocation(getX(), getY() - yVelocity);
         yVelocity -= gravity;
-        if(getY() > floorY || Math.abs(floorY - getY()) <= 5){
+        if(getY() > floorY || Math.abs(floorY - getY()) <= 5) {
             yVelocity = 0;
             canJump = true;
             setLocation(getX(), floorY);
         }
     }
 
-    public void setAsOpponent(){
+    /**
+     * Marks this fighter as an opponent.
+     */
+    public void setAsOpponent() {
         isOpponent = true;
     }
     
-    public void setMovementSpd(int theSpd){
+    /**
+     * Sets the fighter's movement speed.
+     * 
+     * @param theSpd The new movement speed
+     */
+    public void setMovementSpd(int theSpd) {
         movementSpd = theSpd;
     }
     
-    public void setDirection(int newDir){
+    /**
+     * Sets the fighter's facing direction and updates animations accordingly.
+     * 
+     * @param newDir The new direction (1 for right, -1 for left)
+     */
+    public void setDirection(int newDir) {
         direction = newDir;
-
-        //reorient weapon
         myWeapon.setMyImage();
         myArmor.setMyImage();
         
-        if(direction == 1){
-            for(int i = 0; i < 5; i++){
+        if(direction == 1) {
+            for(int i = 0; i < 5; i++) {
                 jumpImgs[i] = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
                 jumpImgs[i] = resize(jumpImgs[i], 2);
             }
-        } else{
-            for(int i = 0; i < 5; i++){
+        } else {
+            for(int i = 0; i < 5; i++) {
                 GreenfootImage img = new GreenfootImage("images/testJumpAnimation/testJump" + i + ".png");
                 img.mirrorHorizontally();
                 jumpImgs[i] = img;
@@ -479,112 +520,188 @@ public abstract class Fighter extends SuperSmoothMover
         }
     }
 
-    public boolean isOpponent(){
+    /**
+     * Checks if this fighter is an opponent.
+     * 
+     * @return true if this fighter is an opponent, false otherwise
+     */
+    public boolean isOpponent() {
         return isOpponent;
     }
 
-    public Weapon getWeapon(){
+    /**
+     * Gets the fighter's equipped weapon.
+     * 
+     * @return The equipped Weapon object
+     */
+    public Weapon getWeapon() {
         return myWeapon;
     }
     
-    public Armor getArmor(){
+    /**
+     * Gets the fighter's equipped armor.
+     * 
+     * @return The equipped Armor object
+     */
+    public Armor getArmor() {
         return myArmor;
     }
 
-    public String getMyState(){
-        if(myState.equals("usingSpecial")){
-            return "cautious";
-        }
-
-        return myState;
+    /**
+     * Gets the fighter's current state.
+     * Returns "cautious" if state is "usingSpecial" to hide special ability usage.
+     * 
+     * @return The current state as a String
+     */
+    public String getMyState() {
+        return myState.equals("usingSpecial") ? "cautious" : myState;
     }
 
-    public int getMyDirection(){
+    /**
+     * Gets the fighter's facing direction.
+     * 
+     * @return 1 for right, -1 for left
+     */
+    public int getMyDirection() {
         return direction;
     }
 
-    public int getYOffset(){
+    /**
+     * Gets the vertical offset used for positioning.
+     * 
+     * @return The y-offset value
+     */
+    public int getYOffset() {
         return yOffset;
     }
     
-    public int getDmgBonus(){
+    /**
+     * Gets the fighter's damage bonus.
+     * 
+     * @return The damage bonus value
+     */
+    public int getDmgBonus() {
         return dmgBonus;
     }
     
-    //getter for HP
-    public int getHP(){
+    /**
+     * Gets the fighter's current health.
+     * 
+     * @return The current health value
+     */
+    public int getHP() {
         return health;
     }
 
-    public void freezeMe(int time){
+    /**
+     * Freezes the fighter for a specified duration.
+     * 
+     * @param time The duration to freeze (in acts)
+     */
+    public void freezeMe(int time) {
         isFrozen = true;
         frozenTimer = time;
     }
     
-    public boolean isFrozen(){
+    /**
+     * Checks if the fighter is currently frozen.
+     * 
+     * @return true if frozen, false otherwise
+     */
+    public boolean isFrozen() {
         return isFrozen; 
     }
     
-    public boolean isScorched(){
+    /**
+     * Checks if the fighter is currently scorched.
+     * 
+     * @return true if scorched, false otherwise
+     */
+    public boolean isScorched() {
         return isScorched;
     }
     
-    public boolean isBleeding(){
+    /**
+     * Checks if the fighter is currently bleeding.
+     * 
+     * @return true if bleeding, false otherwise
+     */
+    public boolean isBleeding() {
         return isBleeding;
     }
 
-    public void freezeMe(){
+    /**
+     * Freezes the fighter indefinitely.
+     */
+    public void freezeMe() {
         freezeMe(Integer.MAX_VALUE);
     }
     
-    public void unfreezeMe(){
+    /**
+     * Unfreezes the fighter.
+     */
+    public void unfreezeMe() {
         isFrozen = false;
     }
     
-    //die method and animation
-    public void die(){
+    /**
+     * Plays the death animation and handles death state.
+     */
+    public void die() {
         isDead = true;
-        
         freezeMe();
-        if(curFrame >= dieImgs.length){
+        if(curFrame >= dieImgs.length) {
             setImage(dieImgs[dieImgs.length - 1]);
-            //add code for next round
-        } else if(curAct % 4 == 0){
+        } else if(curAct % 4 == 0) {
             setImage(dieImgs[curFrame]);
             curFrame++;
         }
     }
-    //other fighter's emote method
-    public void emote(){
+    
+    /**
+     * Plays the emote animation and handles transition to next scene.
+     */
+    public void emote() {
         heal(maxHealth);
         isEmoting = true;
         freezeMe();
-        if(curAct % 6 == 0){
+        if(curAct % 6 == 0) {
             setImage(emoteImgs[curFrame % 3]);
             curFrame++;
         }
-        if(curAct >= transTimer){
+        if(curAct >= transTimer) {
             world.stopMusic();
             Greenfoot.setWorld(new CustomizationScreen(isOpponent, world.getGold()));
         }
     }
     
-    
-    public GreenfootImage resize(GreenfootImage img, int multiplicationFactor){
+    /**
+     * Resizes a GreenfootImage by a multiplication factor.
+     * 
+     * @param img The image to resize
+     * @param multiplicationFactor The scaling factor
+     * @return The resized image
+     */
+    public GreenfootImage resize(GreenfootImage img, int multiplicationFactor) {
         GreenfootImage newImg = img;
         newImg.scale(img.getWidth() * multiplicationFactor, img.getHeight() * multiplicationFactor);
-        return(newImg);
+        return newImg;
     }
 
-    public boolean isTouchingOpponentWall(){
+    /**
+     * Checks if the fighter is touching the opponent's wall.
+     * 
+     * @return true if touching opponent's wall, false otherwise
+     */
+    public boolean isTouchingOpponentWall() {
         int opponentWallX = world.getWidth()/2 * (1 + direction);
-        if(Math.abs(getX() - opponentWallX) <= 40){
-            return true;
-        }
-        return false;
+        return Math.abs(getX() - opponentWallX) <= 40;
     }
     
-    public void removeIframes(){
+    /**
+     * Removes invincibility frames from the fighter.
+     */
+    public void removeIframes() {
         iFrames = false;
     }
 }
