@@ -10,8 +10,10 @@ public class Spikes extends Traps
 {   
     //private int activeTime = 0;
     //private boolean isActive = false;
+    
     public Spikes(){
         super("spikeActive","spikeDeactive",180,10);
+        attackSFX = new GreenfootSound("spikeSFX.mp3");
     }
 
     public void act()

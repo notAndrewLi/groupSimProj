@@ -20,7 +20,8 @@ public abstract class Traps extends SuperSmoothMover
     protected int activeTime;
     protected boolean canTouch = true;
     protected boolean isActive = false;
-
+    
+    protected GreenfootSound attackSFX;
     public Traps(String activeImage, String deactiveImage, int inactiveInterval,int myDamage){
         active = new GreenfootImage(activeImage + ".png");
         deactive = new GreenfootImage(deactiveImage + ".png");
@@ -38,6 +39,9 @@ public abstract class Traps extends SuperSmoothMover
             setImage(active);
             isActive = true;
             activeTime = 30;
+            if(attackSFX != null){
+                attackSFX.play();
+            }
         }
 
         if (isActive) {

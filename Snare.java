@@ -14,6 +14,7 @@ public class Snare extends Traps
      */
     public Snare(){
         super("snareActive","snareDeactive",180,5);
+        attackSFX = new GreenfootSound("snareSFX.mp3");
     }
     
     public void act()

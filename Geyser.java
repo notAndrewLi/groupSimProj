@@ -6,6 +6,7 @@ public class Geyser extends Traps
     //private boolean isActive = false;
     public Geyser(){
         super("fireActive","fireDeactive",180,15);
+        attackSFX = new GreenfootSound("geyserSFX.mp3");
     }
 
     public void act()
