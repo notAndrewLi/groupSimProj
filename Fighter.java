@@ -71,7 +71,9 @@ public abstract class Fighter extends SuperSmoothMover
     
     protected String name = "Opponent";
     
-
+    protected GreenfootSound jumpSFX = new GreenfootSound("jumpSFX.mp3");
+    protected GreenfootSound cheerSFX = new GreenfootSound("cheerSFX.mp3");
+    protected GreenfootSound loseSFX = new GreenfootSound("loseSFX.mp3");
     /**
      * Fighter constructor
      * only face one direction
@@ -246,7 +248,7 @@ public abstract class Fighter extends SuperSmoothMover
             setCurFrame(0);
             die();
             ArrayList<Fighter> otherFighters = getOtherFighters();
-            transTimer = curAct + 180;
+            transTimer = curAct + 300;
 
             for(Fighter otherFighter : otherFighters){
                 otherFighter.setCurFrame(0);
@@ -260,6 +262,9 @@ public abstract class Fighter extends SuperSmoothMover
             if(isOpponent){//am i an enemy character?
                 TextLabel VictoryPopUp = new TextLabel("Victory! Gold Got: " + world.getGold(), 50, new Color(237, 158, 109));
                 world.addObject(VictoryPopUp, world.getWidth()/2, world.getHeight()/2 - 50);
+                cheerSFX.play();
+            } else{
+                loseSFX.play();
             }
         }
     }
@@ -419,6 +424,7 @@ public abstract class Fighter extends SuperSmoothMover
     }
 
     private void jump(){//give the fighter a velocity upwards
+        jumpSFX.play();
         yVelocity = 10;
         canJump = false;
     }
