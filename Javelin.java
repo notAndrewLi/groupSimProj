@@ -99,7 +99,7 @@ public class Javelin extends SuperSmoothMover
                 if(target != me){
                     if(isDangerous){
                         target.removeIframes();
-                        target.takeDamage(20);
+                        target.takeDamage(10);
                         javelinSFX.play();
                         isDangerous = false;
                     }
